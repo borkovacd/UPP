@@ -1,0 +1,38 @@
+<div class="view-welcome intro-2">
+  <div class="container" *ngIf="numberTemp==0">
+    <div>
+      <br/>
+      <h2 style="color: white;" >
+        Čekanje na potvrdu prijave...
+      </h2>
+    </div>
+  </div>
+  <div class="container" *ngIf="numberTemp==1">
+    <div>
+      <br/>
+      <h2 style="color: white;" >
+        Nalog je uspešno verifikovan!
+      </h2>
+    </div>
+
+    <div>
+      <form #f="ngForm" (ngSubmit)="onSubmit(f.value, f)">
+        <div *ngFor="let field of formFields" >
+          <label for={{field.id}}> {{field.label}} </label>
+          <div>
+            <input type="text" name={{field.id}} ngModel  *ngIf="field.type.name=='string'" >
+            <input type="checkbox" name={{field.id}} ngModel  *ngIf="field.type.name=='boolean'">
+            <input type="number" name={{field.id}} ngModel  *ngIf="field.type.name=='long'">
+            <select name="field.id" *ngIf="field.type.name=='enum'">
+              <option *ngFor="let val of enumValues" value={{val}}>
+                {{field.type.values[val]}}
+              </option>
+            </select>
+          </div>
+        </div>
+       <button style="margin-left: 10%" class="btn btn-outline-light" type="submit"> U redu </button>
+      </form>
+    </div>
+  </div>
+
+</div>

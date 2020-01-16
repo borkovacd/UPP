@@ -1,0 +1,55 @@
+<div class="view-welcome intro-2">
+  <div  class="container">
+    <div>
+      <br/>
+      <h2 style="color: white;" >
+        Registracija
+      </h2>
+    </div>
+    <div style="margin-top: 5%; color:white;" class="form-group">
+      <form #f="ngForm" (ngSubmit)="onSubmit(f.value, f)" ngNativeValidate>
+
+        <div *ngFor="let field of formFields" >
+          <label for={{field.id}}> {{field.label}} </label>
+          <div>
+          <input type="text" name={{field.id}} ngModel  *ngIf="field.type.name=='string'" >
+          <input type="checkbox" name={{field.id}} ngModel  *ngIf="field.type.name=='boolean'">
+          <input type="number" name={{field.id}} ngModel  *ngIf="field.type.name=='long'">
+          <select name="field.id" *ngIf="field.type.name=='enum'">
+            <option *ngFor="let val of enumValues" value={{val}}>
+              {{field.type.values[val]}}
+            </option>
+          </select>
+          </div>
+        </div>
+        <button style="margin-left: 10%" class="btn btn-outline-light" type="submit"> Submit </button>
+      </form>
+    </div>
+
+    <!--<div *ngIf="notClaimed">
+      <br/>
+      <h2 style="color: white;" >
+        Preuzimanje svih dostupnih zadataka
+      </h2>
+    </div>
+    <div *ngIf="notClaimed">
+      <button style="margin-left:2%; margin-top: 3%" class="btn btn-outline-light" (click)="getTasks()">Prikaz zadataka</button>
+
+      <table style="color: white; margin-top: 3%; margin-left: 5%">
+        <tr style="margin-top: 5%" *ngFor="let task of tasks" >
+          <td>{{task.name}}</td>
+          <td>{{task.assignee}}</td>
+          <td><button style="margin-left: 10%" class="btn btn-outline-light" (click)="claim(task.taskId)">Claim</button></td>
+          <td><button style="margin-left: 10%" class="btn btn-outline-light" (click)="complete(task.taskId)">Complete</button></td>
+        </tr>
+      </table>
+    </div>
+
+  </div>
+
+  <div *ngIf="claimedTaskId!=null">
+    <button style="margin-left: 10%" class="btn btn-outline-light" (click)="complete(claimedTaskId)">Complete</button>
+  </div>-->
+
+
+</div>

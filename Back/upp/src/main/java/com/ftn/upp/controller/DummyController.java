@@ -16,12 +16,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.concurrent.SuccessCallback;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,6 +31,7 @@ import com.ftn.upp.model.FormFieldsDto;
 import com.ftn.upp.model.FormSubmissionDto;
 
 import com.ftn.upp.model.TaskDto;
+import com.ftn.upp.service.UserService;
 import com.ftn.upp.service.ValidationService;
 import com.ftn.upp.service.ValidationServiceScientificArea;
 
@@ -46,6 +49,8 @@ public class DummyController {
 	private ValidationService validationService;
 	@Autowired
 	private ValidationServiceScientificArea validationServiceScientificArea;
+	@Autowired
+	private UserService userService;
 	
 	// POKRETANJE PROCESA REGISTRACIJE
 	@GetMapping(path = "/getNewProcess", produces = "application/json")
@@ -70,6 +75,22 @@ public class DummyController {
 		
         return new FormFieldsDto(task.getId(), null, properties);
     }
+	
+	// PREUZIMANJE FORME ZA NOVI TASK
+		@GetMapping(path = "/getNewerTask/{processInstanceId}", produces = "application/json")
+	    public @ResponseBody FormFieldsDto getNewerTask(@PathVariable String processInstanceId) {
+			
+			Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).list().get(0);
+				System.out.println("TASK ZA KOJI PREUZIMAM FORMU: " + task.getId());
+			TaskFormData tfd = formService.getTaskFormData(task.getId());
+			List<FormField> properties = tfd.getFormFields();
+			for(FormField fp : properties) {
+				System.out.println(fp.getId() + fp.getType());
+			}
+			
+	        return new FormFieldsDto(task.getId(), null, properties);
+	    }
+
 
 	// REGISTRACIJA USERA
 	@PostMapping(path = "/post/{taskId}", produces = "application/json")
@@ -92,6 +113,28 @@ public class DummyController {
 		
         return hasErrors;
     }
+	
+	// REGISTRACIJA USERA
+		@PostMapping(path = "/postSomething/{taskId}", produces = "application/json")
+	    public @ResponseBody ResponseEntity postSomething(@RequestBody List<FormSubmissionDto> dto, @PathVariable String taskId) {
+			HashMap<String, Object> map = this.mapListToDto(dto);
+			
+			Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+			
+			System.out.println("TASK ovaj koji mi treba: " + task.getId());
+			
+			System.out.println("Naziv ovog taska je: " + task.getName());
+			String processInstanceId = task.getProcessInstanceId();
+			// Varijabla "registration"  mi je potrebna za cuvanje registrovanog korisnika
+			//runtimeService.setVariable(processInstanceId, "registration", dto);
+			formService.submitTaskForm(taskId, map);
+			
+			//boolean hasErrors = false;
+			//List<FormSubmissionDto> registration = (List<FormSubmissionDto>) runtimeService.getVariable(processInstanceId, "registration");
+			//hasErrors = validationService.checkIsRegistrationFormInvalid(registration);
+			
+			return new ResponseEntity<>(HttpStatus.OK);
+	    }
 	
 	// POSTAVLJANJE BROJA NAUCNIH OBLASTI
 	@PostMapping(path = "/postNumber/{taskId}", produces = "application/json")
@@ -170,6 +213,25 @@ public class DummyController {
 		}
         return new ResponseEntity<List<TaskDto>>(dtos, HttpStatus.OK);
     }
+	
+	@RequestMapping(value="/confirmationOfApplication/{processInstanceId}", method = RequestMethod.GET)
+	public @ResponseBody boolean aktiviraj(@PathVariable String processInstanceId){
+		runtimeService.setVariable(processInstanceId, "confirmationOfApplication", true);
+		
+		List<FormSubmissionDto> registration = (List<FormSubmissionDto>) runtimeService.getVariable(processInstanceId, "registration");
+		
+		String username = "";
+	    for (FormSubmissionDto formField : registration) {
+			if(formField.getFieldId().equals("username")) {
+				username = formField.getFieldValue();
+				//System.out.println("USERNAME JE : " + username);
+			}
+	     }
+	    
+	    userService.saveUser(username);
+	    
+		return true;
+	}
 	
 
 	

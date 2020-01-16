@@ -34,12 +34,14 @@ public class User implements Serializable {
 	
 	private boolean reviewer;
 	
+	private boolean activated;
+	
 	public User() {
-		
+		activated = false;
 	}
 
 	public User(Long id, String username, String password, String firstName, String lastName, String city,
-			String state, String title, String email, boolean reviewer) {
+			String state, String title, String email, boolean reviewer, boolean activated) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -51,10 +53,11 @@ public class User implements Serializable {
 		this.title = title;
 		this.email = email;
 		this.reviewer = reviewer;
+		this.activated = activated;
 	}
 	
 	public User(String username, String password, String firstName, String lastName, String city,
-			String state, String title, String email, boolean reviewer) {
+			String state, String title, String email, boolean reviewer, boolean activated) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -65,6 +68,7 @@ public class User implements Serializable {
 		this.title = title;
 		this.email = email;
 		this.reviewer = reviewer;
+		this.activated = activated;
 	}
 
 	public Long getId() {
@@ -145,6 +149,14 @@ public class User implements Serializable {
 
 	public void setReviewer(boolean reviewer) {
 		this.reviewer = reviewer;
+	}
+
+	public boolean isActivated() {
+		return activated;
+	}
+
+	public void setActivated(boolean activated) {
+		this.activated = activated;
 	}
 
 
