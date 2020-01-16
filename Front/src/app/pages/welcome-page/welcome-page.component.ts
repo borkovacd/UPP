@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import {RepositoryService} from "../../services/repository/repository.service";
+import {UserService} from '../../services/users/user.service';
 
 @Component({
   selector: 'app-welcome-page',
@@ -11,7 +12,9 @@ export class WelcomePageComponent implements OnInit {
 
   private processInstance = "";
 
-  constructor(public router: Router, private repositoryService : RepositoryService) {
+  constructor(public router: Router,
+              private repositoryService : RepositoryService,
+              private userService: UserService) {
 
   }
 
@@ -30,4 +33,7 @@ export class WelcomePageComponent implements OnInit {
 
   }
 
+  logIn() {
+    this.router.navigateByUrl('/login');
+  }
 }

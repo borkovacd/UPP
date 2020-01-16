@@ -66,6 +66,7 @@ public class SavingUserService implements JavaDelegate{
 				else if(formField.getFieldValue().equalsIgnoreCase("false"))
 					korisnik.setReviewer(true);
 			}
+			korisnik.setUserType("obicanKorisnik");
 	      }
 	      
 	      identityService.saveUser(user);

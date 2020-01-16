@@ -6,10 +6,14 @@ import {RegistrationPageComponent} from './pages/registration-page/registration-
 import {ScientificAreaPageComponent} from "./pages/scientific-area-page/scientific-area-page.component";
 import {ScientificAreaNameComponent} from "./pages/scientific-area-name/scientific-area-name.component";
 import {ActivationPageComponent} from "./pages/activation-page/activation-page.component";
+import {LoginComponent} from './pages/login/login.component';
+
 
 
 const routes: Routes = [
   { path: '', component: WelcomePageComponent },
+  { path: 'login', component: LoginComponent},
+  { path: 'login/:processInstanceId', component: LoginComponent},
   { path: 'registration/:processInstanceId', component: RegistrationPageComponent},
   { path: 'scientific-area/:processInstanceId', component: ScientificAreaPageComponent },
   { path: 'scientific-area-name/:processInstanceId/:number', component: ScientificAreaNameComponent },

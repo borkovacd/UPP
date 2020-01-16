@@ -42,7 +42,7 @@ public class SavingScientificAreaService implements JavaDelegate {
 				}
 		      }
 	      
-	      User korisnik = userRepository.findByUsername(username);
+	      User korisnik = userRepository.findOneByUsername(username);
 	      
 	      sa.setUser(korisnik);
 	      

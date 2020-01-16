@@ -31,7 +31,7 @@ public class UpdateUserService implements JavaDelegate {
 				}
 		      }
 	      
-	      User korisnik = userRepository.findByUsername(username);
+	      User korisnik = userRepository.findOneByUsername(username);
 	      
 	      korisnik.setActivated(true);
 	      

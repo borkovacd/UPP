@@ -13,10 +13,14 @@ public class UserService {
 	UserRepository userRepository;
 
 	public void saveUser(String username) {
-		User user = userRepository.findByUsername(username);
+		User user = userRepository.findOneByUsername(username);
 		user.setActivated(true);
 		userRepository.save(user);
 		
+	}
+
+	public User findUserByUsername(String username) {
+		return userRepository.findOneByUsername(username);
 	}
 	
 	

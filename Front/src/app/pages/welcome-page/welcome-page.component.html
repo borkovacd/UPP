@@ -1,5 +1,11 @@
 <div class="view-welcome intro-2">
   <div class="container">
+    <div class="items-wrapper__item items-wrapper__item-small items-wrapper__item--blue">
+      <igx-navbar style="font-family: 'Ink Free'" title="ZDRAVSTVENA USTANOVA">
+        <button class="btn-primary" (click)="isLoggedIn()">Uloguj se</button>
+        <button class="btn-primary" (click)="logout()">Izloguj se</button>
+      </igx-navbar>
+    </div>
     <div>
       <br/>
       <h1 style="color: white;" >
@@ -8,6 +14,7 @@
     </div>
     <div style="margin-top: 5%;" class="btn-group btn-group-lg" role="group" aria-label="...">
       <button class="btn btn-dark" (click)="registration()">Registracija</button>
+      <button class="btn btn-dark" (click)="logIn()">Logovanje</button>
     </div>
   </div>
 </div>

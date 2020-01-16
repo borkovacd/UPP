@@ -1,0 +1,23 @@
+<div class="view intro-2">
+  <div class="container"  style="color:white;">
+    <br/>
+    <label style="font-size: 50px; font-style: oblique;">
+      Logovanje
+    </label>
+    <div  class="view-welcome intro-2">
+      <form>
+        <div class="form-group" [formGroup]="form">
+          <label for="input-username">Username: </label>
+          <input type="text" class="form-control" [formControl]="username" id="input-username" aria-describedby="input-username-help" placeholder="Unesi korisničko ime">
+          <!--<small id="input-username-help" class="form-text text-muted">Korisničko ime</small>-->
+        </div>
+        <div class="form-group" [formGroup]="form">
+          <label for="input-password">Password: </label>
+          <input type="text" class="form-control" [formControl]="password" id="input-password" aria-describedby="input-password-help" placeholder="Unesi lozinku">
+          <!--<small id="input-password-help" class="form-text text-muted">Lozinka</small>-->
+        </div>
+        <button class="btn btn-outline-light" type="submit" [disabled]="!form.valid" (click)="logIn()">Uloguj se</button>
+      </form>
+    </div>
+  </div>
+</div>
