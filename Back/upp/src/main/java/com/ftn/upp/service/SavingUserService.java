@@ -22,11 +22,8 @@ public class SavingUserService implements JavaDelegate{
 	
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
-		  /*String var = "Pera";
-	      var = var.toUpperCase();
-	      execution.setVariable("input", var);*/
+
 	      List<FormSubmissionDto> registration = (List<FormSubmissionDto>)execution.getVariable("registration");
-	      //System.out.println(registration);
 	      User user = identityService.newUser("");
 	      com.ftn.upp.model.User korisnik = new com.ftn.upp.model.User();
 	      for (FormSubmissionDto formField : registration) {
@@ -71,7 +68,6 @@ public class SavingUserService implements JavaDelegate{
 	      
 	      identityService.saveUser(user);
 	      
-	      //DODATI PROVERU DA JE USERNAME UNIQUE
 	      userRepository.save(korisnik);
 	      
 	      

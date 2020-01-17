@@ -8,12 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ftn.upp.model.FormSubmissionDto;
-import com.ftn.upp.model.ScientificArea;
 import com.ftn.upp.model.User;
 import com.ftn.upp.repository.UserRepository;
 
 @Service
-public class SavingChangesService implements JavaDelegate {
+public class ReviewerStatusService implements JavaDelegate {
 	
 	@Autowired
 	UserRepository userRepository;
@@ -30,7 +29,7 @@ public class SavingChangesService implements JavaDelegate {
 		      }
 	      
 	      User korisnik = userRepository.findOneByUsername(username);
-	      korisnik.setActivated(true);
+	      korisnik.setUserType("recenzent");
 	      
 	      userRepository.save(korisnik);
 	}

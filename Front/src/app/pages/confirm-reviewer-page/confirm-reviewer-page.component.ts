@@ -63,15 +63,15 @@ export class ConfirmReviewerPageComponent implements OnInit {
     }
 
     console.log(o);
-    let x = this.userService.registerNumber(o, this.formFieldsDto.taskId);
+    let x = this.userService.registerStatus(o, this.formFieldsDto.taskId);
 
     const processInstanceId = this.route.snapshot.params.processInstanceId;
 
     x.subscribe(
       res => {
         console.log(res);
-        alert("Uspesno ste dodali broj!")
-        this.router.navigateByUrl('scientific-area-name/' + processInstanceId + '/');
+        alert("Uspesno ste odredili status korisnika")
+        location.reload();
       },
       err => {
         console.log("Error occured");

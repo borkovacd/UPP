@@ -33,6 +33,10 @@ export class UserService {
     return this.httpClient.post("http://localhost:8080/welcome/postNumber/".concat(taskId), num) as Observable<any>;
   }
 
+  registerStatus(status, taskId) {
+    return this.httpClient.post("http://localhost:8080/welcome/postStatus/".concat(taskId), status) as Observable<any>;
+  }
+
   registerScientificAreaName(num, taskId) {
     return this.httpClient.post("http://localhost:8080/welcome/postScientificAreaName/".concat(taskId), num) as Observable<any>;
   }

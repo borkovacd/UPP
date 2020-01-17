@@ -145,7 +145,6 @@ public class DummyController {
     public @ResponseBody ResponseEntity postNumber(@RequestBody List<FormSubmissionDto> dto, @PathVariable String taskId) {
 		HashMap<String, Object> map = this.mapListToDto(dto);
 		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
-		//System.out.println("Naziv ovog taska je: " + task.getName());
 		formService.submitTaskForm(taskId, map);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -166,9 +165,17 @@ public class DummyController {
 		
         return hasErrors;
     }
-
 	
-	
+	// POSTAVLJANJE STATUSA KORISNIKA
+	@PostMapping(path = "/postStatus/{taskId}", produces = "application/json")
+    public @ResponseBody ResponseEntity postStatus(@RequestBody List<FormSubmissionDto> dto, @PathVariable String taskId) {
+		HashMap<String, Object> map = this.mapListToDto(dto);
+		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+		String processInstanceId = task.getProcessInstanceId();
+		runtimeService.setVariable(processInstanceId, "potvrda_recenzenta", dto);
+		formService.submitTaskForm(taskId, map);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 	
 	
 	// PREUZIMANJE LISTE SVIH TASKOVA
