@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit {
   public username: AbstractControl;
   public password: AbstractControl;
   private processInstanceId = null;
+  private number = null;
 
   constructor(private route: ActivatedRoute,
               private fb: FormBuilder,
@@ -38,6 +39,7 @@ export class LoginComponent implements OnInit {
     )
 
     this.processInstanceId = this.route.snapshot.params.processInstanceId;
+    this.number = this.route.snapshot.params.number;
     if(this.processInstanceId==null) {
       let y = this.userService.loginUser(login);
       console.log('Pre subscribe');
@@ -60,7 +62,11 @@ export class LoginComponent implements OnInit {
           console.log(res);
           alert('Successfully logged in!');
           sessionStorage.setItem('loggedUser', JSON.stringify(res));
-          window.location.href = '/confirm-reviewer/'+this.processInstanceId;
+          if(this.number == 0) {
+            window.location.href = '/confirm-reviewer/' + this.processInstanceId;
+          } else if(this.number == 1) {
+            window.location.href = '/check-magazine-data/' + this.processInstanceId;
+          }
         },
         err => {
           console.log('Mora se ulogovati admin');

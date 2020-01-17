@@ -25,17 +25,9 @@
 execution.setVariable("aktivanCasopis",false);</bpmn:script>
     </bpmn:scriptTask>
     <bpmn:sequenceFlow id="SequenceFlow_0v6t0bq" sourceRef="Task_1iwqibd" targetRef="ServiceTask_006yivisa" />
-    <bpmn:scriptTask id="Task_1fli964" name="Aktivacija casopisa" scriptFormat="javascript">
-      <bpmn:incoming>SequenceFlow_0tphcf5</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_1knbck1</bpmn:outgoing>
-      <bpmn:script>execution.setVariable("aktivanCasopis",true);</bpmn:script>
-    </bpmn:scriptTask>
-    <bpmn:userTask id="Task_1c1r6uo" name="Provera unesenih podataka" camunda:assignee="demo">
+    <bpmn:userTask id="Task_1c1r6uo" name="Provera podataka" camunda:assignee="demo">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="nazivTemp" label="Naziv" type="string" defaultValue="${naziv}" />
-          <camunda:formField id="issn_brojTemp" label="ISSN broj" type="string" defaultValue="${issn_broj}" />
-          <camunda:formField id="nacin_naplateTemp" label="Nacin naplate" type="string" defaultValue="${nacin_naplate}" />
           <camunda:formField id="ispravljanje" label="Potrebno ispravljanje" type="boolean" defaultValue="false" />
         </camunda:formData>
       </bpmn:extensionElements>
@@ -45,7 +37,6 @@ execution.setVariable("aktivanCasopis",false);</bpmn:script>
     <bpmn:endEvent id="EndEvent_0uuxwlc">
       <bpmn:incoming>SequenceFlow_0m3mkej</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="SequenceFlow_1knbck1" sourceRef="Task_1fli964" targetRef="Task_0773mst" />
     <bpmn:scriptTask id="ScriptTask_0bq7bqq" name="Default za naucne oblasti" scriptFormat="javascript">
       <bpmn:incoming>SequenceFlow_1a1rky5</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0f8wn5k</bpmn:outgoing>
@@ -79,8 +70,8 @@ execution.setVariable("aktivanCasopis",false);</bpmn:script>
       <bpmn:incoming>SequenceFlow_0rdacjz</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="SequenceFlow_0m3mkej" sourceRef="Task_0773mst" targetRef="EndEvent_0uuxwlc" />
-    <bpmn:serviceTask id="Task_0773mst" name="Aktiviranje casopisa" camunda:expression="true">
-      <bpmn:incoming>SequenceFlow_1knbck1</bpmn:incoming>
+    <bpmn:serviceTask id="Task_0773mst" name="Aktiviranje casopisa" camunda:class="com.ftn.upp.service.MagazineActivationService">
+      <bpmn:incoming>SequenceFlow_0tphcf5</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0m3mkej</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:exclusiveGateway id="ExclusiveGateway_0ywo61r">
@@ -113,7 +104,7 @@ execution.setVariable("aktivanCasopis",false);</bpmn:script>
     <bpmn:sequenceFlow id="SequenceFlow_0rdacjz" name="Administrator nije aktivirao casopis" sourceRef="ExclusiveGateway_1vx73g8" targetRef="EndEvent_1qtb1c5">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${aktivacija==false}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="SequenceFlow_0tphcf5" name="Administrator je aktivirao casopis" sourceRef="ExclusiveGateway_1vx73g8" targetRef="Task_1fli964">
+    <bpmn:sequenceFlow id="SequenceFlow_0tphcf5" name="Administrator je aktivirao casopis" sourceRef="ExclusiveGateway_1vx73g8" targetRef="Task_0773mst">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${aktivacija==true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="SequenceFlow_12m9r8n" sourceRef="Task_0x6a7bk" targetRef="ExclusiveGateway_1vx73g8" />
@@ -217,19 +208,12 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
         <di:waypoint x="380" y="277" />
         <di:waypoint x="410" y="277" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="ScriptTask_0z6zhej_di" bpmnElement="Task_1fli964">
-        <dc:Bounds x="2690" y="490" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="UserTask_19f1kyf_di" bpmnElement="Task_1c1r6uo">
         <dc:Bounds x="2070" y="390" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="EndEvent_0uuxwlc_di" bpmnElement="EndEvent_0uuxwlc">
         <dc:Bounds x="2962" y="512" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="SequenceFlow_1knbck1_di" bpmnElement="SequenceFlow_1knbck1">
-        <di:waypoint x="2790" y="530" />
-        <di:waypoint x="2820" y="530" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="ScriptTask_0bq7bqq_di" bpmnElement="ScriptTask_0bq7bqq">
         <dc:Bounds x="690" y="237" width="100" height="80" />
       </bpmndi:BPMNShape>
@@ -310,9 +294,9 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_0tphcf5_di" bpmnElement="SequenceFlow_0tphcf5">
         <di:waypoint x="2515" y="530" />
-        <di:waypoint x="2690" y="530" />
+        <di:waypoint x="2820" y="530" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="2549" y="536" width="82" height="27" />
+          <dc:Bounds x="2554" y="536" width="82" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_12m9r8n_di" bpmnElement="SequenceFlow_12m9r8n">

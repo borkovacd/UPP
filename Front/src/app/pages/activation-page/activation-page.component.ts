@@ -84,7 +84,7 @@ export class ActivationPageComponent implements OnInit {
     x.subscribe(
       res => {
         console.log(res);
-        this.router.navigateByUrl('/login/' + processInstanceId);
+        this.router.navigateByUrl('/login/0/' + processInstanceId);
       },
       err => {
         console.log("Error occured");

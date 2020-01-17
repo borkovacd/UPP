@@ -106,6 +106,24 @@ public class MagazineController {
         return hasErrors;
     }
 	
+	@PostMapping(path = "/checkData/{taskId}", produces = "application/json")
+    public @ResponseBody ResponseEntity checkData(@RequestBody List<FormSubmissionDto> dto, @PathVariable String taskId) {
+		HashMap<String, Object> map = this.mapListToDto(dto);
+		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+		formService.submitTaskForm(taskId, map);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+	
+	@PostMapping(path = "/setActivation/{taskId}", produces = "application/json")
+    public @ResponseBody ResponseEntity setActivation(@RequestBody List<FormSubmissionDto> dto, @PathVariable String taskId) {
+		HashMap<String, Object> map = this.mapListToDto(dto);
+		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+		formService.submitTaskForm(taskId, map);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+	
+	
+	
 	@PostMapping(path = "/update/{taskId}", produces = "application/json")
     public @ResponseBody ResponseEntity update(@RequestBody List<ExtendedFormSubmissionDto> formData, @PathVariable String taskId) {
 		

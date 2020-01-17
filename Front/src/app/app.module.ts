@@ -22,6 +22,9 @@ import { MagazineCreationComponent } from './pages/magazine/magazine-creation/ma
 import { MagazineScientificAreaPageComponent } from './pages/magazine/magazine-scientific-area-page/magazine-scientific-area-page.component';
 import { MagazineScientificAreaNameComponent } from './pages/magazine/magazine-scientific-area-name/magazine-scientific-area-name.component';
 import { MagazineAddingReviewersEditorsComponent } from './pages/magazine/magazine-adding-reviewers-editors/magazine-adding-reviewers-editors.component';
+import { CheckMagazineDataComponent } from './pages/magazine/check-magazine-data/check-magazine-data.component';
+import { ActivationMagazineComponent } from './pages/magazine/activation-magazine/activation-magazine.component';
+import { MagazineFinalPageComponent } from './pages/magazine/magazine-final-page/magazine-final-page.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +40,10 @@ import { MagazineAddingReviewersEditorsComponent } from './pages/magazine/magazi
     MagazineCreationComponent,
     MagazineScientificAreaPageComponent,
     MagazineScientificAreaNameComponent,
-    MagazineAddingReviewersEditorsComponent
+    MagazineAddingReviewersEditorsComponent,
+    CheckMagazineDataComponent,
+    ActivationMagazineComponent,
+    MagazineFinalPageComponent
   ],
   imports: [
     BrowserModule,

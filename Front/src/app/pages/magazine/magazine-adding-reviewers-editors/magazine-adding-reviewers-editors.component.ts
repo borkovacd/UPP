@@ -83,7 +83,7 @@ export class MagazineAddingReviewersEditorsComponent implements OnInit {
       res => {
         console.log(res);
         alert('You  have successfully updated magazine!');
-        this.router.navigateByUrl('/login/' + processInstanceId);
+        this.router.navigateByUrl('/login/1/' + processInstanceId);
       },
       err => {
         console.log('Error occured');
