@@ -14,6 +14,7 @@ export class ScientificAreaNameComponent implements OnInit {
   private formFields = [];
   private enumValues = [];
   private numberTemp = null;
+  private greska  = null;
 
 
   constructor(private userService : UserService,
@@ -47,69 +48,53 @@ export class ScientificAreaNameComponent implements OnInit {
 
   }
 
-  ngOnChanges() {
-
-    const numberTemp = this.route.snapshot.params.number;
-    const processInstanceId = this.route.snapshot.params.processInstanceId;
-    let x = this.repositoryService.getNewTask(processInstanceId);
-
-    x.subscribe(
-      res => {
-        console.log(res);
-        this.formFieldsDto = res;
-        this.formFields = res.formFields;
-        this.formFields.forEach( (field) =>{
-
-          if( field.type.name=='enum'){
-            this.enumValues = Object.keys(field.type.values);
-          }
-        });
-      },
-      err => {
-        console.log("Error occured");
-      }
-    );
-
-  }
-
-  onSubmit(value, form){
+  onSubmit(value, form) {
     let o = new Array();
     for (var property in value) {
       console.log(property);
       console.log(value[property]);
-      o.push({fieldId : property, fieldValue : value[property]});
+      if (value[property] == null) {
+        this.greska = true;
+      } else {
+        o.push({fieldId: property, fieldValue: value[property]});
+        this.greska = false;
+      }
     }
 
-    console.log(o);
-    let x = this.userService.registerScientificAreaName(o, this.formFieldsDto.taskId);
+    if (this.greska == false) {
+      console.log(o);
+      let x = this.userService.registerScientificAreaName(o, this.formFieldsDto.taskId);
 
-    const processInstanceId = this.route.snapshot.params.processInstanceId;
+      const processInstanceId = this.route.snapshot.params.processInstanceId;
 
-    x.subscribe(
-      res => {
-        console.log(res);
-        if(res==false) {
-          alert("Uspešno ste dodali naučnu oblast");
-          this.numberTemp = this.route.snapshot.params.number;
-          this.numberTemp = this.numberTemp - 1;
-          console.log("NUMBER TEMP JE (van petlje) : " + this.numberTemp)
-          if(this.numberTemp > 0) {
-            console.log("NUMBER TEMP JE: " + this.numberTemp)
-            this.router.navigateByUrl('scientific-area-name/' + processInstanceId + '/' + this.numberTemp);
-            this.ngOnInit();
+      x.subscribe(
+        res => {
+          console.log(res);
+          if (res == false) {
+            alert("Uspešno ste dodali naučnu oblast");
+            this.numberTemp = this.route.snapshot.params.number;
+            this.numberTemp = this.numberTemp - 1;
+            console.log("NUMBER TEMP JE (van petlje) : " + this.numberTemp)
+            if (this.numberTemp > 0) {
+              console.log("NUMBER TEMP JE: " + this.numberTemp)
+              this.router.navigateByUrl('scientific-area-name/' + processInstanceId + '/' + this.numberTemp);
+              this.ngOnInit();
+            } else {
+              this.router.navigateByUrl('/activation-page/' + processInstanceId + '/' + 0);
+            }
           } else {
-            this.router.navigateByUrl('/activation-page/' + processInstanceId + '/' + 0);
+            alert("Nije uspešno dodata naučna oblast");
+            location.reload();
           }
-        } else {
-          alert("Nije uspešno dodata naučna oblast");
-          location.reload();
-        }
 
-      },
-      err => {
-        console.log("Error occured");
-      }
-    );
+        },
+        err => {
+          console.log("Error occured");
+        }
+      );
+    } else {
+      alert("Polje ne sme biti prazno! Popunite polje i probajte ponovo.");
+    }
   }
 
 }
