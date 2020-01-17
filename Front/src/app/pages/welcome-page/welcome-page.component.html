@@ -5,8 +5,11 @@
         Naučna centrala
       </h1>
     </div>
-    <div style="margin-top: 1%; margin-left: 7%" class="btn-group btn-group-lg" role="group" aria-label="...">
-      <button class="btn btn-dark" (click)="registration()">Registracija</button>
-      <button style="margin-left: 4%" class="btn btn-dark" (click)="logIn()">Logovanje</button>
+    <div *ngIf="loggedUser==null" style="margin-top: 1%; margin-left: 7%" class="btn-group btn-group-lg" role="group" aria-label="...">
+        <button class="btn btn-dark" (click)="registration()">Registruj se</button>
+        <button style="margin-left: 4%" class="btn btn-dark" (click)="logIn()">Uloguj se</button>
+    </div>
+    <div *ngIf="loggedUser!=null" style="margin-top: 1%; margin-left: 7%" class="btn-group btn-group-lg" role="group" aria-label="...">
+        <button style="margin-left: 4%" class="btn btn-dark" (click)="logOut()">Izloguj se</button>
     </div>
 </div>

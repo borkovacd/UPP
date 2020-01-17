@@ -10,6 +10,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class MagazineFinalPageComponent implements OnInit {
 
+  private loggedUser = null;
+
 
   constructor(private userService : UserService,
               private repositoryService : RepositoryService,
@@ -20,6 +22,23 @@ export class MagazineFinalPageComponent implements OnInit {
 
   ngOnInit() {
 
+    this.loggedUser = sessionStorage.getItem("loggedUser");
+
+  }
+
+  logOut() {
+    let x =  this.userService.logoutUser();
+    x.subscribe(
+      res => {
+        alert('Successfully logged out!');
+        sessionStorage.clear();
+        //sessionStorage.setItem('loggedUser', null);
+        window.location.href = '';
+      },
+      err => {
+        console.log('Mistake!');
+      }
+    );
   }
 
 }

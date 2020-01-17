@@ -11,6 +11,7 @@ import {UserService} from '../../service/user.service';
 export class WelcomePageComponent implements OnInit {
 
   private processInstance = "";
+  private loggedUser = null;
 
   constructor(public router: Router,
               private repositoryService : RepositoryService,
@@ -19,6 +20,8 @@ export class WelcomePageComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.loggedUser = sessionStorage.getItem("loggedUser");
 
   }
 
@@ -35,5 +38,20 @@ export class WelcomePageComponent implements OnInit {
 
   logIn() {
     this.router.navigateByUrl('/login');
+  }
+
+  logOut() {
+    let x =  this.userService.logoutUser();
+    x.subscribe(
+      res => {
+        alert('Successfully logged out!');
+        sessionStorage.clear();
+       //sessionStorage.setItem('loggedUser', null);
+        window.location.href = '';
+      },
+      err => {
+        console.log('Mistake!');
+      }
+    );
   }
 }

@@ -13,6 +13,7 @@ export class ConfirmReviewerPageComponent implements OnInit {
   private formFieldsDto = null;
   private formFields = [];
   private enumValues = [];
+  private loggedUser = null;
 
   private processIsFinished = null;
 
@@ -26,6 +27,8 @@ export class ConfirmReviewerPageComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.loggedUser = sessionStorage.getItem("loggedUser");
 
     const processInstanceId = this.route.snapshot.params.processInstanceId;
     let x = this.repositoryService.getNewTask(processInstanceId);
@@ -75,6 +78,21 @@ export class ConfirmReviewerPageComponent implements OnInit {
       },
       err => {
         console.log("Error occured");
+      }
+    );
+  }
+
+  logOut() {
+    let x =  this.userService.logoutUser();
+    x.subscribe(
+      res => {
+        alert('Successfully logged out!');
+        sessionStorage.clear();
+        //sessionStorage.setItem('loggedUser', null);
+        window.location.href = '';
+      },
+      err => {
+        console.log('Mistake!');
       }
     );
   }

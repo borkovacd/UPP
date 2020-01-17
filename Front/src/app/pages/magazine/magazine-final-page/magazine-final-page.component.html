@@ -3,8 +3,11 @@
     <div >
       <br/>
       <h2 style="color: white;" >
-        Proces registracije je uspešno završen!
+        Proces kreiranja časopisa je uspešno završen!
       </h2>
+      <div *ngIf="loggedUser!=null" style="margin-top: 1%; margin-left: 7%" class="btn-group btn-group-lg" role="group" aria-label="...">
+        <button style="margin-left: 4%" class="btn btn-dark" (click)="logOut()">Izloguj se</button>
+      </div>
     </div>
   </div>
 </div>

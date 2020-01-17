@@ -41,4 +41,19 @@ export class WelcomePageUserComponent implements OnInit {
 
   }
 
+  logOut() {
+    let x =  this.userService.logoutUser();
+    x.subscribe(
+      res => {
+        alert('Successfully logged out!');
+        sessionStorage.clear();
+        //sessionStorage.setItem('loggedUser', null);
+        window.location.href = '';
+      },
+      err => {
+        console.log('Mistake!');
+      }
+    );
+  }
+
 }
