@@ -136,14 +136,7 @@ public class MagazineController {
 			String fieldId = item.getFieldId();
 			System.out.println("Id polja je "+fieldId);
 			System.out.println("Vrednost polja je "+item.getFieldValue());
-			
-			if(fieldId.equals("uredniciMagazina")){
-				if(item.getCategories().size()>2){
-					System.out.println("Vise od 2 naucne oblasti");	
-					return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
-				}
-			}
+		
 			
 			if(fieldId.equals("recenzentiMagazina")){
 				if(item.getCategories().size()<2){
