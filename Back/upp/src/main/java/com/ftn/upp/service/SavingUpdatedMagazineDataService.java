@@ -32,7 +32,7 @@ public class SavingUpdatedMagazineDataService implements JavaDelegate {
 
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
-		 System.out.println("Saving Update Service");
+		
 		 List<FormSubmissionDto> m = (List<FormSubmissionDto>)execution.getVariable("magazine");
 		 List<ExtendedFormSubmissionDto> updateInfo = (List<ExtendedFormSubmissionDto>)execution.getVariable("updateData");
 		 
@@ -45,20 +45,14 @@ public class SavingUpdatedMagazineDataService implements JavaDelegate {
 		 
 		 Magazine magazine = new Magazine();
 		 magazine = magazineRepository.findOneByIssn(magazineISSN);
-		 for(ExtendedFormSubmissionDto item: updateInfo){
+		 for(ExtendedFormSubmissionDto item: updateInfo) {
 			  String fieldId=item.getFieldId();
-			  
 			 if(fieldId.equals("uredniciMagazina")){
-				  System.out.println("Editori su");
-				  System.out.println(item.getCategories().size());
 				  List<User> allUsers = userService.getAll();
 				  for(User u : allUsers){
 					  for(String selectedEd:item.getCategories()){
-	
-						  System.out.println("Editor sa id je "+selectedEd);
 						  String idS=u.getId().toString();
 						  if(idS.equals(selectedEd)){
-							  System.out.println("Pronadjen editor");
 							  System.out.println(u.getFirstName());
 							  magazine.getEditorMagazine().add(u);
 							  
@@ -67,16 +61,11 @@ public class SavingUpdatedMagazineDataService implements JavaDelegate {
 				  }
 			 }
 			 if(fieldId.equals("recenzentiMagazina")){
-				  System.out.println("Recenzenti su su");
-				  System.out.println(item.getCategories().size());
 				  List<User> allUsers = userService.getAll();
 				  for(User u : allUsers){
 					  for(String selectedEd:item.getCategories()){
-	
-						  System.out.println("Recenzent sa id je "+selectedEd);
 						  String idS=u.getId().toString();
 						  if(idS.equals(selectedEd)){
-							  System.out.println("Pronadjen recenzent");
 							  System.out.println(u.getFirstName());
 							  magazine.getReviewerMagazine().add(u);
 							  
