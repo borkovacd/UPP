@@ -36,6 +36,9 @@ public class Magazine {
 	@Column(name = "active")
 	private boolean active;
 	
+	@ManyToOne(fetch = FetchType.EAGER)
+	private User mainEditor;
+	
 	@ManyToMany(cascade = {CascadeType.ALL})
 	@JoinTable(
 	        name = "Magazine_Areas", 
@@ -150,6 +153,16 @@ public class Magazine {
 	public void setOpenAccess(boolean openAccess) {
 		this.openAccess = openAccess;
 	}
+
+	public User getMainEditor() {
+		return mainEditor;
+	}
+
+	public void setMainEditor(User mainEditor) {
+		this.mainEditor = mainEditor;
+	}
+	
+	
 	
 
 }

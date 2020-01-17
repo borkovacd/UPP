@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import {UserService} from '../../service/user.service';
-import {RepositoryService} from '../../service/repository.service';
-import {ActivatedRoute, Router} from "@angular/router";
+import {UserService} from '../../../service/user.service';
+import {RepositoryService} from '../../../service/repository.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {MagazineService} from '../../../service/magazine.service';
 
 @Component({
-  selector: 'app-scientific-area-name',
-  templateUrl: './scientific-area-name.component.html',
-  styleUrls: ['./scientific-area-name.component.css']
+  selector: 'app-magazine-scientific-area-name',
+  templateUrl: './magazine-scientific-area-name.component.html',
+  styleUrls: ['./magazine-scientific-area-name.component.css']
 })
-export class ScientificAreaNameComponent implements OnInit {
+export class MagazineScientificAreaNameComponent implements OnInit {
 
   private formFieldsDto = null;
   private formFields = [];
@@ -17,7 +18,7 @@ export class ScientificAreaNameComponent implements OnInit {
   private greska  = null;
 
 
-  constructor(private userService : UserService,
+  constructor(private magazineService : MagazineService,
               private repositoryService : RepositoryService,
               public router: Router,
               private route: ActivatedRoute) {
@@ -63,7 +64,7 @@ export class ScientificAreaNameComponent implements OnInit {
 
     if (this.greska == false) {
       console.log(o);
-      let x = this.userService.registerScientificAreaName(o, this.formFieldsDto.taskId);
+      let x = this.magazineService.registerMagazineSAName(o, this.formFieldsDto.taskId);
 
       const processInstanceId = this.route.snapshot.params.processInstanceId;
 
@@ -98,3 +99,4 @@ export class ScientificAreaNameComponent implements OnInit {
   }
 
 }
+

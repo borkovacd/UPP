@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
-import {RepositoryService} from "../../services/repository/repository.service";
-import {UserService} from '../../services/users/user.service';
+import {RepositoryService} from '../../service/repository.service';
+import {UserService} from '../../service/user.service';
 
 @Component({
   selector: 'app-welcome-page',

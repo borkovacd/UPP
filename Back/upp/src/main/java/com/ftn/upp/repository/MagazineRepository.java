@@ -7,5 +7,7 @@ import com.ftn.upp.model.Magazine;
 
 public interface MagazineRepository extends JpaRepository<Magazine, Long>{
 
+	Magazine findOneByIssn(String magazineISSN);
+
 
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
-import {RepositoryService} from '../../services/repository/repository.service';
-import {UserService} from '../../services/users/user.service';
+import {RepositoryService} from '../../service/repository.service';
+import {UserService} from '../../service/user.service';
 
 @Component({
   selector: 'app-welcome-page-user',
@@ -33,7 +33,7 @@ export class WelcomePageUserComponent implements OnInit {
 
   createMagazine() {
 
-    this.repositoryService.startProcessCreateMagazine().subscribe(data => {
+    this.repositoryService.startProcessCreateMagazine(this.username).subscribe(data => {
       console.log(data);
       this.processInstance = data.processInstanceId;
       this.router.navigateByUrl('/magazineCreation/' + this.processInstance);

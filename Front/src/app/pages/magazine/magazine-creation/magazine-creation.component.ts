@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {RepositoryService} from '../../services/repository/repository.service';
-import {MagazineService} from '../../services/magazines/magazine.service';
+import {RepositoryService} from '../../../service/repository.service';
+import {MagazineService} from '../../../service/magazine.service';
 import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
@@ -66,7 +66,7 @@ export class MagazineCreationComponent implements OnInit {
         console.log(res);
         if(res==false) {
           alert("Registracija novog časopisa uspešno izvršena!");
-          this.router.navigateByUrl('scientific-area/' + processInstanceId);
+          this.router.navigateByUrl('magazine-scientific-area/' + processInstanceId);
         } else {
           alert("Nije uspešno izvršena registracija novog časopisa");
           location.reload();

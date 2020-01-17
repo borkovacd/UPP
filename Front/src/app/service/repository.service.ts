@@ -19,9 +19,9 @@ export class RepositoryService {
     return this.httpClient.get('http://localhost:8080/welcome/getNewProcess');
   }
 
-  startProcessCreateMagazine() : Observable<any> {
+  startProcessCreateMagazine(username: any) : Observable<any> {
     const headers = new HttpHeaders({'Content-Type': 'application/json'});
-    return this.httpClient.get('http://localhost:8080/magazine/startCreateMagazineProcess');
+    return this.httpClient.get('http://localhost:8080/magazine/startCreateMagazineProcess/'.concat(username));
   }
 
   getNewTask(processInstanceId){

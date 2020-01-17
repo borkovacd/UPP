@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import {UserService} from '../../service/user.service';
-import {RepositoryService} from '../../service/repository.service';
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router} from '@angular/router';
+import {RepositoryService} from '../../../service/repository.service';
+import {MagazineService} from '../../../service/magazine.service';
 
 @Component({
-  selector: 'app-scientific-area-page',
-  templateUrl: './scientific-area-page.component.html',
-  styleUrls: ['./scientific-area-page.component.css']
+  selector: 'app-magazine-scientific-area-page',
+  templateUrl: './magazine-scientific-area-page.component.html',
+  styleUrls: ['./magazine-scientific-area-page.component.css']
 })
-export class ScientificAreaPageComponent implements OnInit {
+export class MagazineScientificAreaPageComponent implements OnInit {
 
   private formFieldsDto = null;
   private formFields = [];
@@ -17,7 +17,7 @@ export class ScientificAreaPageComponent implements OnInit {
   private number = null;
 
 
-  constructor(private userService : UserService,
+  constructor(private magazineService: MagazineService,
               private repositoryService : RepositoryService,
               public router: Router,
               private route: ActivatedRoute) {
@@ -58,15 +58,15 @@ export class ScientificAreaPageComponent implements OnInit {
     }
 
     console.log(o);
-    let x = this.userService.registerNumber(o, this.formFieldsDto.taskId);
+    let x = this.magazineService.registerMagazineSANumber(o, this.formFieldsDto.taskId);
 
     const processInstanceId = this.route.snapshot.params.processInstanceId;
 
     x.subscribe(
       res => {
         console.log(res);
-        alert("Uspesno ste dodali broj!")
-        this.router.navigateByUrl('scientific-area-name/' + processInstanceId + '/' + this.number);
+        alert("Uspesno ste dodali željeni broj naučnih oblasti časopisa!")
+        this.router.navigateByUrl('magazine-scientific-area-name/' + processInstanceId + '/' + this.number);
       },
       err => {
         console.log("Error occured");
