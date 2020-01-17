@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators, FormBuilder, NgForm, AbstractControl} from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { User} from '../../model/User';
 import { UserService} from '../../services/users/user.service';
 import {LoginModel} from '../../model/login.model';
 
@@ -47,7 +46,7 @@ export class LoginComponent implements OnInit {
           console.log(res);
           alert('Successfully logged in!');
           sessionStorage.setItem('loggedUser', JSON.stringify(res));
-          window.location.href = '/homepage';
+          window.location.href = '/welcome';
         },
         err => {
           console.log('Username or password are not correct!');
@@ -61,7 +60,7 @@ export class LoginComponent implements OnInit {
           console.log(res);
           alert('Successfully logged in!');
           sessionStorage.setItem('loggedUser', JSON.stringify(res));
-          window.location.href = '/homepage';
+          window.location.href = '/confirm-reviewer/'+this.processInstanceId;
         },
         err => {
           console.log('Mora se ulogovati admin');

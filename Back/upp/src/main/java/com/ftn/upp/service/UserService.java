@@ -22,6 +22,11 @@ public class UserService {
 	public User findUserByUsername(String username) {
 		return userRepository.findOneByUsername(username);
 	}
+
+	public void activateUser(String username) {
+		User user = userRepository.findOneByUsername(username);
+		user.setActivated(true);
+	}
 	
 	
 

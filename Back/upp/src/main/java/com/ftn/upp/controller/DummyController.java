@@ -65,15 +65,20 @@ public class DummyController {
 	@GetMapping(path = "/getNewTask/{processInstanceId}", produces = "application/json")
     public @ResponseBody FormFieldsDto getNewTask(@PathVariable String processInstanceId) {
 		
-		Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).list().get(0);
-		//System.out.println("TASK ZA KOJI PREUZIMAM FORMU: " + task.getId());
-		TaskFormData tfd = formService.getTaskFormData(task.getId());
-		List<FormField> properties = tfd.getFormFields();
-		for(FormField fp : properties) {
-			System.out.println(fp.getId() + fp.getType());
-		}
+		List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceId).list();
+		if(tasks.isEmpty()) {
+			return new FormFieldsDto(null, null, null);
+		} else {
+			Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).list().get(0);
+			//System.out.println("TASK ZA KOJI PREUZIMAM FORMU: " + task.getId());
+			TaskFormData tfd = formService.getTaskFormData(task.getId());
+			List<FormField> properties = tfd.getFormFields();
+			for(FormField fp : properties) {
+				System.out.println(fp.getId() + fp.getType());
+			}
 		
-        return new FormFieldsDto(task.getId(), null, properties);
+			return new FormFieldsDto(task.getId(), null, properties);
+		}
     }
 	
 	// PREUZIMANJE FORME ZA NOVI TASK
@@ -81,7 +86,6 @@ public class DummyController {
 	    public @ResponseBody FormFieldsDto getNewerTask(@PathVariable String processInstanceId) {
 			
 			Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).list().get(0);
-				System.out.println("TASK ZA KOJI PREUZIMAM FORMU: " + task.getId());
 			TaskFormData tfd = formService.getTaskFormData(task.getId());
 			List<FormField> properties = tfd.getFormFields();
 			for(FormField fp : properties) {
@@ -228,7 +232,8 @@ public class DummyController {
 			}
 	     }
 	    
-	    userService.saveUser(username);
+	    //userService.saveUser(username);
+	    userService.activateUser(username);
 	    
 		return true;
 	}

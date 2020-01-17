@@ -15,7 +15,7 @@ import javax.persistence.ManyToOne;
 public class ScientificArea implements Serializable {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	private String name;

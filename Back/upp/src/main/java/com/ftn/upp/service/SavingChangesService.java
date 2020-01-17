@@ -13,7 +13,7 @@ import com.ftn.upp.model.User;
 import com.ftn.upp.repository.UserRepository;
 
 @Service
-public class UserActivationService implements JavaDelegate {
+public class SavingChangesService implements JavaDelegate {
 	
 	@Autowired
 	UserRepository userRepository;

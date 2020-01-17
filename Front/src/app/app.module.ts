@@ -15,7 +15,7 @@ import { ScientificAreaPageComponent } from './pages/scientific-area-page/scient
 import { ScientificAreaNameComponent } from './pages/scientific-area-name/scientific-area-name.component';
 import { ActivationPageComponent } from './pages/activation-page/activation-page.component';
 import { LoginComponent } from './pages/login/login.component';
-import { IgxNavbarModule } from 'igniteui-angular';
+import { ConfirmReviewerPageComponent } from './pages/confirm-reviewer-page/confirm-reviewer-page.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +25,8 @@ import { IgxNavbarModule } from 'igniteui-angular';
     ScientificAreaPageComponent,
     ScientificAreaNameComponent,
     ActivationPageComponent,
-    LoginComponent
+    LoginComponent,
+    ConfirmReviewerPageComponent
   ],
   imports: [
     BrowserModule,
@@ -35,7 +36,6 @@ import { IgxNavbarModule } from 'igniteui-angular';
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    IgxNavbarModule
   ],
   providers: [
     UserService,
