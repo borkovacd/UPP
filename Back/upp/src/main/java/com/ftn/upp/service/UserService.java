@@ -1,6 +1,9 @@
 package com.ftn.upp.service;
 
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ftn.upp.model.User;
@@ -26,6 +29,10 @@ public class UserService {
 	public void activateUser(String username) {
 		User user = userRepository.findOneByUsername(username);
 		user.setActivated(true);
+	}
+	
+	public List<User> getAll() {
+		return userRepository.findAll();
 	}
 	
 	

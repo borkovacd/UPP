@@ -42,7 +42,8 @@ public class SavingMagazineScientificAreaService implements JavaDelegate {
 				if(formField.getFieldId().equals("issn_broj")) {
 					magazineISSN = formField.getFieldValue();
 				}
-		      }
+		  }
+	
 	      
 	      magazineScientificAreaRepository.save(msa);
 	      

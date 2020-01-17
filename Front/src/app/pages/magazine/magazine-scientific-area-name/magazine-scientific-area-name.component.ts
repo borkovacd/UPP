@@ -81,7 +81,7 @@ export class MagazineScientificAreaNameComponent implements OnInit {
               this.router.navigateByUrl('magazine-scientific-area-name/' + processInstanceId + '/' + this.numberTemp);
               this.ngOnInit();
             } else {
-              this.router.navigateByUrl('/activation-page/' + processInstanceId + '/' + 0);
+              this.router.navigateByUrl('/magazine-adding-reviewers-editors/' + processInstanceId);
             }
           } else {
             alert("Nije uspešno dodata naučna oblast");

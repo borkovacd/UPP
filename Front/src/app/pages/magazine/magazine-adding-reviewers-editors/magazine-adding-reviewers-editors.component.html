@@ -1,0 +1,28 @@
+<div class="view-welcome intro-2">
+  <div class="container">
+    <div>
+      <br/>
+      <h2 style="color: white;" >
+        Dodavanje urednika i recenzenata časopisa
+      </h2>
+    </div>
+    <div style="margin-top: 5%; color:white;" class="form-group">
+      <form #f="ngForm" (ngSubmit)="onSubmit(f.value, f)" ngNativeValidate>
+        <div *ngFor="let field of formFields" >
+          <label for={{field.id}}>{{field.label}}</label>
+          <select name="{{field.id}}"  multiple ngModel *ngIf="field.type.name=='enum' && field.id=='recenzentiMagazina'">
+            <option *ngFor="let category of reviewers" value={{category.id}}>
+              {{category.firstName}} , {{category.lastName}}
+            </option>
+          </select>
+          <select name="{{field.id}}"  multiple ngModel *ngIf="field.type.name=='enum' && field.id=='uredniciMagazina'">
+            <option *ngFor="let cat of editors" value={{cat.id}}>
+              {{cat.firstName}},{{cat.lastName}}
+            </option>
+          </select>
+        </div>
+        <button style="margin-left: 10%" class="btn btn-outline-light" type="submit"> Submit </button>
+      </form>
+    </div>
+  </div>
+</div>

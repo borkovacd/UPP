@@ -12,6 +12,7 @@ import {MagazineCreationComponent} from './pages/magazine/magazine-creation/maga
 import {WelcomePageUserComponent} from './pages/welcome-page-user/welcome-page-user.component';
 import {MagazineScientificAreaPageComponent} from './pages/magazine/magazine-scientific-area-page/magazine-scientific-area-page.component';
 import {MagazineScientificAreaNameComponent} from './pages/magazine/magazine-scientific-area-name/magazine-scientific-area-name.component';
+import {MagazineAddingReviewersEditorsComponent} from './pages/magazine/magazine-adding-reviewers-editors/magazine-adding-reviewers-editors.component';
 
 
 
@@ -28,6 +29,7 @@ const routes: Routes = [
   { path: 'confirm-reviewer/:processInstanceId', component: ConfirmReviewerPageComponent} ,
   { path: 'magazine-scientific-area/:processInstanceId', component: MagazineScientificAreaPageComponent },
   { path: 'magazine-scientific-area-name/:processInstanceId/:number', component: MagazineScientificAreaNameComponent },
+  { path: 'magazine-adding-reviewers-editors/:processInstanceId', component: MagazineAddingReviewersEditorsComponent },
   { path: '**', component: WelcomePageComponent},
 ];
 

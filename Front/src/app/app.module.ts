@@ -21,6 +21,7 @@ import { WelcomePageUserComponent } from './pages/welcome-page-user/welcome-page
 import { MagazineCreationComponent } from './pages/magazine/magazine-creation/magazine-creation.component';
 import { MagazineScientificAreaPageComponent } from './pages/magazine/magazine-scientific-area-page/magazine-scientific-area-page.component';
 import { MagazineScientificAreaNameComponent } from './pages/magazine/magazine-scientific-area-name/magazine-scientific-area-name.component';
+import { MagazineAddingReviewersEditorsComponent } from './pages/magazine/magazine-adding-reviewers-editors/magazine-adding-reviewers-editors.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { MagazineScientificAreaNameComponent } from './pages/magazine/magazine-s
     WelcomePageUserComponent,
     MagazineCreationComponent,
     MagazineScientificAreaPageComponent,
-    MagazineScientificAreaNameComponent
+    MagazineScientificAreaNameComponent,
+    MagazineAddingReviewersEditorsComponent
   ],
   imports: [
     BrowserModule,

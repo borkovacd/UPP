@@ -15,9 +15,13 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.ftn.upp.enums.MemebershipPayment;
 
 @Entity
+@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Magazine {
 	
 	@Id
@@ -45,6 +49,7 @@ public class Magazine {
 	        joinColumns = { @JoinColumn(name = "magazine_id") }, 
 	        inverseJoinColumns = { @JoinColumn(name = "magazineScientificArea_id") }
 	  )
+	@JsonIgnore
 	private Set<MagazineScientificArea> magazineAreas = new HashSet<MagazineScientificArea>();
 	
 	@ManyToMany(cascade = {CascadeType.ALL})
@@ -53,6 +58,7 @@ public class Magazine {
 	        joinColumns = { @JoinColumn(name = "magazine_id") }, 
 	        inverseJoinColumns = { @JoinColumn(name = "user_id") }
 	  )
+	@JsonIgnore
 	private Set<User> reviewerMagazine = new HashSet<User>();
 	
 	@ManyToMany(cascade = {CascadeType.ALL})
@@ -61,6 +67,7 @@ public class Magazine {
 	        joinColumns = { @JoinColumn(name = "magazine_id") }, 
 	        inverseJoinColumns = { @JoinColumn(name = "user_id") }
 	  )
+	@JsonIgnore
 	private Set<User> editorMagazine = new HashSet<User>();
 	
 

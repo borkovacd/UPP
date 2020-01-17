@@ -1,12 +1,15 @@
 package com.ftn.upp.controller;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ftn.upp.service.UserService;
+import com.ftn.upp.dto.UserDTO;
 import com.ftn.upp.dto.LoginData;
 import com.ftn.upp.model.User;
 
@@ -108,6 +112,7 @@ public class UserController {
         System.out.println(username + " , " + password);
 		return new ResponseEntity<User>(loginUser, HttpStatus.OK);
     }
+	
 	@RequestMapping(value="/logout",
 			method = RequestMethod.GET)
 	public User logoutUser(@Context HttpServletRequest request){
@@ -120,5 +125,43 @@ public class UserController {
 		}
 		return user;
 	}
+	
+	@RequestMapping(value="/getReviewers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)	
+	public ResponseEntity<List<UserDTO>> getAllReviewers(){		
+		System.out.println("Usao u getAllReviewers");
+		List<User> users = userService.getAll();
+		List<User> reviewers = new ArrayList<User>();
+		for(User u : users){
+			if(u.getUserType().equals("recenzent")){
+				reviewers.add(u);
+			}
+		}
+		List<UserDTO> list=new ArrayList<UserDTO>();
+		for(User e : reviewers){
+			list.add(new UserDTO(e.getId(),e.getFirstName(),e.getLastName()));
+		}
+		return new ResponseEntity<List<UserDTO>>(list, HttpStatus.OK);
+	}
+	@RequestMapping(value="/getEditors", 
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)	
+	public ResponseEntity<List<UserDTO>> getAllEditors(){		
+		List<User> users = userService.getAll();
+		System.out.println("Usao u get all editors");
+		
+		List<User> editors = new ArrayList<User>();
+		for(User u : users){
+			if(u.getUserType().equals("urednik")){
+					editors.add(u);
+				}
+		}
+		List<UserDTO> list=new ArrayList<UserDTO>();
+		for(User e : editors){
+			list.add(new UserDTO(e.getId(),e.getFirstName(),e.getLastName()));
+		}
+		return new ResponseEntity<List<UserDTO>>(list, HttpStatus.OK);
+	}
+	
+	
 
 }

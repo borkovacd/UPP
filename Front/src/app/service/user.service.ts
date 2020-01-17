@@ -44,4 +44,11 @@ export class UserService {
   next(o: any[], taskId: any) {
     return this.httpClient.post("http://localhost:8080/welcome/postSomething/".concat(taskId), o) as Observable<any>;
   }
+
+  getReviewers() {
+    return this.httpClient.get('http://localhost:8080/users/getReviewers') as Observable<any>;
+  }
+  getEditors() {
+    return this.httpClient.get('http://localhost:8080/users/getEditors') as Observable<any>;
+  }
 }

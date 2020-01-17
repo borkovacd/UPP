@@ -77,7 +77,7 @@ export class ScientificAreaNameComponent implements OnInit {
             console.log("NUMBER TEMP JE (van petlje) : " + this.numberTemp)
             if (this.numberTemp > 0) {
               console.log("NUMBER TEMP JE: " + this.numberTemp)
-              this.router.navigateByUrl('magazine-scientific-area-name/' + processInstanceId + '/' + this.numberTemp);
+              this.router.navigateByUrl('scientific-area-name/' + processInstanceId + '/' + this.numberTemp);
               this.ngOnInit();
             } else {
               this.router.navigateByUrl('/activation-page/' + processInstanceId + '/' + 0);
