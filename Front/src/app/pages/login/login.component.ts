@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
           console.log(res);
           alert('Successfully logged in!');
           sessionStorage.setItem('loggedUser', JSON.stringify(res));
-          window.location.href = '/welcome';
+          window.location.href = '/userPage';
         },
         err => {
           console.log('Username or password are not correct!');

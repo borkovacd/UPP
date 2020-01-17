@@ -1,0 +1,16 @@
+<div class="view-welcome intro-2">
+  <div class="card-header">
+    <br/>
+    <h2 style="color: white;">
+      Naučna centrala
+    </h2>
+    <h4 style="color: white; ">
+      Dobrodošao/la <i>{{username}}</i>
+    </h4>
+  </div>
+  <div style="margin-top: 1%; margin-left: 7%" class="btn-group btn-group-lg" role="group" aria-label="...">
+    <div *ngIf="userType=='urednik'">
+      <button style="margin-left: 4%" class="btn btn-dark" (click)="createMagazine()">Kreiranje časopisa</button>
+    </div>>
+  </div>
+</div>

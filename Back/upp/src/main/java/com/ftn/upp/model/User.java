@@ -2,11 +2,15 @@ package com.ftn.upp.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+
 
 @Entity
 public class User implements Serializable {
@@ -15,7 +19,6 @@ public class User implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	//@Column(unique=true)
 	private String username;
 	
 	private String password;
@@ -37,6 +40,12 @@ public class User implements Serializable {
 	private boolean activated;
 	
 	private String userType;
+	
+	@ManyToMany(mappedBy = "reviewerMagazine")
+	private Set<Magazine> reviewedMagazines = new HashSet<Magazine>();
+	
+	@ManyToMany(mappedBy = "editorMagazine")
+	private Set<Magazine> editedMagazines = new HashSet<Magazine>();
 	
 	public User() {
 		activated = false;
@@ -170,6 +179,24 @@ public class User implements Serializable {
 	public void setUserType(String userType) {
 		this.userType = userType;
 	}
+
+	public Set<Magazine> getReviewedMagazines() {
+		return reviewedMagazines;
+	}
+
+	public void setReviewedMagazines(Set<Magazine> reviewedMagazines) {
+		this.reviewedMagazines = reviewedMagazines;
+	}
+
+	public Set<Magazine> getEditedMagazines() {
+		return editedMagazines;
+	}
+
+	public void setEditedMagazines(Set<Magazine> editedMagazines) {
+		this.editedMagazines = editedMagazines;
+	}
+	
+	
 
 
 }
