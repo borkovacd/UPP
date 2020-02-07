@@ -22,4 +22,17 @@ export class TextProcessingService {
   decideOnRegistration(registration, taskId) {
     return this.httpClient.post("http://localhost:8080/textProcessing/decideOnRegistration/".concat(taskId), registration) as Observable<any>;
   }
+
+  chooseMagazine(magazine, taskId) {
+    return this.httpClient.post('http://localhost:8080/textProcessing/chooseMagazine/'.concat(taskId), magazine) as Observable<any>;
+  }
+
+  postArticleData(articleData, taskId) {
+    return this.httpClient.post('http://localhost:8080/textProcessing/articleData/'.concat(taskId), articleData) as Observable<any>;
+  }
+
+  addCoauthor(coauthorData, taskId) {
+    return this.httpClient.post("http://localhost:8080/textProcessing/coauthorData/".concat(taskId), coauthorData) as Observable<any>;
+  }
+
 }

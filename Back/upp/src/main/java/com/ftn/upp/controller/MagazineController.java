@@ -1,5 +1,6 @@
 package com.ftn.upp.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -11,20 +12,26 @@ import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ftn.upp.dto.MagazineDTO;
+import com.ftn.upp.dto.UserDTO;
 import com.ftn.upp.model.ExtendedFormSubmissionDto;
 import com.ftn.upp.model.FormFieldsDto;
 import com.ftn.upp.model.FormSubmissionDto;
+import com.ftn.upp.model.Magazine;
 import com.ftn.upp.model.User;
 import com.ftn.upp.repository.UserRepository;
+import com.ftn.upp.service.MagazineService;
 import com.ftn.upp.service.UserService;
 import com.ftn.upp.service.ValidationMagazineService;
 import com.ftn.upp.service.ValidationServiceMagazineScientificArea;
@@ -46,6 +53,23 @@ public class MagazineController {
 	private ValidationServiceMagazineScientificArea validationServiceScientificArea;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private MagazineService magazineService;
+	
+	
+	// Preuzimanje svih casopisa
+	@RequestMapping(value="/getAllMagazines", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)	
+	public ResponseEntity<List<MagazineDTO>> getAllMagazines(){		
+		//System.out.println("Usao u metodu za preuzimanje svih casopisa");
+		List<Magazine> magazines = magazineService.findAll();
+		List<MagazineDTO> list= new ArrayList<MagazineDTO>();
+		for(Magazine m : magazines){
+			list.add(new MagazineDTO(m.getId(),m.getTitle()));
+		}
+		return new ResponseEntity<List<MagazineDTO>>(list, HttpStatus.OK);
+	}
+	
+	
 		
 	// POKRETANJE PROCESA KREIRANJA CASOPISA
 	@GetMapping(path = "/startCreateMagazineProcess/{username}", produces = "application/json")

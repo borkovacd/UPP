@@ -20,6 +20,8 @@ import {NeedRegistrationComponent} from './text-processing/need-registration/nee
 import {ChoosingMagazineComponent} from './text-processing/choosing-magazine/choosing-magazine.component';
 import {ConfirmLoggingInComponent} from './text-processing/confirm-logging-in/confirm-logging-in.component';
 import {AuthorLoginComponent} from './text-processing/author-login/author-login.component';
+import {TextInformationComponent} from './text-processing/text-information/text-information.component';
+import {CoauthorDataComponent} from './text-processing/coauthor-data/coauthor-data.component';
 
 
 
@@ -44,6 +46,8 @@ const routes: Routes = [
   { path: 'choosing-magazine/:processInstanceId', component: ChoosingMagazineComponent },
   { path: 'confirm-logging-in/:processInstanceId', component: ConfirmLoggingInComponent },
   { path: 'login/:processInstanceId', component: AuthorLoginComponent},
+  { path: 'text-information/:processInstanceId', component: TextInformationComponent },
+  { path: 'coauthor-data/:processInstanceId/:number', component:  CoauthorDataComponent},
 
 ];
 

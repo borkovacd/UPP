@@ -26,6 +26,9 @@ public class MagazineScientificArea {
 	
 	@ManyToMany(mappedBy = "magazineAreas")
 	private Set<Magazine> magazines = new HashSet<Magazine>();
+	
+	@ManyToMany(mappedBy = "articleAreas")
+	private Set<Article> articles = new HashSet<Article>();
 	 
 	public MagazineScientificArea(){}
 

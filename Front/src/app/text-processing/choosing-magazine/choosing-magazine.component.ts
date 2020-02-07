@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {TextProcessingService} from '../../service/text-processing.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {UserService} from '../../service/user.service';
+import {MagazineService} from '../../service/magazine.service';
+import {RepositoryService} from '../../service/repository.service';
 
 @Component({
   selector: 'app-choosing-magazine',
@@ -11,63 +14,71 @@ export class ChoosingMagazineComponent implements OnInit {
 
   private formFieldsDto = null;
   private formFields = [];
-  private processInstance = "";
-  private enumValues = [];
-  private tasks = [];
-  private claimedTaskId = null;
+  private processId = '';
+  private username = '';
+  private magazines = [];
 
-  constructor(private textProcessingService: TextProcessingService,
+  constructor(private route: ActivatedRoute,
               public router: Router,
-              private route: ActivatedRoute) {
+              private userService: UserService,
+              private magazineService: MagazineService,
+              private repositoryService: RepositoryService,
+              private textProcessingService: TextProcessingService) {
 
-  }
+    this.route.params.subscribe( params => {this.processId = params.processInstanceId; });
 
-  ngOnInit() {
-
-    const processInstanceId = this.route.snapshot.params.processInstanceId;
-    let x = this.textProcessingService.getTaskForm(processInstanceId);
-
+    const x = textProcessingService.getTaskForm(this.processId);
     x.subscribe(
       res => {
-        console.log(res);
         this.formFieldsDto = res;
         this.formFields = res.formFields;
-        this.formFields.forEach((field) => {
-
-          if (field.type.name == 'enum') {
-            this.enumValues = Object.keys(field.type.values);
+        this.magazineService.getAllMagazines().subscribe(
+          pom => {
+            console.log('Ispis casopisa');
+            console.log(pom);
+            this.magazines = pom;
           }
-        });
+        );
       },
       err => {
-        console.log("Error occured");
+        console.log('Error occured');
       }
     );
 
   }
 
-  onSubmit(value, form) {
-    let o = new Array();
-    for (var property in value) {
-      console.log(property);
-      console.log(value[property]);
-      o.push({fieldId: property, fieldValue: value[property]});
-    }
+  ngOnInit() {
+  }
 
-    console.log(o);
-    let x = this.textProcessingService.decideOnRegistration(o, this.formFieldsDto.taskId);
+  onSubmit(value, form){
+    console.log(form);
+    console.log(value);
+    const o = new Array();
+
+    for (const property in value) {
+
+      if (property != 'casopisi') {
+        o.push({fieldId : property, fieldValue : value[property]});
+      } else {
+        o.push({fieldId : property, categories : value[property]});
+
+      }
+      console.log('niz za slanje izgleda');
+      console.log(o);
+    }
 
     const processInstanceId = this.route.snapshot.params.processInstanceId;
 
+    let x = this.textProcessingService.chooseMagazine(o, this.formFieldsDto.taskId);
+
     x.subscribe(
       res => {
-        console.log("Registration needed: "  + res);
-        if (res == false) {
-          alert("Odlucili ste da Vam nije potrebna registracija");
-          this.router.navigateByUrl('/login/' + processInstanceId);
+        console.log(res);
+        if(res==false) {
+          alert("Izabrani časopis nije open access tipa.");
+          this.router.navigateByUrl('text-information/' + processInstanceId);
         } else {
-          alert("Odlucili ste da Vam je potrebna registracija");
-          this.router.navigateByUrl('/registration/' + processInstanceId);
+          alert("Izabrani časopis je open access tipa.");
         }
       },
       err => {
@@ -75,5 +86,39 @@ export class ChoosingMagazineComponent implements OnInit {
       }
     );
   }
+
 }
 
+  /*onSubmit(value, form) {
+    console.log(form);
+    console.log(value);
+    const o = new Array();
+
+    for (const property in value) {
+
+      if (property != 'recenzentiMagazina' && property != 'uredniciMagazina' ) {
+        o.push({fieldId : property, fieldValue : value[property]});
+      } else {
+        o.push({fieldId : property, categories : value[property]});
+
+      }
+      console.log('niz za slanje izgleda');
+      console.log(o);
+    }
+
+    const processInstanceId = this.route.snapshot.params.processInstanceId;
+
+    let x = this.magazineService.updateMagazine(o, this.formFieldsDto.taskId);
+    console.log('Pre subscribe');
+    x.subscribe(
+      res => {
+        console.log(res);
+        alert('You  have successfully updated magazine!');
+        this.router.navigateByUrl('/login/1/' + processInstanceId);
+      },
+      err => {
+        console.log('Error occured');
+      }
+    );
+  }
+}*/

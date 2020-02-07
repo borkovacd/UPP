@@ -31,6 +31,8 @@ import { NeedRegistrationComponent } from './text-processing/need-registration/n
 import { ConfirmLoggingInComponent } from './text-processing/confirm-logging-in/confirm-logging-in.component';
 import { ChoosingMagazineComponent } from './text-processing/choosing-magazine/choosing-magazine.component';
 import { AuthorLoginComponent } from './text-processing/author-login/author-login.component';
+import { TextInformationComponent } from './text-processing/text-information/text-information.component';
+import { CoauthorDataComponent } from './text-processing/coauthor-data/coauthor-data.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +55,9 @@ import { AuthorLoginComponent } from './text-processing/author-login/author-logi
     NeedRegistrationComponent,
     ConfirmLoggingInComponent,
     ChoosingMagazineComponent,
-    AuthorLoginComponent
+    AuthorLoginComponent,
+    TextInformationComponent,
+    CoauthorDataComponent
   ],
   imports: [
     BrowserModule,
