@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import {RepositoryService} from '../../service/repository.service';
 import {UserService} from '../../service/user.service';
+import {TextProcessingService} from '../../service/text-processing.service';
 
 @Component({
   selector: 'app-welcome-page',
@@ -15,7 +16,8 @@ export class WelcomePageComponent implements OnInit {
 
   constructor(public router: Router,
               private repositoryService : RepositoryService,
-              private userService: UserService) {
+              private userService: UserService,
+              private textProcessingService: TextProcessingService) {
 
   }
 
@@ -34,6 +36,22 @@ export class WelcomePageComponent implements OnInit {
       this.router.navigateByUrl('/registration/' + this.processInstance);
     })
 
+  }
+
+  submitNewText() {
+    this.textProcessingService.startTextProcessingProcess().subscribe(data => {
+      console.log(data);
+      this.processInstance = data.processInstanceId;
+
+      this.userService.userIsLoggedIn().subscribe( data => {
+        console.log("There is a logged in user " + data);
+        if(data == false) {
+          this.router.navigateByUrl('/need-registration/' + this.processInstance);
+        } else {
+          this.router.navigateByUrl('/choosing-magazine/' + this.processInstance);
+        }
+      })
+    })
   }
 
   logIn() {

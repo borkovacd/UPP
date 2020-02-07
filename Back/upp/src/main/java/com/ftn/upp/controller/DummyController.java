@@ -70,6 +70,7 @@ public class DummyController {
 			return new FormFieldsDto(null, null, null);
 		} else {
 			Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).list().get(0);
+			System.out.println("ASSIGNEE : " + task.getAssignee());
 			//System.out.println("TASK ZA KOJI PREUZIMAM FORMU: " + task.getId());
 			TaskFormData tfd = formService.getTaskFormData(task.getId());
 			List<FormField> properties = tfd.getFormFields();

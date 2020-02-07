@@ -7,6 +7,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 
+import org.camunda.bpm.engine.IdentityService;
+import org.camunda.bpm.engine.RuntimeService;
+import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,6 +30,12 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private RuntimeService runtimeService;
+	
+	@Autowired
+	private IdentityService identityService;
 	
 	@RequestMapping(value="/loginUser",method = RequestMethod.POST)
     public  ResponseEntity<User>  loginUser(@RequestBody LoginData loginData, @Context HttpServletRequest request){
@@ -59,14 +68,20 @@ public class UserController {
 	   
 	   if(!loginUser.getPassword().equals(password)) {
 			//moraju se poklapati unesena lozinka i lozinka od korisnika sa unetim mailom 
-			System.out.println("Ne poklapaju se sifre");
+			System.out.println("Ne poklapaju se sifre"); 
 			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
 
 		}
+	   
+	   
 		
 		request.getSession().setAttribute("logged", loginUser);
+		identityService.setAuthenticatedUserId(loginUser.getUsername());
+	
+		
+		System.out.println("Logged in Camunda user with username: " + identityService.getCurrentAuthentication().getUserId());
 
-        System.out.println(username + " , " + password);
+        //System.out.println(username + " , " + password);
 		return new ResponseEntity<User>(loginUser, HttpStatus.OK);
     }
 	
@@ -108,23 +123,28 @@ public class UserController {
 	   	}
 		
 		request.getSession().setAttribute("logged", loginUser);
+		
 
         System.out.println(username + " , " + password);
 		return new ResponseEntity<User>(loginUser, HttpStatus.OK);
     }
 	
-	@RequestMapping(value="/logout",
+	/*@RequestMapping(value="/logout",
 			method = RequestMethod.GET)
 	public User logoutUser(@Context HttpServletRequest request){
 		User user = (User)request.getSession().getAttribute("logged");		
 		System.out.println("Usao u funkciju logout");
 		
+		//System.out.println("Logged in Camunda user with username: " + identityService.getCurrentAuthentication().getUserId());
+		
 		request.getSession().invalidate();
+		identityService.clearAuthentication();
+		//System.out.println("Logged in Camunda user with username: " + identityService.getCurrentAuthentication().getUserId());
 		if(user == null) {
 			return null;
 		}
 		return user;
-	}
+	}*/
 	
 	@RequestMapping(value="/getReviewers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)	
 	public ResponseEntity<List<UserDTO>> getAllReviewers(){		
@@ -142,6 +162,7 @@ public class UserController {
 		}
 		return new ResponseEntity<List<UserDTO>>(list, HttpStatus.OK);
 	}
+	
 	@RequestMapping(value="/getEditors", 
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)	
@@ -162,6 +183,21 @@ public class UserController {
 		return new ResponseEntity<List<UserDTO>>(list, HttpStatus.OK);
 	}
 	
+	
+	@RequestMapping(value="/trenutniKorisnik",method = RequestMethod.GET)
+	public User trenutniKorisnik(@Context HttpServletRequest request){
+		return userService.getCurrentUser();
+	}
+	
+	@RequestMapping(value="/loggedIn", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)	
+	public boolean IsUserLoggedIn(){		
+		User loggedInUser = userService.getCurrentUser();
+		if(loggedInUser != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
 
 }

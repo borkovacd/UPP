@@ -3,6 +3,10 @@ import {FormControl, FormGroup, Validators, FormBuilder, NgForm, AbstractControl
 import { ActivatedRoute } from '@angular/router';
 import { UserService} from '../../service/user.service';
 import {LoginModel} from '../../model/login.model';
+import {UserModel} from '../../model/user.model';
+import {AuthService} from '../../service/auth.service';
+import {KorisnikModel} from '../../model/Korisnik.model';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -16,10 +20,15 @@ export class LoginComponent implements OnInit {
   public password: AbstractControl;
   private processInstanceId = null;
   private number = null;
+  errorMessage : String;
+
+  user : KorisnikModel = new KorisnikModel();
 
   constructor(private route: ActivatedRoute,
               private fb: FormBuilder,
-              private userService: UserService) {
+              private userService: UserService,
+              private authService: AuthService,
+              private http: HttpClient) {
     this.form = this.fb.group({
       'username' : ['', Validators.compose([Validators.required])],
       'password' : ['', Validators.compose([Validators.required])],
@@ -33,12 +42,29 @@ export class LoginComponent implements OnInit {
 
   logIn() {
 
-    const login = new LoginModel(
-      this.username.value,
-      this.password.value,
-    )
+    this.user.username = this.username.value;
+    this.user.password = this.password.value;
 
-    this.processInstanceId = this.route.snapshot.params.processInstanceId;
+    this.authService.login(this.user).subscribe(
+      success => {
+
+        if (!success) {
+          alert('Neispravno korisnicko ime ili lozinka!');
+          this.errorMessage = "Wrong email or password";
+        } else {
+          this.authService.getCurrentUser().subscribe(
+            data => {
+              //localStorage.setItem("ROLE", data.uloga);
+              localStorage.setItem("USERNAME", data.username);
+              window.location.href = '/userPage';
+              
+            }
+          )
+        }
+      }
+    );
+
+    /*this.processInstanceId = this.route.snapshot.params.processInstanceId;
     this.number = this.route.snapshot.params.number;
     if(this.processInstanceId==null) {
       let y = this.userService.loginUser(login);
@@ -72,7 +98,7 @@ export class LoginComponent implements OnInit {
           console.log('Mora se ulogovati admin');
         }
       );
-    }
+    }*/
   }
 
 }

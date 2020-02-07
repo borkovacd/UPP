@@ -51,4 +51,8 @@ export class UserService {
   getEditors() {
     return this.httpClient.get('http://localhost:8080/users/getEditors') as Observable<any>;
   }
+
+  userIsLoggedIn() {
+    return this.httpClient.get('http://localhost:8080/users/loggedIn') as Observable<any>;
+  }
 }

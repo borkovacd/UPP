@@ -6,7 +6,7 @@ import { WelcomePageComponent } from './pages/welcome-page/welcome-page.componen
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RegistrationPageComponent } from './pages/registration-page/registration-page.component';
 import { UserService} from './service/user.service';
@@ -25,6 +25,12 @@ import { MagazineAddingReviewersEditorsComponent } from './pages/magazine/magazi
 import { CheckMagazineDataComponent } from './pages/magazine/check-magazine-data/check-magazine-data.component';
 import { ActivationMagazineComponent } from './pages/magazine/activation-magazine/activation-magazine.component';
 import { MagazineFinalPageComponent } from './pages/magazine/magazine-final-page/magazine-final-page.component';
+import {AuthInterceptor} from './http-interceptor/AuthInterceptor';
+import {AuthService} from './service/auth.service';
+import { NeedRegistrationComponent } from './text-processing/need-registration/need-registration.component';
+import { ConfirmLoggingInComponent } from './text-processing/confirm-logging-in/confirm-logging-in.component';
+import { ChoosingMagazineComponent } from './text-processing/choosing-magazine/choosing-magazine.component';
+import { AuthorLoginComponent } from './text-processing/author-login/author-login.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +49,11 @@ import { MagazineFinalPageComponent } from './pages/magazine/magazine-final-page
     MagazineAddingReviewersEditorsComponent,
     CheckMagazineDataComponent,
     ActivationMagazineComponent,
-    MagazineFinalPageComponent
+    MagazineFinalPageComponent,
+    NeedRegistrationComponent,
+    ConfirmLoggingInComponent,
+    ChoosingMagazineComponent,
+    AuthorLoginComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +67,9 @@ import { MagazineFinalPageComponent } from './pages/magazine/magazine-final-page
   providers: [
     UserService,
     RepositoryService,
-    MagazineService
+    MagazineService,
+    AuthService,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

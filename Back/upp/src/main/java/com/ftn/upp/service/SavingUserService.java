@@ -5,6 +5,7 @@ import java.util.List;
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+import org.camunda.bpm.engine.identity.Group;
 import org.camunda.bpm.engine.identity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ public class SavingUserService implements JavaDelegate{
 	public void execute(DelegateExecution execution) throws Exception {
 
 	      List<FormSubmissionDto> registration = (List<FormSubmissionDto>)execution.getVariable("registration");
+	     
 	      User user = identityService.newUser("");
 	      com.ftn.upp.model.User korisnik = new com.ftn.upp.model.User();
 	      for (FormSubmissionDto formField : registration) {
@@ -66,7 +68,13 @@ public class SavingUserService implements JavaDelegate{
 			korisnik.setUserType("obicanKorisnik");
 	      }
 	      
+	      Group group = identityService.newGroup("registrovani_korisnici");
+	      identityService.saveGroup(group);
+	      System.out.println("Kreirana je nova grupa.");
+	      
 	      identityService.saveUser(user);
+	      identityService.createMembership(user.getId(), group.getId());
+	      
 	      
 	      userRepository.save(korisnik);
 	      

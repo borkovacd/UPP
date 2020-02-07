@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.ftn.upp.model.User;
 import com.ftn.upp.repository.UserRepository;
@@ -34,6 +35,13 @@ public class UserService {
 	public List<User> getAll() {
 		return userRepository.findAll();
 	}
+	
+	public User getCurrentUser() {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User u = userRepository.findOneByUsername(principal.toString());
+		return u;
+	}
+
 	
 	
 

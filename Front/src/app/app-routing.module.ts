@@ -16,6 +16,10 @@ import {MagazineAddingReviewersEditorsComponent} from './pages/magazine/magazine
 import {CheckMagazineDataComponent} from './pages/magazine/check-magazine-data/check-magazine-data.component';
 import {ActivationMagazineComponent} from './pages/magazine/activation-magazine/activation-magazine.component';
 import {MagazineFinalPageComponent} from './pages/magazine/magazine-final-page/magazine-final-page.component';
+import {NeedRegistrationComponent} from './text-processing/need-registration/need-registration.component';
+import {ChoosingMagazineComponent} from './text-processing/choosing-magazine/choosing-magazine.component';
+import {ConfirmLoggingInComponent} from './text-processing/confirm-logging-in/confirm-logging-in.component';
+import {AuthorLoginComponent} from './text-processing/author-login/author-login.component';
 
 
 
@@ -36,7 +40,11 @@ const routes: Routes = [
   { path: 'magazine-scientific-area-name/:processInstanceId/:number', component: MagazineScientificAreaNameComponent },
   { path: 'magazine-adding-reviewers-editors/:processInstanceId', component: MagazineAddingReviewersEditorsComponent },
   { path: 'magazine-final', component: MagazineFinalPageComponent },
-  { path: '**', component: WelcomePageComponent},
+  { path: 'need-registration/:processInstanceId', component: NeedRegistrationComponent },
+  { path: 'choosing-magazine/:processInstanceId', component: ChoosingMagazineComponent },
+  { path: 'confirm-logging-in/:processInstanceId', component: ConfirmLoggingInComponent },
+  { path: 'login/:processInstanceId', component: AuthorLoginComponent},
+
 ];
 
 @NgModule({
