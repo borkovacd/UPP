@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { WelcomePageComponent } from './pages/registration/welcome-page/welcome-page.component';
+import { WelcomePageComponent } from './pages/welcome-page/welcome-page.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
@@ -15,9 +15,9 @@ import { RepositoryService} from './service/repository.service';
 import { ScientificAreaPageComponent } from './pages/registration/scientific-area-page/scientific-area-page.component';
 import { ScientificAreaNameComponent } from './pages/registration/scientific-area-name/scientific-area-name.component';
 import { ActivationPageComponent } from './pages/registration/activation-page/activation-page.component';
-import { LoginComponent } from './pages/registration/login/login.component';
+import { LoginComponent } from './pages/login/login.component';
 import { ConfirmReviewerPageComponent } from './pages/registration/confirm-reviewer-page/confirm-reviewer-page.component';
-import { WelcomePageUserComponent } from './pages/registration/welcome-page-user/welcome-page-user.component';
+import { WelcomePageUserComponent } from './pages/welcome-page-user/welcome-page-user.component';
 import { MagazineCreationComponent } from './pages/magazine/magazine-creation/magazine-creation.component';
 import { MagazineScientificAreaPageComponent } from './pages/magazine/magazine-scientific-area-page/magazine-scientific-area-page.component';
 import { MagazineScientificAreaNameComponent } from './pages/magazine/magazine-scientific-area-name/magazine-scientific-area-name.component';
@@ -33,6 +33,7 @@ import { ChoosingMagazineComponent } from './pages/text-processing/choosing-maga
 import { AuthorLoginComponent } from './pages/text-processing/author-login/author-login.component';
 import { TextInformationComponent } from './pages/text-processing/text-information/text-information.component';
 import { CoauthorDataComponent } from './pages/text-processing/coauthor-data/coauthor-data.component';
+import { UserInformingComponent } from './pages/text-processing/user-informing/user-informing.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { CoauthorDataComponent } from './pages/text-processing/coauthor-data/coa
     ChoosingMagazineComponent,
     AuthorLoginComponent,
     TextInformationComponent,
-    CoauthorDataComponent
+    CoauthorDataComponent,
+    UserInformingComponent
   ],
   imports: [
     BrowserModule,

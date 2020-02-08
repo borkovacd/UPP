@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
-import {RepositoryService} from '../../../service/repository.service';
-import {UserService} from '../../../service/user.service';
-import {TextProcessingService} from '../../../service/text-processing.service';
+import {RepositoryService} from '../../service/repository.service';
+import {UserService} from '../../service/user.service';
+import {TextProcessingService} from '../../service/text-processing.service';
 
 @Component({
   selector: 'app-welcome-page',
@@ -23,8 +23,7 @@ export class WelcomePageComponent implements OnInit {
 
   ngOnInit() {
 
-    this.loggedUser = sessionStorage.getItem("loggedUser");
-
+    this.loggedUser = localStorage.getItem("USERNAME");
   }
 
 
@@ -59,7 +58,7 @@ export class WelcomePageComponent implements OnInit {
   }
 
   logOut() {
-    let x =  this.userService.logoutUser();
+    /*let x =  this.userService.logoutUser();
     x.subscribe(
       res => {
         alert('Successfully logged out!');
@@ -70,6 +69,9 @@ export class WelcomePageComponent implements OnInit {
       err => {
         console.log('Mistake!');
       }
-    );
+    );*/
+    localStorage.clear();
+    alert('Successfully logged out!');
+    window.location.href = '';
   }
 }

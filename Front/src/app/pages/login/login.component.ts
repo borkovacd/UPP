@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators, FormBuilder, NgForm, AbstractControl} from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { UserService} from '../../../service/user.service';
-import {LoginModel} from '../../../model/login.model';
-import {UserModel} from '../../../model/user.model';
-import {AuthService} from '../../../service/auth.service';
-import {KorisnikModel} from '../../../model/Korisnik.model';
+import { UserService} from '../../service/user.service';
+import {LoginModel} from '../../model/login.model';
+import {UserModel} from '../../model/user.model';
+import {AuthService} from '../../service/auth.service';
+import {KorisnikModel} from '../../model/Korisnik.model';
 import {HttpClient} from '@angular/common/http';
 
 @Component({
@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
         } else {
           this.authService.getCurrentUser().subscribe(
             data => {
-              //localStorage.setItem("ROLE", data.uloga);
+              localStorage.setItem("ROLE", data.userType);
               localStorage.setItem("USERNAME", data.username);
               window.location.href = '/userPage';
 

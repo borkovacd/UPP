@@ -82,7 +82,7 @@ export class CoauthorDataComponent implements OnInit {
               this.ngOnInit();
             } else {
               alert("IDI DALJE");
-              this.router.navigateByUrl('/activation-page/' + processInstanceId + '/' + 0);
+              this.router.navigateByUrl('/user-informing');
             }
           } else {
             alert("Podaci o koautoru nisu uspesno uneti!");

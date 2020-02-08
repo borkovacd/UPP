@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {WelcomePageComponent} from './pages/registration/welcome-page/welcome-page.component';
+import {WelcomePageComponent} from './pages/welcome-page/welcome-page.component';
 import {FormsModule} from '@angular/forms';
 import {RegistrationPageComponent} from './pages/registration/registration-page/registration-page.component';
 import {ScientificAreaPageComponent} from "./pages/registration/scientific-area-page/scientific-area-page.component";
 import {ScientificAreaNameComponent} from "./pages/registration/scientific-area-name/scientific-area-name.component";
 import {ActivationPageComponent} from "./pages/registration/activation-page/activation-page.component";
-import {LoginComponent} from './pages/registration/login/login.component';
+import {LoginComponent} from './pages/login/login.component';
 import {ConfirmReviewerPageComponent} from './pages/registration/confirm-reviewer-page/confirm-reviewer-page.component';
 import {MagazineCreationComponent} from './pages/magazine/magazine-creation/magazine-creation.component';
-import {WelcomePageUserComponent} from './pages/registration/welcome-page-user/welcome-page-user.component';
+import {WelcomePageUserComponent} from './pages/welcome-page-user/welcome-page-user.component';
 import {MagazineScientificAreaPageComponent} from './pages/magazine/magazine-scientific-area-page/magazine-scientific-area-page.component';
 import {MagazineScientificAreaNameComponent} from './pages/magazine/magazine-scientific-area-name/magazine-scientific-area-name.component';
 import {MagazineAddingReviewersEditorsComponent} from './pages/magazine/magazine-adding-reviewers-editors/magazine-adding-reviewers-editors.component';
@@ -22,6 +22,7 @@ import {ConfirmLoggingInComponent} from './pages/text-processing/confirm-logging
 import {AuthorLoginComponent} from './pages/text-processing/author-login/author-login.component';
 import {TextInformationComponent} from './pages/text-processing/text-information/text-information.component';
 import {CoauthorDataComponent} from './pages/text-processing/coauthor-data/coauthor-data.component';
+import {UserInformingComponent} from './pages/text-processing/user-informing/user-informing.component';
 
 
 
@@ -48,6 +49,7 @@ const routes: Routes = [
   { path: 'login/:processInstanceId', component: AuthorLoginComponent},
   { path: 'text-information/:processInstanceId', component: TextInformationComponent },
   { path: 'coauthor-data/:processInstanceId/:number', component:  CoauthorDataComponent},
+  { path: 'user-informing', component:  UserInformingComponent},
 
 ];
 
