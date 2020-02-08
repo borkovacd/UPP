@@ -111,7 +111,7 @@
       <bpmn:outgoing>SequenceFlow_0at4h0f</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="SequenceFlow_0at4h0f" sourceRef="Task_0zamoud" targetRef="Task_1r61u53" />
-    <bpmn:userTask id="Task_1r61u53" name="Pregled rada" camunda:assignee="glavniUrednik">
+    <bpmn:userTask id="Task_1r61u53" name="Pregled rada" camunda:assignee="${glavniUrednik}">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="naslovR" label="Naslov" type="string" />

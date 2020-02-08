@@ -15,6 +15,12 @@ export class WelcomePageUserComponent implements OnInit {
   private loggedUser = null;
   private username = null;
   private userType = null;
+  private enumValues = [];
+  private tasks = [];
+  private claimedTaskId = null;
+  private formFieldsDto = null;
+  private formFields = [];
+  private notClaimed: boolean;
 
   constructor(public router: Router,
               private repositoryService : RepositoryService,
@@ -27,7 +33,21 @@ export class WelcomePageUserComponent implements OnInit {
 
     this.loggedUser = localStorage.getItem("USERNAME");
     this.username = localStorage.getItem("USERNAME");
+    this.userType = localStorage.getItem('ROLE');
 
+    this.notClaimed = true;
+
+    let x = this.userService.getTasksOfUser(this.username);
+
+    x.subscribe(
+      res => {
+        console.log(res);
+        this.tasks = res;
+      },
+      err => {
+        console.log('Error occured');
+      }
+    );
 
   }
 
@@ -74,5 +94,72 @@ export class WelcomePageUserComponent implements OnInit {
         }
       })
     })
+  }
+
+  getTasks(){
+    //const processInstanceId = this.route.snapshot.params.processInstanceId;
+    let x = this.repositoryService.getTasks(this.processInstance);
+
+    x.subscribe(
+      res => {
+        console.log(res);
+        this.tasks = res;
+      },
+      err => {
+        console.log("Error occured");
+      }
+    );
+  }
+
+  claim(taskId){
+    let x = this.repositoryService.claimTask(taskId);
+
+    x.subscribe(
+      res => {
+        console.log(res);
+
+
+        this.claimedTaskId = taskId;
+
+        let y = this.repositoryService.getNewTask(taskId);
+
+        y.subscribe(
+          res => {
+            console.log(res);
+            this.formFieldsDto = res;
+            this.formFields = res.formFields;
+            //this.processInstance = res.processInstanceId;
+            this.formFields.forEach( (field) =>{
+
+              if( field.type.name=='enum'){
+                this.enumValues = Object.keys(field.type.values);
+              }
+            });
+          },
+          err => {
+            console.log("Error occured");
+          }
+        );
+
+      },
+      err => {
+        console.log("Error occured");
+      }
+    );
+  }
+
+  complete(taskId){
+    //const processInstanceId = this.route.snapshot.params.processInstanceId;
+    let x = this.repositoryService.completeTask(this.processInstance,taskId);
+
+    x.subscribe(
+      res => {
+        console.log(res);
+        this.tasks = res;
+      },
+      err => {
+        console.log("Error occured");
+      }
+    );
   }
 }

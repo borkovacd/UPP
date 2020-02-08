@@ -159,6 +159,7 @@ public class TextProcessingController {
 							  System.out.println(m.getTitle());
 							  openAccess = m.isOpenAccess();
 							  runtimeService.setVariable(processInstanceId, "openAccess", openAccess);
+							  runtimeService.setVariable(processInstanceId, "glavniUrednik", m.getMainEditor().getUsername());
 							  
 						  }
 					  }

@@ -9,19 +9,25 @@ import javax.ws.rs.core.Context;
 
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.RuntimeService;
+import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
+import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ftn.upp.service.UserService;
 import com.ftn.upp.dto.UserDTO;
 import com.ftn.upp.dto.LoginData;
+import com.ftn.upp.model.TaskDto;
 import com.ftn.upp.model.User;
 
 @RestController
@@ -36,6 +42,9 @@ public class UserController {
 	
 	@Autowired
 	private IdentityService identityService;
+	
+	@Autowired
+	private TaskService taskService;
 	
 	@RequestMapping(value="/loginUser",method = RequestMethod.POST)
     public  ResponseEntity<User>  loginUser(@RequestBody LoginData loginData, @Context HttpServletRequest request){
@@ -198,6 +207,50 @@ public class UserController {
 			return false;
 		}
 	}
+	
+	@GetMapping(path = "/getTasksUser/{username}", produces = "application/json")
+    public @ResponseBody ResponseEntity<List<TaskDto>> get(@PathVariable String username) {
+		System.out.println("Usao u getTasksUser");
+		System.out.println(username);
+		User user = userService.findUserByUsername(username);
+		List<TaskDto> dtos = new ArrayList<TaskDto>();
+		List<User> allUsers = userService.getAll();
+		if(user==null){
+			System.out.println("Null je ");
+		}
+        for(User u : allUsers){
+        	System.out.println("Username je "+u.getUsername());
+        	if(u.getUsername().equals(username)){
+        		user=u;
+        		System.out.println("Pronadjen usesr");
+        	}
+        }
+		if(user!=null){
+			System.out.println("User nije null");
+		}
+		System.out.println("User nije null");
+		List<Task> tasks = new ArrayList<Task>();
+		if(user.getUserType().equals("urednik")) {
+			System.out.println("User je urednik");
+			tasks.addAll(taskService.createTaskQuery().processDefinitionKey("Proces_ObradeTeksta").taskAssignee(user.getUsername()).list());
+		}
+		/*if(user.getUserType().equals("admin")){
+			System.out.println("User je admin");
+			tasks.addAll(taskService.createTaskQuery().processDefinitionKey("RegProcess").taskAssignee("demo").list());
+			tasks.addAll(taskService.createTaskQuery().processDefinitionKey("MagazineProcess").taskAssignee("demo").list());
+		}else{
+			System.out.println("User nije admin");
+			tasks.addAll(taskService.createTaskQuery().processDefinitionKey("RegProcess").taskAssignee(username).list());
+			tasks.addAll(taskService.createTaskQuery().processDefinitionKey("MagazineProcess").taskAssignee(username).list());
+		}*/
+		for (Task task : tasks) {
+			TaskDto t = new TaskDto(task.getId(), task.getName(), task.getAssignee());
+			dtos.add(t);
+		}
+		
+        return new ResponseEntity<List<TaskDto>> (dtos,  HttpStatus.OK);
+    }
+	
 	
 
 }

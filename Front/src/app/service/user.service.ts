@@ -55,4 +55,9 @@ export class UserService {
   userIsLoggedIn() {
     return this.httpClient.get('http://localhost:8080/users/loggedIn') as Observable<any>;
   }
+  getTasksOfUser(username: string) {
+    console.log('u gettasksofuser ' + username);
+    return this.httpClient.get('http://localhost:8080/users/getTasksUser/'.concat(username)) as Observable<any>;
+  }
+
 }
