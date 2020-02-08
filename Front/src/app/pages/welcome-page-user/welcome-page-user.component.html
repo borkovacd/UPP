@@ -26,35 +26,16 @@
         Preuzimanje svih dostupnih zadataka
       </h2>
     </div>
-    <div *ngIf="notClaimed">
-      <button style="margin-left:2%; margin-top: 3%" class="btn btn-outline-light" (click)="getTasks()">Prikaz zadataka</button>
-
+    <div>
       <table style="color: white; margin-top: 3%; margin-left: 5%">
         <tr style="margin-top: 5%" *ngFor="let task of tasks" >
           <td>{{task.name}}</td>
-          <td>{{task.assignee}}</td>
-          <td><button style="margin-left: 10%" class="btn btn-outline-light" (click)="claim(task.taskId)">Claim</button></td>
-          <td><button style="margin-left: 10%" class="btn btn-outline-light" (click)="complete(task.taskId)">Complete</button></td>
+          <td>&nbsp;({{task.assignee}})</td>
+          <!--<td><button style="margin-left: 10%" class="btn btn-outline-light" (click)="claim(task.taskId)">Claim</button></td>-->
+          <td><button style="margin-left: 10%" class="btn btn-outline-light" (click)="start(task)">Izvrši</button></td>
         </tr>
       </table>
     </div>
-
   </div>
-
-  <div *ngIf="claimedTaskId!=null">
-    <button style="margin-left: 10%" class="btn btn-outline-light" (click)="complete(claimedTaskId)">Complete</button>
-  </div>
-
-  <div>
-    <div class="mt-2" *ngFor="let task of tasks">
-        <p> {{task.title}} </p>
-        <p>{{task.assignee}}</p>
-        {{task.name}}
-      <p>
-        <button mat-raised-button (click)="complete(task)">Start Task</button>
-      </p>
-    </div>
-  </div>
-
 
 </div>

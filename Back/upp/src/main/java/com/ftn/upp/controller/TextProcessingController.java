@@ -221,6 +221,54 @@ public class TextProcessingController {
         return hasErrors;
     }
 	
+	@SuppressWarnings("deprecation")
+	@GetMapping(path = "/loadTask/{taskId}", produces = "application/json")
+    public @ResponseBody FormFieldsDto loadNextTask(@PathVariable String taskId) {
+		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+		TaskFormData tfd = formService.getTaskFormData(taskId);
+		List<FormField> properties = tfd.getFormFields();
+		for(FormField fp : properties) {
+			System.out.println(fp.getId() + fp.getType());
+			
+			/*if(fp.getDefaultValue() != null ) {
+				System.out.println("NIJE NULL DEFAULT");
+				System.out.println(fp.getDefaultValue().toString());
+			} else {
+				System.out.println(" NULL DEFAULT");
+			}*/
+			
+		}
+		
+        return new FormFieldsDto(taskId, task.getProcessInstanceId(), properties);
+    }
+	
+	@PostMapping(path = "/articleReviewDecision/{taskId}", produces = "application/json")
+    public @ResponseBody boolean articleReviewDecision(@RequestBody List<FormSubmissionDto> dto, @PathVariable String taskId) {
+		HashMap<String, Object> map = this.mapListToDto(dto);
+		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+		String processInstanceId = task.getProcessInstanceId();
+		runtimeService.setVariable(processInstanceId, "article_review_decision", dto); 
+		
+		
+		boolean articleRejected = false;
+		List<FormSubmissionDto> articleReviewDecision = (List<FormSubmissionDto>) runtimeService.getVariable(processInstanceId, "article_review_decision");
+		for (FormSubmissionDto formField : articleReviewDecision) {
+			if(formField.getFieldId().equals("prikladan")) {
+				if(formField.getFieldValue().equals("true")) {
+					articleRejected = false;
+				} else if(formField.getFieldValue().equals("false")) {
+					articleRejected = true;
+				}
+			}
+		}
+		
+		formService.submitTaskForm(taskId, map);
+		
+        return articleRejected;
+        
+
+    }
+	
 	private HashMap<String, Object> mapListToDto(List<FormSubmissionDto> list)
 	{
 		HashMap<String, Object> map = new HashMap<String, Object>();

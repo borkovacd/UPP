@@ -63,18 +63,6 @@ export class WelcomePageUserComponent implements OnInit {
   }
 
   logOut() {
-    /*let x =  this.userService.logoutUser();
-    x.subscribe(
-      res => {
-        alert('Successfully logged out!');
-        sessionStorage.clear();
-        //sessionStorage.setItem('loggedUser', null);
-        window.location.href = '';
-      },
-      err => {
-        console.log('Mistake!');
-      }
-    );*/
     localStorage.clear();
     alert('Successfully logged out!');
     window.location.href = '';
@@ -96,7 +84,7 @@ export class WelcomePageUserComponent implements OnInit {
     })
   }
 
-  getTasks(){
+  /*getTasks(){
     //const processInstanceId = this.route.snapshot.params.processInstanceId;
     let x = this.repositoryService.getTasks(this.processInstance);
 
@@ -109,9 +97,9 @@ export class WelcomePageUserComponent implements OnInit {
         console.log("Error occured");
       }
     );
-  }
+  }*/
 
-  claim(taskId){
+  /*claim(taskId){
     let x = this.repositoryService.claimTask(taskId);
 
     x.subscribe(
@@ -161,5 +149,10 @@ export class WelcomePageUserComponent implements OnInit {
         console.log("Error occured");
       }
     );
+  }*/
+
+  start(taskId){
+    let x = this.userService.startTask(taskId);
+    console.log('Usao u izvrši task');
   }
 }

@@ -60,4 +60,15 @@ export class UserService {
     return this.httpClient.get('http://localhost:8080/users/getTasksUser/'.concat(username)) as Observable<any>;
   }
 
+  startTask(task) {
+    console.log(task.name);
+    console.log(task.taskId);
+    if (task.name === 'Pregled rada') {
+      window.location.href = 'article-review/' + task.taskId;
+    } else {
+      alert("U pitanju je neki drugi task!")
+      //window.location.href = 'checkingMagazine/' + task.taskId;
+    }
+  }
+
 }

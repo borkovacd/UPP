@@ -210,7 +210,7 @@ public class UserController {
 	
 	@GetMapping(path = "/getTasksUser/{username}", produces = "application/json")
     public @ResponseBody ResponseEntity<List<TaskDto>> get(@PathVariable String username) {
-		System.out.println("Usao u getTasksUser");
+		//System.out.println("Usao u getTasksUser");
 		System.out.println(username);
 		User user = userService.findUserByUsername(username);
 		List<TaskDto> dtos = new ArrayList<TaskDto>();
@@ -234,21 +234,12 @@ public class UserController {
 			System.out.println("User je urednik");
 			tasks.addAll(taskService.createTaskQuery().processDefinitionKey("Proces_ObradeTeksta").taskAssignee(user.getUsername()).list());
 		}
-		/*if(user.getUserType().equals("admin")){
-			System.out.println("User je admin");
-			tasks.addAll(taskService.createTaskQuery().processDefinitionKey("RegProcess").taskAssignee("demo").list());
-			tasks.addAll(taskService.createTaskQuery().processDefinitionKey("MagazineProcess").taskAssignee("demo").list());
-		}else{
-			System.out.println("User nije admin");
-			tasks.addAll(taskService.createTaskQuery().processDefinitionKey("RegProcess").taskAssignee(username).list());
-			tasks.addAll(taskService.createTaskQuery().processDefinitionKey("MagazineProcess").taskAssignee(username).list());
-		}*/
 		for (Task task : tasks) {
 			TaskDto t = new TaskDto(task.getId(), task.getName(), task.getAssignee());
 			dtos.add(t);
 		}
 		
-        return new ResponseEntity<List<TaskDto>> (dtos,  HttpStatus.OK);
+        return new ResponseEntity<List<TaskDto>>(dtos,  HttpStatus.OK);
     }
 	
 	

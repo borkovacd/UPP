@@ -23,6 +23,9 @@ import {AuthorLoginComponent} from './pages/text-processing/author-login/author-
 import {TextInformationComponent} from './pages/text-processing/text-information/text-information.component';
 import {CoauthorDataComponent} from './pages/text-processing/coauthor-data/coauthor-data.component';
 import {UserInformingComponent} from './pages/text-processing/user-informing/user-informing.component';
+import {ArticleReviewComponent} from './pages/text-processing/article-review/article-review.component';
+import {EndPageComponent} from './pages/text-processing/end-page/end-page.component';
+import {PdfReviewComponent} from './pages/text-processing/pdf-review/pdf-review.component';
 
 
 
@@ -50,7 +53,9 @@ const routes: Routes = [
   { path: 'text-information/:processInstanceId', component: TextInformationComponent },
   { path: 'coauthor-data/:processInstanceId/:number', component:  CoauthorDataComponent},
   { path: 'user-informing', component:  UserInformingComponent},
-
+  { path: 'article-review/:taskId', component: ArticleReviewComponent },
+  { path: 'pdf-review/:processInstanceId', component: PdfReviewComponent },
+  { path: 'article-final', component: EndPageComponent },
 ];
 
 @NgModule({

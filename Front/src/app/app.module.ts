@@ -34,6 +34,9 @@ import { AuthorLoginComponent } from './pages/text-processing/author-login/autho
 import { TextInformationComponent } from './pages/text-processing/text-information/text-information.component';
 import { CoauthorDataComponent } from './pages/text-processing/coauthor-data/coauthor-data.component';
 import { UserInformingComponent } from './pages/text-processing/user-informing/user-informing.component';
+import { ArticleReviewComponent } from './pages/text-processing/article-review/article-review.component';
+import { EndPageComponent } from './pages/text-processing/end-page/end-page.component';
+import { PdfReviewComponent } from './pages/text-processing/pdf-review/pdf-review.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +62,10 @@ import { UserInformingComponent } from './pages/text-processing/user-informing/u
     AuthorLoginComponent,
     TextInformationComponent,
     CoauthorDataComponent,
-    UserInformingComponent
+    UserInformingComponent,
+    ArticleReviewComponent,
+    EndPageComponent,
+    PdfReviewComponent
   ],
   imports: [
     BrowserModule,

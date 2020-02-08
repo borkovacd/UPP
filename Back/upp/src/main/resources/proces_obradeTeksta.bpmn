@@ -114,9 +114,9 @@
     <bpmn:userTask id="Task_1r61u53" name="Pregled rada" camunda:assignee="${glavniUrednik}">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="naslovR" label="Naslov" type="string" />
-          <camunda:formField id="naucnaOblastR" label="Naucna oblast" type="string" />
-          <camunda:formField id="pojamR" label="pojam" type="string" />
+          <camunda:formField id="naslovR" label="Naslov" type="string" defaultValue="${naslov}" />
+          <camunda:formField id="pojamR" label="Ključni pojmovi" type="string" defaultValue="${kljucni_pojmovi}" />
+          <camunda:formField id="apstraktR" label="Apstrakt" type="string" defaultValue="${apstrakt}" />
           <camunda:formField id="prikladan" label="Rad je tematski prikladan" type="boolean" />
         </camunda:formData>
       </bpmn:extensionElements>
@@ -130,9 +130,9 @@
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="SequenceFlow_0rsdpoh" sourceRef="Task_1r61u53" targetRef="ExclusiveGateway_0apxc68" />
     <bpmn:endEvent id="EndEvent_0aqtg95">
-      <bpmn:incoming>SequenceFlow_0xykriw</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_1q7zzdy</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="SequenceFlow_0xykriw" name="Rad nije tematski prikladan" sourceRef="ExclusiveGateway_0apxc68" targetRef="EndEvent_0aqtg95">
+    <bpmn:sequenceFlow id="SequenceFlow_0xykriw" name="Rad nije tematski prikladan" sourceRef="ExclusiveGateway_0apxc68" targetRef="ServiceTask_18zwkyd">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${prikladan== false}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="SequenceFlow_1xm08yl" name="Rad je tematski prikladan" sourceRef="ExclusiveGateway_0apxc68" targetRef="Task_0ixc70x">
@@ -831,6 +831,11 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${brojac&gt; 0}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="SequenceFlow_1bnuj4i" sourceRef="ScriptTask_0j0aqcx" targetRef="ExclusiveGateway_1x242nw" />
+    <bpmn:serviceTask id="ServiceTask_18zwkyd" name="Slanje notifikacije o odbijanju rada" camunda:class="com.ftn.upp.service.camunda.SendingRejectionEmailService">
+      <bpmn:incoming>SequenceFlow_0xykriw</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1q7zzdy</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_1q7zzdy" sourceRef="ServiceTask_18zwkyd" targetRef="EndEvent_0aqtg95" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Proces_ObradeTeksta">
@@ -955,13 +960,13 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
         <di:waypoint x="2825" y="720" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="EndEvent_0aqtg95_di" bpmnElement="EndEvent_0aqtg95">
-        <dc:Bounds x="2832" y="822" width="36" height="36" />
+        <dc:Bounds x="2832" y="942" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_0xykriw_di" bpmnElement="SequenceFlow_0xykriw">
         <di:waypoint x="2850" y="745" />
-        <di:waypoint x="2850" y="822" />
+        <di:waypoint x="2850" y="830" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="2757" y="776" width="85" height="27" />
+          <dc:Bounds x="2757" y="791" width="85" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_1xm08yl_di" bpmnElement="SequenceFlow_1xm08yl">
@@ -1584,6 +1589,13 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
         <di:waypoint x="2470" y="180" />
         <di:waypoint x="1920" y="180" />
         <di:waypoint x="1920" y="295" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_18zwkyd_di" bpmnElement="ServiceTask_18zwkyd">
+        <dc:Bounds x="2800" y="830" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1q7zzdy_di" bpmnElement="SequenceFlow_1q7zzdy">
+        <di:waypoint x="2850" y="910" />
+        <di:waypoint x="2850" y="942" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

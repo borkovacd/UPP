@@ -35,4 +35,11 @@ export class TextProcessingService {
     return this.httpClient.post("http://localhost:8080/textProcessing/coauthorData/".concat(taskId), coauthorData) as Observable<any>;
   }
 
+  loadTask(taskId) {
+    return this.httpClient.get('http://localhost:8080/textProcessing/loadTask/'.concat(taskId)) as Observable<any>;
+  }
+
+  articleReviewDecision(decision, taskId) {
+    return this.httpClient.post("http://localhost:8080/textProcessing/articleReviewDecision/".concat(taskId), decision) as Observable<any>;
+  }
 }
