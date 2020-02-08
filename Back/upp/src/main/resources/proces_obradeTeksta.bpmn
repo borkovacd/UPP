@@ -78,7 +78,11 @@
           <camunda:formField id="naucne_oblasti" label="Naučna oblast" type="enum" />
           <camunda:formField id="kljucni_pojmovi" label="Ključni pojmovi" type="string" />
           <camunda:formField id="apstrakt" label="Apstrakt" type="string" />
-          <camunda:formField id="pdf" label="PDF dokument" type="string" />
+          <camunda:formField id="pdf" label="PDF dokument" type="string">
+            <camunda:properties>
+              <camunda:property id="type" value="file" />
+            </camunda:properties>
+          </camunda:formField>
           <camunda:formField id="broj_koautora" label="Broj koautora" type="long" />
         </camunda:formData>
       </bpmn:extensionElements>

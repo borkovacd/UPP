@@ -2,22 +2,22 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { WelcomePageComponent } from './pages/welcome-page/welcome-page.component';
+import { WelcomePageComponent } from './pages/registration/welcome-page/welcome-page.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RegistrationPageComponent } from './pages/registration-page/registration-page.component';
+import { RegistrationPageComponent } from './pages/registration/registration-page/registration-page.component';
 import { UserService} from './service/user.service';
 import { MagazineService} from './service/magazine.service';
 import { RepositoryService} from './service/repository.service';
-import { ScientificAreaPageComponent } from './pages/scientific-area-page/scientific-area-page.component';
-import { ScientificAreaNameComponent } from './pages/scientific-area-name/scientific-area-name.component';
-import { ActivationPageComponent } from './pages/activation-page/activation-page.component';
-import { LoginComponent } from './pages/login/login.component';
-import { ConfirmReviewerPageComponent } from './pages/confirm-reviewer-page/confirm-reviewer-page.component';
-import { WelcomePageUserComponent } from './pages/welcome-page-user/welcome-page-user.component';
+import { ScientificAreaPageComponent } from './pages/registration/scientific-area-page/scientific-area-page.component';
+import { ScientificAreaNameComponent } from './pages/registration/scientific-area-name/scientific-area-name.component';
+import { ActivationPageComponent } from './pages/registration/activation-page/activation-page.component';
+import { LoginComponent } from './pages/registration/login/login.component';
+import { ConfirmReviewerPageComponent } from './pages/registration/confirm-reviewer-page/confirm-reviewer-page.component';
+import { WelcomePageUserComponent } from './pages/registration/welcome-page-user/welcome-page-user.component';
 import { MagazineCreationComponent } from './pages/magazine/magazine-creation/magazine-creation.component';
 import { MagazineScientificAreaPageComponent } from './pages/magazine/magazine-scientific-area-page/magazine-scientific-area-page.component';
 import { MagazineScientificAreaNameComponent } from './pages/magazine/magazine-scientific-area-name/magazine-scientific-area-name.component';
@@ -27,12 +27,12 @@ import { ActivationMagazineComponent } from './pages/magazine/activation-magazin
 import { MagazineFinalPageComponent } from './pages/magazine/magazine-final-page/magazine-final-page.component';
 import {AuthInterceptor} from './http-interceptor/AuthInterceptor';
 import {AuthService} from './service/auth.service';
-import { NeedRegistrationComponent } from './text-processing/need-registration/need-registration.component';
-import { ConfirmLoggingInComponent } from './text-processing/confirm-logging-in/confirm-logging-in.component';
-import { ChoosingMagazineComponent } from './text-processing/choosing-magazine/choosing-magazine.component';
-import { AuthorLoginComponent } from './text-processing/author-login/author-login.component';
-import { TextInformationComponent } from './text-processing/text-information/text-information.component';
-import { CoauthorDataComponent } from './text-processing/coauthor-data/coauthor-data.component';
+import { NeedRegistrationComponent } from './pages/text-processing/need-registration/need-registration.component';
+import { ConfirmLoggingInComponent } from './pages/text-processing/confirm-logging-in/confirm-logging-in.component';
+import { ChoosingMagazineComponent } from './pages/text-processing/choosing-magazine/choosing-magazine.component';
+import { AuthorLoginComponent } from './pages/text-processing/author-login/author-login.component';
+import { TextInformationComponent } from './pages/text-processing/text-information/text-information.component';
+import { CoauthorDataComponent } from './pages/text-processing/coauthor-data/coauthor-data.component';
 
 @NgModule({
   declarations: [

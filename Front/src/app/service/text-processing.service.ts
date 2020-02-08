@@ -27,8 +27,8 @@ export class TextProcessingService {
     return this.httpClient.post('http://localhost:8080/textProcessing/chooseMagazine/'.concat(taskId), magazine) as Observable<any>;
   }
 
-  postArticleData(articleData, taskId) {
-    return this.httpClient.post('http://localhost:8080/textProcessing/articleData/'.concat(taskId), articleData) as Observable<any>;
+   postArticleData(y, taskId) {
+    return this.httpClient.post('http://localhost:8080/textProcessing/articleData/'.concat(taskId), y) as Observable<any>;
   }
 
   addCoauthor(coauthorData, taskId) {

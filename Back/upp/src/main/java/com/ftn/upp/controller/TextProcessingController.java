@@ -1,5 +1,8 @@
 package com.ftn.upp.controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -27,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ftn.upp.dto.FormSubmissionWithFileDto;
 import com.ftn.upp.model.ExtendedFormSubmissionDto;
 import com.ftn.upp.model.FormFieldsDto;
 import com.ftn.upp.model.FormSubmissionDto;
@@ -35,6 +39,8 @@ import com.ftn.upp.model.User;
 import com.ftn.upp.service.MagazineService;
 import com.ftn.upp.service.UserService;
 import com.ftn.upp.service.ValidationCoauthorService;
+
+import sun.misc.BASE64Decoder;
 
 
 @RestController
@@ -167,12 +173,22 @@ public class TextProcessingController {
     }
 	
 	@PostMapping(path = "/articleData/{taskId}", produces = "application/json")
-    public @ResponseBody ResponseEntity postArticleData(@RequestBody List<FormSubmissionDto> dto, @PathVariable String taskId) {
-		HashMap<String, Object> map = this.mapListToDto(dto);
+    public @ResponseBody ResponseEntity postArticleData(@RequestBody FormSubmissionWithFileDto dto, @PathVariable String taskId) throws IOException {
+		HashMap<String, Object> map = this.mapListToDto(dto.getForm());
 		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
 		String processInstanceId = task.getProcessInstanceId();
-		runtimeService.setVariable(processInstanceId, "article_data", dto); 
+		runtimeService.setVariable(processInstanceId, "article_data", dto.getForm()); 
 		formService.submitTaskForm(taskId, map);
+		
+		BASE64Decoder decoder = new BASE64Decoder();
+		byte[] decodedBytes = decoder.decodeBuffer(dto.getFile());
+
+		File file = new File("pdf_files/" + dto.getFileName());
+		FileOutputStream fop = new FileOutputStream(file);
+
+		fop.write(decodedBytes);
+		fop.flush();
+		fop.close();
 		
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
