@@ -216,22 +216,22 @@ public class UserController {
 		List<TaskDto> dtos = new ArrayList<TaskDto>();
 		List<User> allUsers = userService.getAll();
 		if(user==null){
-			System.out.println("Null je ");
+			//System.out.println("Null je ");
 		}
         for(User u : allUsers){
-        	System.out.println("Username je "+u.getUsername());
+        	//System.out.println("Username je "+u.getUsername());
         	if(u.getUsername().equals(username)){
         		user=u;
-        		System.out.println("Pronadjen usesr");
+        		//System.out.println("Pronadjen usesr");
         	}
         }
 		if(user!=null){
-			System.out.println("User nije null");
+			//System.out.println("User nije null");
 		}
-		System.out.println("User nije null");
+		//System.out.println("User nije null");
 		List<Task> tasks = new ArrayList<Task>();
 		if(user.getUserType().equals("urednik")) {
-			System.out.println("User je urednik");
+			//System.out.println("User je urednik");
 			tasks.addAll(taskService.createTaskQuery().processDefinitionKey("Proces_ObradeTeksta").taskAssignee(user.getUsername()).list());
 		}
 		for (Task task : tasks) {

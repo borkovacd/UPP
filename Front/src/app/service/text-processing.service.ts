@@ -42,4 +42,8 @@ export class TextProcessingService {
   articleReviewDecision(decision, taskId) {
     return this.httpClient.post("http://localhost:8080/textProcessing/articleReviewDecision/".concat(taskId), decision) as Observable<any>;
   }
+
+  decideOnPDF(decision, taskId) {
+    return this.httpClient.post("http://localhost:8080/textProcessing/decideOnPDF/".concat(taskId), decision) as Observable<any>;
+  }
 }

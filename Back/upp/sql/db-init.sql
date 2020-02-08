@@ -17,7 +17,7 @@ insert into magazine (id, active, issn, open_access, title, main_editor_id)
 insert into magazine (id, active, issn, open_access, title, main_editor_id)
 	values (2, true, "2134-2130", false, "Norma", 2);
 insert into magazine (id, active, issn, open_access, title, main_editor_id)
-	values (3, true, "6552-5463", true, "Filomat", );
+	values (3, true, "6552-5463", true, "Filomat", 3);
 -- insert naucna oblast
 insert into magazine_scientific_area (id, name)
 	values (1, "Racunarstvo");

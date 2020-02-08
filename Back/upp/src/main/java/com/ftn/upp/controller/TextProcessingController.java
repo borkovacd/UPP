@@ -265,9 +265,35 @@ public class TextProcessingController {
 		formService.submitTaskForm(taskId, map);
 		
         return articleRejected;
-        
-
     }
+	
+	@PostMapping(path = "/decideOnPDF/{taskId}", produces = "application/json")
+    public @ResponseBody boolean decideOnPDF(@RequestBody List<FormSubmissionDto> dto, @PathVariable String taskId) {
+		HashMap<String, Object> map = this.mapListToDto(dto);
+		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+		String processInstanceId = task.getProcessInstanceId();
+		runtimeService.setVariable(processInstanceId, "pdf_decision", dto); 
+		
+		boolean correctionNeeded = false;
+		List<FormSubmissionDto> pdfDecision = (List<FormSubmissionDto>) runtimeService.getVariable(processInstanceId, "pdf_decision");
+		for (FormSubmissionDto formField : pdfDecision) {
+			if(formField.getFieldId().equals("dobro_formatiran")) {
+				if(formField.getFieldValue().equals("false") || formField.getFieldValue() == null) {
+					if(formField.getFieldValue() == null) {
+						System.out.println("Poslato null ali gde treba je ");
+					}
+					correctionNeeded = true;
+				} else if(formField.getFieldValue().equals("true") ) {
+					
+					correctionNeeded = false;
+				}
+			}
+		}
+		
+		formService.submitTaskForm(taskId, map);
+        return correctionNeeded;
+    }
+	
 	
 	private HashMap<String, Object> mapListToDto(List<FormSubmissionDto> list)
 	{
