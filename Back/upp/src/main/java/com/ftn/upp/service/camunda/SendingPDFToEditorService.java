@@ -2,6 +2,8 @@ package com.ftn.upp.service.camunda;
 
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.List;
 
@@ -72,8 +74,12 @@ public class SendingPDFToEditorService implements JavaDelegate{
 		}
 		
 		String processInstanceId = execution.getProcessInstanceId();
+		
+		 String fileName = (String) execution.getVariable("file_name");
+	     byte[] decodedBytes = (byte[]) execution.getVariable("file_decoded");
+	      
 		try {
-			sendNotificaitionAsync(processInstanceId, usernameChiefEditor, emailChiefEditor);
+			sendNotificaitionAsync(processInstanceId, usernameChiefEditor, emailChiefEditor, fileName, decodedBytes);
 		}catch( Exception e ) {
 			System.out.println("Greska prilikom slanja emaila sa PDF-om glavnom uredniku: " + e.getMessage());
 		}
@@ -85,7 +91,9 @@ public class SendingPDFToEditorService implements JavaDelegate{
 	@Async
 	public void sendNotificaitionAsync(String processInstanceId,
 			   						   String username,
-			   						   String email) throws MailException, InterruptedException, MessagingException {
+			   						   String email,
+			   						   String fileName, 
+			   						   byte[] decodedBytes) throws MailException, InterruptedException, MessagingException {
 
 		System.out.println("Email se šalje...");
 		String content = "U prilgu se nalazi PDF dokument koji je potrebno pregledati ";
@@ -98,15 +106,15 @@ public class SendingPDFToEditorService implements JavaDelegate{
 	        textBodyPart.setText(content);
 
 	        //now write the PDF content to the output stream
-	        outputStream = new ByteArrayOutputStream();
-	        //writePdf(outputStream);
-	        byte[] bytes = outputStream.toByteArray();
+	        //outputStream = new ByteArrayOutputStream();
+	        writePdf(fileName, decodedBytes);
+	        //byte[] bytes = outputStream.toByteArray();
 
 	        //construct the pdf body part
-	        DataSource dataSource = new ByteArrayDataSource(bytes, "application/pdf");
+	        DataSource dataSource = new ByteArrayDataSource(decodedBytes, "application/pdf");
 	        MimeBodyPart pdfBodyPart = new MimeBodyPart();
 	        pdfBodyPart.setDataHandler(new DataHandler(dataSource));
-	        pdfBodyPart.setFileName("test.pdf");
+	        pdfBodyPart.setFileName(fileName);
 
 	        //construct the mime multi part
 	        MimeMultipart mimeMultipart = new MimeMultipart();
@@ -137,18 +145,11 @@ public class SendingPDFToEditorService implements JavaDelegate{
 		
 	}
 	
-	
-	/*
-	public void writePdf(OutputStream outputStream) throws Exception {
-	    Document document = new Document();
-	    PdfWriter.getInstance(document, outputStream);
-	    document.open();
-	    Paragraph paragraph = new Paragraph();
-	    paragraph.add(new Chunk("hello!"));
-	    document.add(paragraph);
-	    document.close();
+	public void writePdf(String fileName, byte[] decodedBytes) throws Exception {
+		File file = new File("pdf_files/" + fileName);
+		FileOutputStream fop = new FileOutputStream(file);
+		fop.write(decodedBytes);
+		fop.flush();
+		fop.close();
 	}
-	*/
-
-
 }

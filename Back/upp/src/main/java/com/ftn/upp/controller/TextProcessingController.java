@@ -191,10 +191,13 @@ public class TextProcessingController {
 		}
 		
 		runtimeService.setVariable(processInstanceId, "article_data", dto.getForm()); 
+		runtimeService.setVariable(processInstanceId, "file_name", dto.getFileName()); 
 		formService.submitTaskForm(taskId, map);
 		
 		BASE64Decoder decoder = new BASE64Decoder();
 		byte[] decodedBytes = decoder.decodeBuffer(dto.getFile());
+		
+		runtimeService.setVariable(processInstanceId, "file_decoded", decodedBytes); 
 
 		File file = new File("pdf_files/" + dto.getFileName());
 		FileOutputStream fop = new FileOutputStream(file);
