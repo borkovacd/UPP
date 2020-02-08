@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {TextProcessingService} from '../../../service/text-processing.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormSubmissionWithFileDto} from '../../../model/FormSubmissionWithFileDto';
+import {MagazineService} from '../../../service/magazine.service';
 
 @Component({
   selector: 'app-text-information',
@@ -23,7 +24,10 @@ export class TextInformationComponent implements OnInit {
 
   private number = null;
 
+  private areas = [];
+
   constructor(private textProcessingService: TextProcessingService,
+              private magazineService: MagazineService,
               public router: Router,
               private route: ActivatedRoute) {
 
@@ -45,6 +49,13 @@ export class TextInformationComponent implements OnInit {
             this.enumValues = Object.keys(field.type.values);
           }
         });
+        this.magazineService.getAllScientificAreas().subscribe(
+          pom => {
+            console.log('Ispis naucnih oblasti');
+            console.log(pom);
+            this.areas = pom;
+          }
+        );
       },
       err => {
         console.log("Error occured");
@@ -82,8 +93,19 @@ export class TextInformationComponent implements OnInit {
       if(property.toString() == "pdf") {
         value[property] = this.fileName;
       }
-      o.push({fieldId: property, fieldValue: value[property]});
     }
+    for (const property in value) {
+
+      if (property != 'naucne_oblasti') {
+        o.push({fieldId : property, fieldValue : value[property]});
+      } else {
+        o.push({fieldId : property, categories : value[property]});
+
+      }
+      console.log('niz za slanje izgleda');
+      console.log(o);
+    }
+
 
     console.log(o);
     let y = new FormSubmissionWithFileDto(o, this.fileField.toString(), this.fileName.toString());

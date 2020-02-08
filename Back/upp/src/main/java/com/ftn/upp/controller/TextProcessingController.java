@@ -174,9 +174,21 @@ public class TextProcessingController {
 	
 	@PostMapping(path = "/articleData/{taskId}", produces = "application/json")
     public @ResponseBody ResponseEntity postArticleData(@RequestBody FormSubmissionWithFileDto dto, @PathVariable String taskId) throws IOException {
-		HashMap<String, Object> map = this.mapListToDto(dto.getForm());
+		HashMap<String, Object> map = this.mapListToDto2(dto.getForm());
 		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
 		String processInstanceId = task.getProcessInstanceId();
+		
+		for(ExtendedFormSubmissionDto item: dto.getForm()){
+			String fieldId = item.getFieldId();
+			
+			if(fieldId.equals("naucne_oblasti")){
+				if(item.getCategories().size()!=1){
+					System.out.println("Potrebno je izabrati tacno 1 casopis!");	
+					return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+				}
+			}
+		}
+		
 		runtimeService.setVariable(processInstanceId, "article_data", dto.getForm()); 
 		formService.submitTaskForm(taskId, map);
 		

@@ -24,14 +24,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ftn.upp.dto.MagazineDTO;
+import com.ftn.upp.dto.ScientificAreaDTO;
 import com.ftn.upp.dto.UserDTO;
 import com.ftn.upp.model.ExtendedFormSubmissionDto;
 import com.ftn.upp.model.FormFieldsDto;
 import com.ftn.upp.model.FormSubmissionDto;
 import com.ftn.upp.model.Magazine;
+import com.ftn.upp.model.MagazineScientificArea;
 import com.ftn.upp.model.User;
 import com.ftn.upp.repository.UserRepository;
 import com.ftn.upp.service.MagazineService;
+import com.ftn.upp.service.ScientificAreaService;
 import com.ftn.upp.service.UserService;
 import com.ftn.upp.service.ValidationMagazineService;
 import com.ftn.upp.service.ValidationServiceMagazineScientificArea;
@@ -55,6 +58,8 @@ public class MagazineController {
 	private UserService userService;
 	@Autowired
 	private MagazineService magazineService;
+	@Autowired
+	private ScientificAreaService saService;
 	
 	
 	// Preuzimanje svih casopisa
@@ -67,6 +72,17 @@ public class MagazineController {
 			list.add(new MagazineDTO(m.getId(),m.getTitle()));
 		}
 		return new ResponseEntity<List<MagazineDTO>>(list, HttpStatus.OK);
+	}
+	
+	// Preuzimanje svih naucnih oblasti
+	@RequestMapping(value="/getAllScientificAreas", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)	
+	public ResponseEntity<List<ScientificAreaDTO>> getAllScientificAreas(){		
+		List<MagazineScientificArea> areas = saService.findAll();
+		List<ScientificAreaDTO> list= new ArrayList<ScientificAreaDTO>();
+		for(MagazineScientificArea a : areas){
+			list.add(new ScientificAreaDTO(a.getId(),a.getName()));
+		}
+		return new ResponseEntity<List<ScientificAreaDTO>>(list, HttpStatus.OK);
 	}
 	
 	

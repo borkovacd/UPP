@@ -14,6 +14,10 @@ export class MagazineService {
     return this.httpClient.get('http://localhost:8080/magazine/getAllMagazines') as Observable<any>;
   }
 
+  getAllScientificAreas() {
+    return this.httpClient.get('http://localhost:8080/magazine/getAllScientificAreas') as Observable<any>;
+  }
+
   registerMagazine(magazine, taskId) {
     return this.httpClient.post("http://localhost:8080/magazine/create/".concat(taskId), magazine) as Observable<any>;
   }
