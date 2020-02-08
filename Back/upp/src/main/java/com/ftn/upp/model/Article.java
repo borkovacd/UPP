@@ -6,18 +6,23 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @Entity
 public class Article {
 	
@@ -27,6 +32,9 @@ public class Article {
 	
 	@Column(name = "title", nullable = false)
 	private String title;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	private User author;
 	
 	@ManyToMany(cascade = {CascadeType.ALL})
 	@JoinTable(
@@ -51,11 +59,5 @@ public class Article {
 	  )
 	@JsonIgnore
 	private Set<MagazineScientificArea> articleAreas = new HashSet<MagazineScientificArea>();
-	
-	@Column
-	private byte[] file;
-	
-	@Column
-	private String fileFormat;
 
 }
