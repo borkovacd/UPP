@@ -5,10 +5,13 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -44,6 +47,14 @@ public class User implements Serializable {
 	private boolean activated;
 	
 	private String userType;
+	
+	@ManyToMany(cascade = {CascadeType.ALL})
+	@JoinTable(
+	        name = "User_Areas", 
+	        joinColumns = { @JoinColumn(name = "user_id") }, 
+	        inverseJoinColumns = { @JoinColumn(name = "scientificArea_id") }
+	  )
+	private Set<MagazineScientificArea> interestedAreas = new HashSet<MagazineScientificArea>();
 	
 	@ManyToMany(mappedBy = "reviewerMagazine")
 	private Set<Magazine> reviewedMagazines = new HashSet<Magazine>();
@@ -198,6 +209,14 @@ public class User implements Serializable {
 
 	public void setEditedMagazines(Set<Magazine> editedMagazines) {
 		this.editedMagazines = editedMagazines;
+	}
+
+	public Set<MagazineScientificArea> getInterestedAreas() {
+		return interestedAreas;
+	}
+
+	public void setInterestedAreas(Set<MagazineScientificArea> interestedAreas) {
+		this.interestedAreas = interestedAreas;
 	}
 	
 	

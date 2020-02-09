@@ -24,6 +24,9 @@ public class MagazineScientificArea {
 	@Column(name="name", nullable = false)
 	private String name;
 	
+	@ManyToMany(mappedBy = "interestedAreas")
+	private Set<User> users = new HashSet<User>();
+	
 	@ManyToMany(mappedBy = "magazineAreas")
 	private Set<Magazine> magazines = new HashSet<Magazine>();
 	

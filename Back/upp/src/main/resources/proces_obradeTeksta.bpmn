@@ -187,7 +187,7 @@
       </bpmn:timerEventDefinition>
     </bpmn:boundaryEvent>
     <bpmn:sequenceFlow id="SequenceFlow_1nn441r" sourceRef="IntermediateThrowEvent_1sya2qq" targetRef="Task_0ik5rfv" />
-    <bpmn:serviceTask id="Task_0ik5rfv" name="Slanje notifikacije o odbijanju" camunda:class="com.ftn.upp.service.camunda.SendingTechnicalRejectionEmailService">
+    <bpmn:serviceTask id="Task_0ik5rfv" name="Slanje notifikacije o odbijanju rada" camunda:class="com.ftn.upp.service.camunda.SendingTechnicalRejectionEmailService">
       <bpmn:incoming>SequenceFlow_1nn441r</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0js3v9v</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -195,7 +195,7 @@
       <bpmn:incoming>SequenceFlow_0js3v9v</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="SequenceFlow_0js3v9v" sourceRef="Task_0ik5rfv" targetRef="EndEvent_0uh2qoj" />
-    <bpmn:serviceTask id="Task_0fzbbbk" name="Provera da li postoji aktivan urednik naučne oblasti" camunda:expression="false" camunda:resultVariable="result">
+    <bpmn:serviceTask id="Task_0fzbbbk" name="Provera da li postoji aktivan urednik naučne oblasti" camunda:class="com.ftn.upp.service.camunda.CheckActiveSAEditorService">
       <bpmn:incoming>SequenceFlow_12tcyfn</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_189gevz</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -206,7 +206,7 @@
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="SequenceFlow_189gevz" sourceRef="Task_0fzbbbk" targetRef="ExclusiveGateway_0guigt0" />
     <bpmn:sequenceFlow id="SequenceFlow_1dc9o6w" name="Postoji aktivan urednik" sourceRef="ExclusiveGateway_0guigt0" targetRef="Task_0cew62z">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${result== true}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${postojiAktivanEditor== true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:serviceTask id="Task_0cew62z" name="Izbor urednika" camunda:expression="true">
       <bpmn:incoming>SequenceFlow_1dc9o6w</bpmn:incoming>
@@ -218,7 +218,7 @@
       <bpmn:outgoing>SequenceFlow_1rz2v1w</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="SequenceFlow_0u0lpfp" name="Ne postoji aktivan urednik" sourceRef="ExclusiveGateway_0guigt0" targetRef="Task_1ramejx">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${result== false}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${postojiAktivanEditor== false}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:serviceTask id="Task_1ramejx" name="Slanje notifikacije o novom radu glavnom uredniku" camunda:expression="true">
       <bpmn:incoming>SequenceFlow_0u0lpfp</bpmn:incoming>
