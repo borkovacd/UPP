@@ -33,7 +33,7 @@ public class CheckActiveSAEditorService implements JavaDelegate {
 		
 		boolean activeEditorExist = false;
 		
-		List<ExtendedFormSubmissionDto> articleData = (List<ExtendedFormSubmissionDto>)execution.getVariable("article_data");
+		List<ExtendedFormSubmissionDto> articleData = (List<ExtendedFormSubmissionDto>) execution.getVariable("article_data");
 		String articleTitle = "";
 		for (ExtendedFormSubmissionDto formField : articleData) {
 			if(formField.getFieldId().equals("naslov")) {

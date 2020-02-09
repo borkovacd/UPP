@@ -81,7 +81,6 @@ export class CoauthorDataComponent implements OnInit {
               this.router.navigateByUrl('coauthor-data/' + processInstanceId + '/' + this.numberTemp);
               this.ngOnInit();
             } else {
-              alert("IDI DALJE");
               this.router.navigateByUrl('/user-informing');
             }
           } else {
