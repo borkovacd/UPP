@@ -12,16 +12,16 @@
     <button style="margin-left: 2%" class="btn btn-outline-light" (click)="filterByScientificArea()" >Filtriraj po naucnoj oblasti</button>
     <div style="margin-top: 5%; color:white;" class="form-group">
       <form #f="ngForm" (ngSubmit)="onSubmit(f.value, f)" ngNativeValidate>
-        <div *ngFor="let field of formFields" >
-          <label for={{field.id}}>{{field.label}}</label>
-          <select name="{{field.id}}" multiple ngModel *ngIf="field.type.name=='enum' && field.id=='izborRecenzenata'">
-            <option *ngFor="let category of reviewers" value={{category.id}}>
-              {{category.firstName}} {{category.lastName}}
-            </option>
-          </select>
-        </div>
-        <button style="margin-left: 10%" class="btn btn-outline-light" type="submit">Potvrdi</button>
-      </form>
+      <div *ngFor="let field of formFields" >
+        <label for={{field.id}}>{{field.label}}</label>
+        <select name="{{field.id}}"  multiple ngModel *ngIf="field.type.name=='enum' ">
+          <option *ngFor="let val of enumValues" value={{val}}>
+            {{field.type.values[val]}}
+          </option>
+        </select>
+      </div>
+      <button style="margin-left: 10%" class="btn btn-outline-light" type="submit">Potvrdi</button>
+    </form>
     </div>
   </div>
 </div>

@@ -16,6 +16,7 @@ export class ChoosingReviewersComponent implements OnInit {
   private formFields = [];
   private reviewers = [];
   private processInstanceId = null;
+  private enumValues = [];
 
 
   constructor(private route: ActivatedRoute,
@@ -30,30 +31,28 @@ export class ChoosingReviewersComponent implements OnInit {
 
   ngOnInit() {
     const taskId = this.route.snapshot.params.taskId;
-    const x = this.textProcessingService.loadTask(taskId);
+    const x = this.textProcessingService.getTaskFormChoosingReviewers(taskId);
 
     x.subscribe(
       res => {
+        console.log(res);
         this.formFieldsDto = res;
         this.formFields = res.formFields;
-        this.processInstanceId = res.processInstanceId;
-        this.userService.getAllMagazineReviewers(taskId).subscribe(
-          pom => {
-            console.log('Ispis casopisa');
-            console.log(pom);
-            this.reviewers = pom;
+        console.log(this.formFields);
+        this.formFields.forEach( (field) =>{
+
+          if( field.type.name=='enum'){
+            this.enumValues = Object.keys(field.type.values);
           }
-        );
+        });
+
+
 
       },
-
       err => {
         console.log('Error occured');
       }
-
     );
-
-
 
   }
 

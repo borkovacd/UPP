@@ -27,6 +27,10 @@ export class TextProcessingService {
     return this.httpClient.get('http://localhost:8080/textProcessing/getTaskFormArticleInformation/'.concat(processInstanceId)) as Observable<any>
   }
 
+  getTaskFormChoosingReviewers(processInstanceId){
+    return this.httpClient.get('http://localhost:8080/textProcessing/getTaskFormChoosingReviewers/'.concat(processInstanceId)) as Observable<any>
+  }
+
   decideOnRegistration(registration, taskId) {
     return this.httpClient.post("http://localhost:8080/textProcessing/decideOnRegistration/".concat(taskId), registration) as Observable<any>;
   }
