@@ -3,6 +3,7 @@ package com.ftn.upp.controller;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.form.FormField;
 import org.camunda.bpm.engine.form.TaskFormData;
+import org.camunda.bpm.engine.impl.form.type.EnumFormType;
 import org.camunda.bpm.engine.impl.form.validator.FormFieldValidationException;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
@@ -35,7 +37,11 @@ import com.ftn.upp.model.ExtendedFormSubmissionDto;
 import com.ftn.upp.model.FormFieldsDto;
 import com.ftn.upp.model.FormSubmissionDto;
 import com.ftn.upp.model.Magazine;
+import com.ftn.upp.model.MagazineScientificArea;
+import com.ftn.upp.model.TaskDto;
 import com.ftn.upp.model.User;
+import com.ftn.upp.repository.MagazineScientificAreaRepository;
+import com.ftn.upp.repository.ScientificAreaRepository;
 import com.ftn.upp.service.MagazineService;
 import com.ftn.upp.service.UserService;
 import com.ftn.upp.service.ValidationCoauthorService;
@@ -64,6 +70,9 @@ public class TextProcessingController {
 	
 	@Autowired
 	private MagazineService magazineService;
+	
+	@Autowired
+	private MagazineScientificAreaRepository magazineScientificAreaRepository;
 	
 	@Autowired
 	private ValidationCoauthorService validationCoauthorService;
@@ -99,6 +108,96 @@ public class TextProcessingController {
 			}*/
 			return new FormFieldsDto(task.getId(), null, properties);
 		}
+    }
+	
+	@GetMapping(path = "/getTaskFormMagazinesChoosing/{processId}", produces = "application/json")
+    public @ResponseBody FormFieldsDto getTaskFormMagazinesChoosing(@PathVariable String processId) {
+
+		List<Task> tasks = taskService.createTaskQuery().processInstanceId(processId).list();
+		List<TaskDto> taskDTOList = new ArrayList<TaskDto>();
+		
+		if(tasks.size()==0){
+			System.out.println("Prazna lista, nema vise taskova");
+		}
+		for(Task T: tasks)
+		{
+			System.out.println("Dodaje task "+T.getName());
+			taskDTOList.add(new TaskDto(T.getId(), T.getName(), T.getAssignee()));
+		}
+		
+		Task nextTask = tasks.get(0);
+
+		
+		TaskFormData tfd = formService.getTaskFormData(nextTask.getId());
+		List<FormField> properties = tfd.getFormFields();
+		
+		// dinamicko ucitavanje
+		List<Magazine> magazines = magazineService.findAll();
+		for (FormField fp: properties)
+		{
+			if (fp.getId().equals("casopisi"))
+			{
+				EnumFormType enumType = (EnumFormType) fp.getType();
+				enumType.getValues().clear();
+				String openAccess ;
+				for (Magazine magazine: magazines)
+				{
+					if (magazine.isOpenAccess() == true)
+					{
+						openAccess = "open-access" ;
+					}
+					else
+					{
+						openAccess = "nije open-access" ;
+					}
+					enumType.getValues().put(magazine.getId().toString(), magazine.getTitle() + " (" + openAccess + ")");
+				}
+				break ;
+			}
+		}
+		
+        return new FormFieldsDto(nextTask.getId(), processId, properties);
+    }
+	
+	@GetMapping(path = "/getTaskFormArticleInformation/{processId}", produces = "application/json")
+    public @ResponseBody FormFieldsDto getTaskFormArticleInformation(@PathVariable String processId) {
+
+		List<Task> tasks = taskService.createTaskQuery().processInstanceId(processId).list();
+		List<TaskDto> taskDTOList = new ArrayList<TaskDto>();
+		
+		if(tasks.size()==0){
+			System.out.println("Prazna lista, nema vise taskova");
+		}
+		for(Task T: tasks)
+		{
+			System.out.println("Dodaje task "+T.getName());
+			taskDTOList.add(new TaskDto(T.getId(), T.getName(), T.getAssignee()));
+		}
+		
+		Task nextTask = tasks.get(0);
+
+		
+		TaskFormData tfd = formService.getTaskFormData(nextTask.getId());
+		List<FormField> properties = tfd.getFormFields();
+		
+		// dinamicko ucitavanje
+		List<MagazineScientificArea> scientificAreas = magazineScientificAreaRepository.findAll();
+		for (FormField fp: properties)
+		{
+			if (fp.getId().equals("naucne_oblasti"))
+			{
+				EnumFormType enumType = (EnumFormType) fp.getType();
+				enumType.getValues().clear();
+				
+				for (MagazineScientificArea sa: scientificAreas)
+				{
+					enumType.getValues().put(sa.getId().toString(), sa.getName());
+				}
+				break ;
+			}
+		}
+		
+        return new FormFieldsDto(nextTask.getId(), processId, properties);
     }
 	
 	

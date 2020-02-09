@@ -19,6 +19,14 @@ export class TextProcessingService {
     return this.httpClient.get('http://localhost:8080/textProcessing/getTaskForm/'.concat(processInstanceId)) as Observable<any>
   }
 
+  getTaskFormMagazinesChoosing(processInstanceId){
+    return this.httpClient.get('http://localhost:8080/textProcessing/getTaskFormMagazinesChoosing/'.concat(processInstanceId)) as Observable<any>
+  }
+
+  getTaskFormArticleInformation(processInstanceId){
+    return this.httpClient.get('http://localhost:8080/textProcessing/getTaskFormArticleInformation/'.concat(processInstanceId)) as Observable<any>
+  }
+
   decideOnRegistration(registration, taskId) {
     return this.httpClient.post("http://localhost:8080/textProcessing/decideOnRegistration/".concat(taskId), registration) as Observable<any>;
   }

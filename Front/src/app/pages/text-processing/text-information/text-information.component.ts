@@ -36,29 +36,25 @@ export class TextInformationComponent implements OnInit {
   ngOnInit() {
 
     const processInstanceId = this.route.snapshot.params.processInstanceId;
-    let x = this.textProcessingService.getTaskForm(processInstanceId);
-
+    const x = this.textProcessingService.getTaskFormArticleInformation(processInstanceId);
     x.subscribe(
       res => {
         console.log(res);
         this.formFieldsDto = res;
         this.formFields = res.formFields;
-        this.formFields.forEach((field) => {
+        console.log(this.formFields);
+        this.formFields.forEach( (field) =>{
 
-          if (field.type.name == 'enum') {
+          if( field.type.name=='enum'){
             this.enumValues = Object.keys(field.type.values);
           }
         });
-        this.magazineService.getAllScientificAreas().subscribe(
-          pom => {
-            console.log('Ispis naucnih oblasti');
-            console.log(pom);
-            this.areas = pom;
-          }
-        );
+
+
+
       },
       err => {
-        console.log("Error occured");
+        console.log('Error occured');
       }
     );
 

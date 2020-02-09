@@ -17,6 +17,8 @@ export class ChoosingMagazineComponent implements OnInit {
   private processId = '';
   private username = '';
   private magazines = [];
+  private enumValues = [];
+
 
   constructor(private route: ActivatedRoute,
               public router: Router,
@@ -27,18 +29,22 @@ export class ChoosingMagazineComponent implements OnInit {
 
     this.route.params.subscribe( params => {this.processId = params.processInstanceId; });
 
-    const x = textProcessingService.getTaskForm(this.processId);
+    const x = textProcessingService.getTaskFormMagazinesChoosing(this.processId);
     x.subscribe(
       res => {
+        console.log(res);
         this.formFieldsDto = res;
         this.formFields = res.formFields;
-        this.magazineService.getAllMagazines().subscribe(
-          pom => {
-            console.log('Ispis casopisa');
-            console.log(pom);
-            this.magazines = pom;
+        console.log(this.formFields);
+        this.formFields.forEach( (field) =>{
+
+          if( field.type.name=='enum'){
+            this.enumValues = Object.keys(field.type.values);
           }
-        );
+        });
+
+
+
       },
       err => {
         console.log('Error occured');
