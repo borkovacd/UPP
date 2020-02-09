@@ -3,6 +3,7 @@ package com.ftn.upp.controller;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
@@ -28,10 +29,13 @@ import com.ftn.upp.service.MagazineService;
 import com.ftn.upp.service.UserService;
 import com.ftn.upp.dto.UserDTO;
 import com.ftn.upp.dto.LoginData;
+import com.ftn.upp.model.Article;
 import com.ftn.upp.model.ExtendedFormSubmissionDto;
 import com.ftn.upp.model.Magazine;
+import com.ftn.upp.model.MagazineScientificArea;
 import com.ftn.upp.model.TaskDto;
 import com.ftn.upp.model.User;
+import com.ftn.upp.repository.ArticleRepository;
 
 @RestController
 @RequestMapping("/users")
@@ -51,6 +55,9 @@ public class UserController {
 	
 	@Autowired
 	private MagazineService magazineService;
+	
+	@Autowired
+	private ArticleRepository articleRepository;
 	
 	@RequestMapping(value="/loginUser",method = RequestMethod.POST)
     public  ResponseEntity<User>  loginUser(@RequestBody LoginData loginData, @Context HttpServletRequest request){
@@ -282,6 +289,78 @@ public class UserController {
 		
 		List<UserDTO> list=new ArrayList<UserDTO>();
 		for(User e : magazineReviewers){
+			list.add(new UserDTO(e.getId(),e.getFirstName(),e.getLastName()));
+		}
+		return new ResponseEntity<List<UserDTO>>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/getFilteredMagazineReviewers/{taskId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)	
+	public ResponseEntity<List<UserDTO>> getFilteredMagazineReviewers(@PathVariable String taskId){		
+		System.out.println("Usao u metodu filtriranje recenzenata po izabranoj naucnoj oblasti");
+		
+		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+		String processInstanceId = task.getProcessInstanceId();
+		
+		List<ExtendedFormSubmissionDto> articleData = (List<ExtendedFormSubmissionDto>) runtimeService.getVariable(processInstanceId, "article_data");
+		String articleTitle = "";
+		for (ExtendedFormSubmissionDto formField : articleData) {
+			if(formField.getFieldId().equals("naslov")) {
+				articleTitle = formField.getFieldValue();
+			}
+		}
+		Article article = articleRepository.findOneByTitle(articleTitle);
+		Set<MagazineScientificArea> scientificAreas =  article.getArticleAreas();
+		
+		//Izabrana naucna oblast
+		MagazineScientificArea scientificArea = scientificAreas.iterator().next();
+		System.out.println("Izabrana naucna oblast: " + scientificArea.getName());
+		
+		Magazine magazine = null;
+		
+		List<ExtendedFormSubmissionDto> chosenMagazineData = (List<ExtendedFormSubmissionDto>) runtimeService.getVariable(processInstanceId, "chosenMagazine");
+		for(ExtendedFormSubmissionDto item: chosenMagazineData) {
+			 String fieldId=item.getFieldId();
+			 if(fieldId.equals("casopisi")){
+				  List<Magazine> allMagazines = magazineService.findAll();
+				  for(Magazine m : allMagazines){
+					  for(String selected: item.getCategories()){
+						  String idM = m.getId().toString();
+						  if(idM.equals(selected)){
+							  magazine = m;
+						  }
+					  }
+				  }
+			 }
+		}
+		//Izabrani casopis
+		System.out.println("Izabrani casopis: " + magazine.getTitle());
+		
+		List<User> allUsers = userService.getAll();
+		List<User> magazineReviewers = new ArrayList<User>();
+		List<User> magazineReviewersFiltered = new ArrayList<User>();
+
+		for(User u : allUsers) {
+			if(u.getUserType().equals("recenzent")) {
+				for(User magazineReviewer: magazine.getReviewerMagazine()) {
+					if(magazineReviewer.getId() == u.getId()) {
+						System.out.println("Korisnik (" + u.getUsername() + ") je recenzent izabranog casopisa");
+						magazineReviewers.add(u);
+					}
+				}
+			}
+		}
+		
+		for(User mr : magazineReviewers) {
+			for(MagazineScientificArea sa : mr.getInterestedAreas()) {
+				if(sa.getId() == scientificArea.getId()) {
+					System.out.println("Za naucnu oblast (" + scientificArea.getName() + ") pronadjen je recenzent (" + mr.getUsername() + ")");
+					magazineReviewersFiltered.add(mr);
+				}
+			}
+		}
+		
+		List<UserDTO> list=new ArrayList<UserDTO>();
+		for(User e : magazineReviewersFiltered){
 			list.add(new UserDTO(e.getId(),e.getFirstName(),e.getLastName()));
 		}
 		return new ResponseEntity<List<UserDTO>>(list, HttpStatus.OK);

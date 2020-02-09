@@ -26,9 +26,6 @@ export class ChoosingReviewersComponent implements OnInit {
               private textProcessingService: TextProcessingService) {
 
 
-
-
-
   }
 
   ngOnInit() {
@@ -99,4 +96,13 @@ export class ChoosingReviewersComponent implements OnInit {
     );
   }
 
+  filterByScientificArea() {
+    const taskId = this.route.snapshot.params.taskId;
+    this.userService.getFilteredMagazineReviewers(taskId).subscribe(
+      pom => {
+        this.reviewers = pom;
+      }
+    );
+
+  }
 }

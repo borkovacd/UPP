@@ -78,4 +78,8 @@ export class UserService {
     return this.httpClient.get('http://localhost:8080/users/getAllMagazineReviewers/'.concat(processInstanceId)) as Observable<any>;
   }
 
+  getFilteredMagazineReviewers(processInstanceId) {
+    return this.httpClient.get('http://localhost:8080/users/getFilteredMagazineReviewers/'.concat(processInstanceId)) as Observable<any>;
+  }
+
 }

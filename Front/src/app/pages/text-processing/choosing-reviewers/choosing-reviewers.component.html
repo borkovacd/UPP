@@ -9,6 +9,7 @@
         Neophodno je izabrati minimum 2 recenzenta!
       </h5>
     </div>
+    <button style="margin-left: 2%" class="btn btn-outline-light" (click)="filterByScientificArea()" >Filtriraj po naucnoj oblasti</button>
     <div style="margin-top: 5%; color:white;" class="form-group">
       <form #f="ngForm" (ngSubmit)="onSubmit(f.value, f)" ngNativeValidate>
         <div *ngFor="let field of formFields" >
