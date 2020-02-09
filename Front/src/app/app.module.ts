@@ -38,6 +38,7 @@ import { ArticleReviewComponent } from './pages/text-processing/article-review/a
 import { EndPageComponent } from './pages/text-processing/end-page/end-page.component';
 import { PdfReviewComponent } from './pages/text-processing/pdf-review/pdf-review.component';
 import { ChiefEditorInformingComponent } from './pages/text-processing/chief-editor-informing/chief-editor-informing.component';
+import { ArticleCorrectionComponent } from './pages/text-processing/article-correction/article-correction.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { ChiefEditorInformingComponent } from './pages/text-processing/chief-edi
     ArticleReviewComponent,
     EndPageComponent,
     PdfReviewComponent,
-    ChiefEditorInformingComponent
+    ChiefEditorInformingComponent,
+    ArticleCorrectionComponent
   ],
   imports: [
     BrowserModule,

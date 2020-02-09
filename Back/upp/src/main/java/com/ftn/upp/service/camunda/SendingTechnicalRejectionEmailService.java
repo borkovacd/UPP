@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import com.ftn.upp.model.Article;
 import com.ftn.upp.model.ExtendedFormSubmissionDto;
-import com.ftn.upp.model.Magazine;
 import com.ftn.upp.model.User;
 import com.ftn.upp.repository.ArticleRepository;
 import com.ftn.upp.repository.UserRepository;
@@ -25,7 +24,7 @@ import com.ftn.upp.service.MagazineService;
 import com.ftn.upp.service.UserService;
 
 @Service
-public class SendingRejectionEmailService implements JavaDelegate{
+public class SendingTechnicalRejectionEmailService implements JavaDelegate{
 
 	@Autowired
 	private JavaMailSender javaMailSender;
@@ -88,14 +87,15 @@ public class SendingRejectionEmailService implements JavaDelegate{
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, false, "utf-8");
 
-		String htmlMsg = "<h4>Obavestavamo Vas da je rad koji ste prijavili odbijen od strane glavnog urednika jer tekst rada nije tematski prikladan.</h4>";
+		String htmlMsg = "<h4>Obavestavamo Vas da je rad koji ste prijavili odbijen iz tehnickih razloga.</h4>";
 		mimeMessage.setContent(htmlMsg, "text/html");
 		helper.setTo(email);
 		helper.setSubject("Obaveštenje o odbijanju rada");
 		helper.setFrom(env.getProperty("spring.mail.username"));
 		javaMailSender.send(mimeMessage);
 	
-		System.out.println("Email notifikacija je uspešno poslata!");
+		System.out.println("Email notifikacija o odbijanju iz tehnickih razloga je uspešno poslata!");
 	}
 }
+
 

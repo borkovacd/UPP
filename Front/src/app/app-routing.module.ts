@@ -27,6 +27,7 @@ import {ArticleReviewComponent} from './pages/text-processing/article-review/art
 import {EndPageComponent} from './pages/text-processing/end-page/end-page.component';
 import {PdfReviewComponent} from './pages/text-processing/pdf-review/pdf-review.component';
 import {ChiefEditorInformingComponent} from './pages/text-processing/chief-editor-informing/chief-editor-informing.component';
+import {ArticleCorrectionComponent} from './pages/text-processing/article-correction/article-correction.component';
 
 
 
@@ -55,6 +56,7 @@ const routes: Routes = [
   { path: 'coauthor-data/:processInstanceId/:number', component:  CoauthorDataComponent},
   { path: 'user-informing', component:  UserInformingComponent},
   { path: 'article-review/:taskId', component: ArticleReviewComponent },
+  { path: 'article-correction/:taskId', component: ArticleCorrectionComponent },
   { path: 'pdf-review/:processInstanceId', component: PdfReviewComponent },
   { path: 'article-final', component: EndPageComponent },
   { path: 'chief-editor-informing', component:  ChiefEditorInformingComponent},

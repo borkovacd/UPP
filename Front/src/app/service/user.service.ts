@@ -65,6 +65,8 @@ export class UserService {
     console.log(task.taskId);
     if (task.name === 'Pregled rada') {
       window.location.href = 'article-review/' + task.taskId;
+    } else if (task.name === 'Korigovanje prijave (PDF dokumenta)') {
+      window.location.href = 'article-correction/' + task.taskId;
     } else {
       alert("U pitanju je neki drugi task!")
       //window.location.href = 'checkingMagazine/' + task.taskId;

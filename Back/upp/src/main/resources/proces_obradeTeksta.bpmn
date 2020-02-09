@@ -168,12 +168,12 @@
     <bpmn:userTask id="Task_0ah9w2i" name="Korigovanje prijave (PDF dokumenta)" camunda:assignee="${author}">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="komentarR" label="Komentar urednika" type="string" defaultValue="${komentar}">
-            <camunda:validation>
-              <camunda:constraint name="readonly" />
-            </camunda:validation>
+          <camunda:formField id="komentarR" label="Komentar urednika" type="string" defaultValue="${komentar}" />
+          <camunda:formField id="pdf" label="Korigovan PDF dokument" type="string">
+            <camunda:properties>
+              <camunda:property id="type" value="file" />
+            </camunda:properties>
           </camunda:formField>
-          <camunda:formField id="noviPdf" label="Novi PDF dokument" type="string" defaultValue="${pdf}" />
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_0cctpet</bpmn:incoming>
@@ -187,7 +187,7 @@
       </bpmn:timerEventDefinition>
     </bpmn:boundaryEvent>
     <bpmn:sequenceFlow id="SequenceFlow_1nn441r" sourceRef="IntermediateThrowEvent_1sya2qq" targetRef="Task_0ik5rfv" />
-    <bpmn:serviceTask id="Task_0ik5rfv" name="Slanje notifikacije o odbijanju" camunda:expression="true">
+    <bpmn:serviceTask id="Task_0ik5rfv" name="Slanje notifikacije o odbijanju" camunda:class="com.ftn.upp.service.camunda.SendingTechnicalRejectionEmailService">
       <bpmn:incoming>SequenceFlow_1nn441r</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0js3v9v</bpmn:outgoing>
     </bpmn:serviceTask>

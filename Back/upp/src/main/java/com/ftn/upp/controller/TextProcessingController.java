@@ -221,6 +221,33 @@ public class TextProcessingController {
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 	
+	@PostMapping(path = "/updateArticleData/{taskId}", produces = "application/json")
+    public @ResponseBody ResponseEntity<Boolean> updateArticleData(@RequestBody FormSubmissionWithFileDto dto, @PathVariable String taskId) throws IOException {
+		HashMap<String, Object> map = this.mapListToDto2(dto.getForm());
+		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+		if(task == null) {
+			return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+		}
+		String processInstanceId = task.getProcessInstanceId();
+		 
+		runtimeService.setVariable(processInstanceId, "file_name", dto.getFileName()); 
+		formService.submitTaskForm(taskId, map);
+		
+		BASE64Decoder decoder = new BASE64Decoder();
+		byte[] decodedBytes = decoder.decodeBuffer(dto.getFile());
+		
+		runtimeService.setVariable(processInstanceId, "file_decoded", decodedBytes); 
+
+		File file = new File("pdf_files/" + dto.getFileName());
+		FileOutputStream fop = new FileOutputStream(file);
+
+		fop.write(decodedBytes);
+		fop.flush();
+		fop.close();
+		
+        return new ResponseEntity<Boolean>(true, HttpStatus.ACCEPTED);
+    }
+	
 	@PostMapping(path = "/coauthorData/{taskId}", produces = "application/json")
     public @ResponseBody boolean postCoauthorData(@RequestBody List<FormSubmissionDto> dto, @PathVariable String taskId) {
 		HashMap<String, Object> map = this.mapListToDto(dto);
