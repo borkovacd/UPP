@@ -67,10 +67,15 @@ export class UserService {
       window.location.href = 'article-review/' + task.taskId;
     } else if (task.name === 'Korigovanje prijave (PDF dokumenta)') {
       window.location.href = 'article-correction/' + task.taskId;
+    } else if (task.name === 'Izbor recenzenata') {
+      window.location.href = 'choosing-reviewers/' + task.taskId;
     } else {
       alert("U pitanju je neki drugi task!")
-      //window.location.href = 'checkingMagazine/' + task.taskId;
     }
+  }
+
+  getAllMagazineReviewers(processInstanceId) {
+    return this.httpClient.get('http://localhost:8080/users/getAllMagazineReviewers/'.concat(processInstanceId)) as Observable<any>;
   }
 
 }

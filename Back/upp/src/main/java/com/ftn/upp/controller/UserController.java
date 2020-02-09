@@ -24,9 +24,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ftn.upp.service.MagazineService;
 import com.ftn.upp.service.UserService;
 import com.ftn.upp.dto.UserDTO;
 import com.ftn.upp.dto.LoginData;
+import com.ftn.upp.model.ExtendedFormSubmissionDto;
+import com.ftn.upp.model.Magazine;
 import com.ftn.upp.model.TaskDto;
 import com.ftn.upp.model.User;
 
@@ -45,6 +48,9 @@ public class UserController {
 	
 	@Autowired
 	private TaskService taskService;
+	
+	@Autowired
+	private MagazineService magazineService;
 	
 	@RequestMapping(value="/loginUser",method = RequestMethod.POST)
     public  ResponseEntity<User>  loginUser(@RequestBody LoginData loginData, @Context HttpServletRequest request){
@@ -232,6 +238,54 @@ public class UserController {
 		
         return new ResponseEntity<List<TaskDto>>(dtos,  HttpStatus.OK);
     }
+	
+	@RequestMapping(value="/getAllMagazineReviewers/{taskId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)	
+	public ResponseEntity<List<UserDTO>> getAllReviewers(@PathVariable String taskId){		
+		System.out.println("Usao u metodu za preuzimanje svih recenzenata izabaranog casopisa");
+		
+		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+		String processInstanceId = task.getProcessInstanceId();
+		
+		Magazine magazine = null;
+		
+		List<ExtendedFormSubmissionDto> chosenMagazineData = (List<ExtendedFormSubmissionDto>) runtimeService.getVariable(processInstanceId, "chosenMagazine");
+		for(ExtendedFormSubmissionDto item: chosenMagazineData) {
+			 String fieldId=item.getFieldId();
+			 if(fieldId.equals("casopisi")){
+				  List<Magazine> allMagazines = magazineService.findAll();
+				  for(Magazine m : allMagazines){
+					  for(String selected: item.getCategories()){
+						  String idM = m.getId().toString();
+						  if(idM.equals(selected)){
+							  magazine = m;
+						  }
+					  }
+				  }
+			 }
+		}
+		//Izabrani casopis
+		System.out.println("Izabrani casopis: " + magazine.getTitle());
+		
+		List<User> allUsers = userService.getAll();
+		List<User> magazineReviewers = new ArrayList<User>();
+		
+		for(User u : allUsers) {
+			if(u.getUserType().equals("recenzent")) {
+				for(User magazineReviewer: magazine.getReviewerMagazine()) {
+					if(magazineReviewer.getId() == u.getId()) {
+						System.out.println("Korisnik (" + u.getUsername() + ") je recenzent izabranog casopisa");
+						magazineReviewers.add(u);
+					}
+				}
+			}
+		}
+		
+		List<UserDTO> list=new ArrayList<UserDTO>();
+		for(User e : magazineReviewers){
+			list.add(new UserDTO(e.getId(),e.getFirstName(),e.getLastName()));
+		}
+		return new ResponseEntity<List<UserDTO>>(list, HttpStatus.OK);
+	}
 	
 	
 

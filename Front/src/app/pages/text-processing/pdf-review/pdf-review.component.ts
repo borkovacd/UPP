@@ -60,7 +60,7 @@ export class PdfReviewComponent implements OnInit {
         console.log("Correction needed: "  + res);
         if (res == false) {
           alert("Odlucili ste da nije potrebna korekcija dokumenta");
-          //this.router.navigateByUrl('/login/' + processInstanceId);
+          this.router.navigateByUrl('/chief-editor-informing-nocorrection');
         } else {
           alert("Odlucili ste da je potrebna korekcija dokumenta");
           this.router.navigateByUrl('/chief-editor-informing');

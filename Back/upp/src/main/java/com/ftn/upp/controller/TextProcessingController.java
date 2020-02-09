@@ -336,6 +336,48 @@ public class TextProcessingController {
         return correctionNeeded;
     }
 	
+	@PostMapping(path = "/chooseReviewers/{taskId}", produces = "application/json")
+    public @ResponseBody ResponseEntity<Boolean> chooseReviewers(@RequestBody List<ExtendedFormSubmissionDto> formData, @PathVariable String taskId) {
+		
+		HashMap<String, Object> map = this.mapListToDto2(formData);
+		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+		String processInstanceId = task.getProcessInstanceId();
+		
+		for(ExtendedFormSubmissionDto item: formData){
+			String fieldId = item.getFieldId();
+			
+			if(fieldId.equals("izborRecenzenata")){
+				if(item.getCategories().size() < 2){
+					System.out.println("Potrebno je izabrati barem 2 recenzenta!");	
+					return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+				}
+			}
+		}
+
+		runtimeService.setVariable(processInstanceId, "chosenReviewers", formData);
+		
+		List<ExtendedFormSubmissionDto> chosenReviewersData = (List<ExtendedFormSubmissionDto>) runtimeService.getVariable(processInstanceId, "chosenReviewers");
+		for(ExtendedFormSubmissionDto item: chosenReviewersData) {
+			 String fieldId=item.getFieldId();
+			 if(fieldId.equals("izborRecenzenata")){
+				  List<User> allUsers = userService.getAll();
+				  for(User user : allUsers){
+					  for(String selected: item.getCategories()){
+						  String idReviewer = user.getId().toString();
+						  if(idReviewer.equals(selected)){
+							  System.out.println("Izabran je recenzent: " + user.getUsername());  
+						  }
+					  }
+				  }
+			 }
+		}
+		
+		formService.submitTaskForm(taskId, map);
+		
+		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		
+    }
+	
 	
 	private HashMap<String, Object> mapListToDto(List<FormSubmissionDto> list)
 	{

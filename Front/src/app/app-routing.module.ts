@@ -28,6 +28,9 @@ import {EndPageComponent} from './pages/text-processing/end-page/end-page.compon
 import {PdfReviewComponent} from './pages/text-processing/pdf-review/pdf-review.component';
 import {ChiefEditorInformingComponent} from './pages/text-processing/chief-editor-informing/chief-editor-informing.component';
 import {ArticleCorrectionComponent} from './pages/text-processing/article-correction/article-correction.component';
+import {ChoosingReviewersComponent} from './pages/text-processing/choosing-reviewers/choosing-reviewers.component';
+import {DefineReviewTimeComponent} from './define-review-time/define-review-time.component';
+import {ChiefEditorNoCorrectionComponent} from './pages/text-processing/chief-editor-no-correction/chief-editor-no-correction.component';
 
 
 
@@ -58,8 +61,11 @@ const routes: Routes = [
   { path: 'article-review/:taskId', component: ArticleReviewComponent },
   { path: 'article-correction/:taskId', component: ArticleCorrectionComponent },
   { path: 'pdf-review/:processInstanceId', component: PdfReviewComponent },
+  { path: 'review-time/:processInstanceId', component: DefineReviewTimeComponent },
   { path: 'article-final', component: EndPageComponent },
   { path: 'chief-editor-informing', component:  ChiefEditorInformingComponent},
+  { path: 'chief-editor-informing-nocorrection', component:  ChiefEditorNoCorrectionComponent},
+  { path: 'choosing-reviewers/:taskId', component: ChoosingReviewersComponent },
 ];
 
 @NgModule({
