@@ -37,5 +37,23 @@
       </table>
     </div>
   </div>
+  <div *ngIf="userType=='registrovan_korisnik'">
+    <div *ngIf="notClaimed">
+      <br/>
+      <h2 style="color: white;" >
+        Preuzimanje svih dostupnih zadataka
+      </h2>
+    </div>
+    <div>
+      <table style="color: white; margin-top: 3%; margin-left: 5%">
+        <tr style="margin-top: 5%" *ngFor="let task of tasks" >
+          <td>{{task.name}}</td>
+          <td>&nbsp;({{task.assignee}})</td>
+          <!--<td><button style="margin-left: 10%" class="btn btn-outline-light" (click)="claim(task.taskId)">Claim</button></td>-->
+          <td><button style="margin-left: 10%" class="btn btn-outline-light" (click)="start(task)">Izvrši</button></td>
+        </tr>
+      </table>
+    </div>
+  </div>
 
 </div>

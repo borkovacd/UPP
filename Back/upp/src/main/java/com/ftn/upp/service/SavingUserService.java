@@ -65,7 +65,7 @@ public class SavingUserService implements JavaDelegate{
 				else if(formField.getFieldValue().equalsIgnoreCase("false"))
 					korisnik.setReviewer(true);
 			}
-			korisnik.setUserType("obicanKorisnik");
+			korisnik.setUserType("registrovan_korisnik");
 	      }
 	      
 	      Group group = identityService.newGroup("registrovani_korisnici");

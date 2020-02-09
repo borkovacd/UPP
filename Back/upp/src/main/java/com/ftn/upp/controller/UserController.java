@@ -62,18 +62,6 @@ public class UserController {
 			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
 
 	   } 
-	   	/*try {
-			encryptedPass = userService.encrypt(password);
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		if(!loginUser.getPassword().equals(encryptedPass)) {
-			//moraju se poklapati unesena lozinka i lozinka od korisnika sa unetim mailom 
-			System.out.println("Ne poklapaju se sifre");
-			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
-		}*/
 	   
 	   if(!loginUser.getPassword().equals(password)) {
 			//moraju se poklapati unesena lozinka i lozinka od korisnika sa unetim mailom 
@@ -232,6 +220,9 @@ public class UserController {
 		List<Task> tasks = new ArrayList<Task>();
 		if(user.getUserType().equals("urednik")) {
 			//System.out.println("User je urednik");
+			tasks.addAll(taskService.createTaskQuery().processDefinitionKey("Proces_ObradeTeksta").taskAssignee(user.getUsername()).list());
+		}
+		if(user.getUserType().equals("registrovan_korisnik")) {
 			tasks.addAll(taskService.createTaskQuery().processDefinitionKey("Proces_ObradeTeksta").taskAssignee(user.getUsername()).list());
 		}
 		for (Task task : tasks) {

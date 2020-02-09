@@ -11,6 +11,9 @@ insert into user(id, activated, city, email, first_name, last_name, password, re
 	values (4, true, "New York", "devon.smith996@gmail.com", "Recenzent1", "Recenzent1", "$2a$10$bFoT0UWjOFAIQoFRYCIicO2hwNwZy6qhWYq4eXmWqJevf7b2TWpae", false, "USA", "Recenzent" , "recenzent", "recenzent1");
 insert into user(id, activated, city, email, first_name, last_name, password, reviewer, state, title, user_type, username) 
 	values (5, true, "New York", "devon.smith996@gmail.com", "Recenzent2", "Recenzent2", "$2a$10$bFoT0UWjOFAIQoFRYCIicO2hwNwZy6qhWYq4eXmWqJevf7b2TWpae", false, "USA", "Recenzent" , "recenzent", "recenzent2");
+-- insert autor
+insert into user(id, activated, city, email, first_name, last_name, password, reviewer, state, title, user_type, username) 
+	values (6, true, "Novi Sad", "borkovac.dragan96@gmail.com", "Dragan", "Borkovac", "$2a$10$bFoT0UWjOFAIQoFRYCIicO2hwNwZy6qhWYq4eXmWqJevf7b2TWpae", false, "Srbija", "Student" , "registrovan_korisnik", "borkovac");
 -- insert casopis
 insert into magazine (id, active, issn, open_access, title, main_editor_id)
 	values (1, true, "3214-2352", false, "ComSIS", 2);
