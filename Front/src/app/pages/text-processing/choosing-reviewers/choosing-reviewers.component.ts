@@ -97,11 +97,26 @@ export class ChoosingReviewersComponent implements OnInit {
 
   filterByScientificArea() {
     const taskId = this.route.snapshot.params.taskId;
-    this.userService.getFilteredMagazineReviewers(taskId).subscribe(
-      pom => {
-        this.reviewers = pom;
+    const x = this.textProcessingService.getTaskFormChoosingReviewersFiltered(taskId);
+
+    x.subscribe(
+      res => {
+        console.log(res);
+        this.formFieldsDto = res;
+        this.formFields = res.formFields;
+        console.log(this.formFields);
+        this.formFields.forEach((field) => {
+
+          if (field.type.name == 'enum') {
+            this.enumValues = Object.keys(field.type.values);
+          }
+        });
+
+
+      },
+      err => {
+        console.log('Error occured');
       }
     );
-
   }
 }

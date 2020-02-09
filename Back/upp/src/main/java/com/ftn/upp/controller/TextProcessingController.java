@@ -230,6 +230,37 @@ public class TextProcessingController {
         return new FormFieldsDto(task.getId(), processInstanceId, properties);
     }
 	
+	@GetMapping(path = "/getTaskFormChoosingReviewersFiltered/{taskId}", produces = "application/json")
+    public @ResponseBody FormFieldsDto getTaskFormChoosingReviewersFiltered(@PathVariable String taskId) {
+		
+		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+		String processInstanceId = task.getProcessInstanceId();
+
+
+		TaskFormData tfd = formService.getTaskFormData(task.getId());
+		List<FormField> properties = tfd.getFormFields();
+		
+		// dinamicko ucitavanje
+		List<User> reviewers = userService.findAllReviewersFiltered(taskId);
+		for (FormField fp: properties)
+		{
+			if (fp.getId().equals("izborRecenzenata"))
+			{
+				EnumFormType enumType = (EnumFormType) fp.getType();
+				enumType.getValues().clear();
+				
+				for (User reviewer: reviewers)
+				{
+					enumType.getValues().put(reviewer.getId().toString(), reviewer.getFirstName() + " " + reviewer.getLastName());
+				}
+				break ;
+			}
+		}
+		
+        return new FormFieldsDto(task.getId(), processInstanceId, properties);
+    }
+	
+	
 	
 	// Odlucivanje o registraciji
 	@PostMapping(path = "/decideOnRegistration/{taskId}", produces = "application/json")
