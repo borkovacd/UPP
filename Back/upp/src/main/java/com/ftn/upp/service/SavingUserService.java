@@ -35,7 +35,7 @@ public class SavingUserService implements JavaDelegate{
 			}
 			if(formField.getFieldId().equals("password")) {
 				user.setPassword(formField.getFieldValue());
-				korisnik.setPassword(formField.getFieldValue());
+				korisnik.setPassword("$2a$10$bFoT0UWjOFAIQoFRYCIicO2hwNwZy6qhWYq4eXmWqJevf7b2TWpae");
 			}
 			if(formField.getFieldId().equals("ime")) {
 				user.setFirstName(formField.getFieldValue());
@@ -68,12 +68,8 @@ public class SavingUserService implements JavaDelegate{
 			korisnik.setUserType("registrovan_korisnik");
 	      }
 	      
-	      Group group = identityService.newGroup("registrovani_korisnici");
-	      identityService.saveGroup(group);
-	      System.out.println("Kreirana je nova grupa.");
 	      
 	      identityService.saveUser(user);
-	      identityService.createMembership(user.getId(), group.getId());
 	      
 	      
 	      userRepository.save(korisnik);

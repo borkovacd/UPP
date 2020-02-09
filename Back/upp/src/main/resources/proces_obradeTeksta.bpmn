@@ -323,12 +323,6 @@
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="SequenceFlow_0wnqzgi" sourceRef="UserTask_1galn8j" targetRef="ServiceTask_0q4g5cv" />
     <bpmn:sequenceFlow id="SequenceFlow_0nhsnj3" sourceRef="Task_1aliybu" targetRef="ServiceTask_0cjquca" />
-    <bpmn:boundaryEvent id="IntermediateThrowEvent_1xwvxwy" attachedToRef="Task_1aliybu">
-      <bpmn:outgoing>SequenceFlow_19kpker</bpmn:outgoing>
-      <bpmn:timerEventDefinition>
-        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">${vremenskiRokZaRecenziranje}</bpmn:timeDuration>
-      </bpmn:timerEventDefinition>
-    </bpmn:boundaryEvent>
     <bpmn:sequenceFlow id="SequenceFlow_19kpker" sourceRef="IntermediateThrowEvent_1xwvxwy" targetRef="Task_0v8dpr2" />
     <bpmn:serviceTask id="Task_0v8dpr2" name="Obaveštavanje urednika" camunda:expression="true">
       <bpmn:incoming>SequenceFlow_19kpker</bpmn:incoming>
@@ -698,6 +692,12 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
       <bpmn:outgoing>SequenceFlow_1g66fwx</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="SequenceFlow_1g66fwx" sourceRef="Task_0lij4d9" targetRef="Task_1709los" />
+    <bpmn:boundaryEvent id="IntermediateThrowEvent_1xwvxwy" attachedToRef="Task_1aliybu">
+      <bpmn:outgoing>SequenceFlow_19kpker</bpmn:outgoing>
+      <bpmn:timerEventDefinition>
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">${vremenskiRokZaRecenziranje}</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:boundaryEvent>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Proces_ObradeTeksta">
@@ -937,11 +937,11 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
       <bpmndi:BPMNEdge id="SequenceFlow_0kfg7t3_di" bpmnElement="SequenceFlow_0kfg7t3">
         <di:waypoint x="5030" y="670" />
         <di:waypoint x="5225" y="670" />
-        <di:waypoint x="5225" y="620" />
-        <di:waypoint x="5400" y="620" />
+        <di:waypoint x="5225" y="710" />
+        <di:waypoint x="5400" y="710" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="UserTask_0wpgjgo_di" bpmnElement="Task_1aliybu">
-        <dc:Bounds x="5400" y="580" width="100" height="80" />
+        <dc:Bounds x="5400" y="670" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="ServiceTask_1yt5p4f_di" bpmnElement="Task_07m568w">
         <dc:Bounds x="4560" y="1110" width="100" height="80" />
@@ -961,15 +961,12 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
         <di:waypoint x="4880" y="1150" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_0nhsnj3_di" bpmnElement="SequenceFlow_0nhsnj3">
-        <di:waypoint x="5450" y="660" />
-        <di:waypoint x="5450" y="710" />
+        <di:waypoint x="5450" y="750" />
+        <di:waypoint x="5450" y="870" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="BoundaryEvent_0dvee4n_di" bpmnElement="IntermediateThrowEvent_1xwvxwy">
-        <dc:Bounds x="5482" y="602" width="36" height="36" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_19kpker_di" bpmnElement="SequenceFlow_19kpker">
-        <di:waypoint x="5518" y="620" />
-        <di:waypoint x="5610" y="620" />
+        <di:waypoint x="5518" y="710" />
+        <di:waypoint x="5610" y="710" />
         <di:waypoint x="5610" y="450" />
         <di:waypoint x="5540" y="450" />
       </bpmndi:BPMNEdge>
@@ -989,11 +986,11 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
         <di:waypoint x="5050" y="1150" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="ServiceTask_0cjquca_di" bpmnElement="ServiceTask_0cjquca">
-        <dc:Bounds x="5400" y="710" width="100" height="80" />
+        <dc:Bounds x="5400" y="870" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_1k06wlp_di" bpmnElement="SequenceFlow_1k06wlp">
-        <di:waypoint x="5450" y="790" />
-        <di:waypoint x="5450" y="850" />
+        <di:waypoint x="5450" y="950" />
+        <di:waypoint x="5450" y="1010" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="UserTask_1bmpc7g_di" bpmnElement="UserTask_1bmpc7g">
         <dc:Bounds x="5050" y="1110" width="100" height="80" />
@@ -1003,10 +1000,10 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
         <di:waypoint x="5425" y="1150" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="UserTask_1097bqv_di" bpmnElement="UserTask_1097bqv">
-        <dc:Bounds x="5400" y="850" width="100" height="80" />
+        <dc:Bounds x="5400" y="1010" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_0d7zm4b_di" bpmnElement="SequenceFlow_0d7zm4b">
-        <di:waypoint x="5450" y="930" />
+        <di:waypoint x="5450" y="1090" />
         <di:waypoint x="5450" y="1125" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_05kovf3_di" bpmnElement="SequenceFlow_05kovf3">
@@ -1065,10 +1062,10 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_1l7snja_di" bpmnElement="SequenceFlow_1l7snja">
         <di:waypoint x="6420" y="1125" />
-        <di:waypoint x="6420" y="670" />
-        <di:waypoint x="5030" y="670" />
+        <di:waypoint x="6420" y="640" />
+        <di:waypoint x="5030" y="640" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="6430" y="1058" width="79" height="40" />
+          <dc:Bounds x="6430" y="1055" width="79" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_0bkl7es_di" bpmnElement="SequenceFlow_0bkl7es">
@@ -1359,6 +1356,9 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
         <di:waypoint x="4660" y="670" />
         <di:waypoint x="4930" y="670" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="BoundaryEvent_0dvee4n_di" bpmnElement="IntermediateThrowEvent_1xwvxwy">
+        <dc:Bounds x="5482" y="692" width="36" height="36" />
+      </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>

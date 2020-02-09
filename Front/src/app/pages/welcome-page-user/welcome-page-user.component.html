@@ -10,21 +10,21 @@
   </div>
   <div style="margin-top: 1%; margin-left: 7%" class="btn-group btn-group-lg" role="group" aria-label="...">
     <div *ngIf="userType=='urednik'">
-      <button style="margin-left: 4%" class="btn btn-dark" (click)="createMagazine()">Kreiranje časopisa</button>
+      <button style="margin-left: 4%" class="btn btn-outline-light" (click)="createMagazine()">Kreiranje časopisa</button>
     </div>
     <div>
-      <button style="margin-left: 4%" class="btn btn-dark" (click)="submitNewText()">Podnošenje novog teksta</button>
+      <button style="margin-left: 4%" class="btn btn-outline-light" (click)="submitNewText()">Podnošenje novog teksta</button>
     </div>
   </div>
   <div *ngIf="loggedUser!=null" style="margin-top: 1%; margin-left: 7%" class="btn-group btn-group-lg" role="group" aria-label="...">
     <button style="margin-left: 4%" class="btn btn-dark" (click)="logOut()">Izloguj se</button>
   </div>
   <div *ngIf="userType=='urednik'">
-    <div *ngIf="notClaimed">
+    <div *ngIf="tasks">
       <br/>
-      <h2 style="color: white;" >
+      <h5 style="color: white; margin-left: 1%" >
         Preuzimanje svih dostupnih zadataka
-      </h2>
+      </h5>
     </div>
     <div>
       <table style="color: white; margin-top: 3%; margin-left: 5%">
@@ -38,7 +38,7 @@
     </div>
   </div>
   <div *ngIf="userType=='registrovan_korisnik'">
-    <div *ngIf="notClaimed">
+    <div *ngIf="tasks">
       <br/>
       <h2 style="color: white;" >
         Preuzimanje svih dostupnih zadataka

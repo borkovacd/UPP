@@ -29,7 +29,7 @@ import {PdfReviewComponent} from './pages/text-processing/pdf-review/pdf-review.
 import {ChiefEditorInformingComponent} from './pages/text-processing/chief-editor-informing/chief-editor-informing.component';
 import {ArticleCorrectionComponent} from './pages/text-processing/article-correction/article-correction.component';
 import {ChoosingReviewersComponent} from './pages/text-processing/choosing-reviewers/choosing-reviewers.component';
-import {DefineReviewTimeComponent} from './define-review-time/define-review-time.component';
+import {DefineReviewTimeComponent} from './pages/text-processing/define-review-time/define-review-time.component';
 import {ChiefEditorNoCorrectionComponent} from './pages/text-processing/chief-editor-no-correction/chief-editor-no-correction.component';
 
 

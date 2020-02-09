@@ -19,6 +19,7 @@ export class NeedRegistrationComponent implements OnInit {
   private claimedTaskId = null;
 
   constructor(private textProcessingService: TextProcessingService,
+              private repositoryService: RepositoryService,
               public router: Router,
               private route: ActivatedRoute) {
 
@@ -69,7 +70,11 @@ export class NeedRegistrationComponent implements OnInit {
           this.router.navigateByUrl('/login/' + processInstanceId);
         } else {
           alert("Odlucili ste da Vam je potrebna registracija");
-          this.router.navigateByUrl('/registration/' + processInstanceId);
+          this.repositoryService.startNewProcess().subscribe(data => {
+            console.log(data);
+            this.processInstance = data.processInstanceId;
+            this.router.navigateByUrl('/registration/' + this.processInstance);
+          })
         }
       },
       err => {

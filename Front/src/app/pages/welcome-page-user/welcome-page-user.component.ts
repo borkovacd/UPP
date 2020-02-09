@@ -16,7 +16,7 @@ export class WelcomePageUserComponent implements OnInit {
   private username = null;
   private userType = null;
   private enumValues = [];
-  private tasks = [];
+  private tasks = null;
   private claimedTaskId = null;
   private formFieldsDto = null;
   private formFields = [];
@@ -36,6 +36,7 @@ export class WelcomePageUserComponent implements OnInit {
     this.userType = localStorage.getItem('ROLE');
 
     this.notClaimed = true;
+    this.tasks = null;
 
     let x = this.userService.getTasksOfUser(this.username);
 
