@@ -15,9 +15,11 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import com.ftn.upp.model.Article;
 import com.ftn.upp.model.ExtendedFormSubmissionDto;
 import com.ftn.upp.model.Magazine;
 import com.ftn.upp.model.User;
+import com.ftn.upp.repository.ArticleRepository;
 import com.ftn.upp.repository.UserRepository;
 import com.ftn.upp.service.MagazineService;
 import com.ftn.upp.service.UserService;
@@ -40,6 +42,9 @@ public class SendingRejectionEmailService implements JavaDelegate{
 	@Autowired
 	private MagazineService magazineService;
 	
+	@Autowired 
+	private ArticleRepository articleRepository;
+	
 	
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
@@ -47,29 +52,19 @@ public class SendingRejectionEmailService implements JavaDelegate{
 		String usernameAuthor = "";
 		String emailAuthor = "";
 		
-		User author = userService.getCurrentUser();
-		System.out.println("Autor: " + author.getUsername());
+	    List<ExtendedFormSubmissionDto> articleData = (List<ExtendedFormSubmissionDto>)execution.getVariable("article_data");
+	    
+	    String articleTitle = "";
+		for (ExtendedFormSubmissionDto formField : articleData) {
+			if(formField.getFieldId().equals("naslov")) {
+				articleTitle = formField.getFieldValue();
+			}
+		}
+		  
+		Article article = articleRepository.findOneByTitle(articleTitle);
+		User author = userRepository.findOneByUsername(article.getAuthor().getUsername());
 		usernameAuthor = author.getUsername();
 		emailAuthor = author.getEmail();
-		
-		/*List<ExtendedFormSubmissionDto> chosenMagazineData = (List<ExtendedFormSubmissionDto>) execution.getVariable("chosenMagazine");
-		for(ExtendedFormSubmissionDto item: chosenMagazineData) {
-			 String fieldId=item.getFieldId();
-			 if(fieldId.equals("casopisi")){
-				  List<Magazine> allMagazines = magazineService.findAll();
-				  for(Magazine m : allMagazines){
-					  for(String selected: item.getCategories()){
-						  String idM = m.getId().toString();
-						  if(idM.equals(selected)) {
-							  User chiefEditor = m.getMainEditor();
-							  System.out.println("Glavni urednik: " + chiefEditor.getUsername());
-							  usernameChiefEditor = chiefEditor.getUsername();
-							  emailChiefEditor = chiefEditor.getEmail();
-						  }
-					  }
-				  }
-			 }
-		}*/
 		
 		
 		String processInstanceId = execution.getProcessInstanceId();
@@ -80,13 +75,6 @@ public class SendingRejectionEmailService implements JavaDelegate{
 		{
 			System.out.println("Greska prilikom slanja emaila autoru: " + e.getMessage());
 		}
-		/*try 
-		{
-			sendNotificaitionAsync(processInstanceId, usernameChiefEditor, emailChiefEditor);
-		}catch( Exception e )
-		{
-			System.out.println("Greska prilikom slanja emaila glavnom uredniku: " + e.getMessage());
-		}*/
 		
 		
 	}
@@ -103,7 +91,7 @@ public class SendingRejectionEmailService implements JavaDelegate{
 		String htmlMsg = "<h4>Obavestavamo Vas je rad koji ste prijavili odbijen od strane glavnog urednika jer tekst rada nije tematski prikladan.</h4>";
 		mimeMessage.setContent(htmlMsg, "text/html");
 		helper.setTo(email);
-		helper.setSubject("Notifikacija o prijavi novog rada");
+		helper.setSubject("Obaveštenje o odbijanju rada");
 		helper.setFrom(env.getProperty("spring.mail.username"));
 		javaMailSender.send(mimeMessage);
 	

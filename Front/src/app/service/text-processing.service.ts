@@ -23,6 +23,10 @@ export class TextProcessingService {
     return this.httpClient.post("http://localhost:8080/textProcessing/decideOnRegistration/".concat(taskId), registration) as Observable<any>;
   }
 
+  confirmLoggingIn(o: any[], taskId: any) {
+    return this.httpClient.post("http://localhost:8080/textProcessing/confirmLoggingIn/".concat(taskId), o) as Observable<any>;
+  }
+
   chooseMagazine(magazine, taskId) {
     return this.httpClient.post('http://localhost:8080/textProcessing/chooseMagazine/'.concat(taskId), magazine) as Observable<any>;
   }

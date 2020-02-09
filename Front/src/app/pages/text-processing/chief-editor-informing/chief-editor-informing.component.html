@@ -1,0 +1,17 @@
+<div class="view-welcome intro-2">
+  <div class="container">
+    <div >
+      <br/>
+      <h2 style="color: white;" >
+        Autor je obavešten da mora da koriguje svoju prijavu.
+      </h2>
+      <h4 style="color: white;" >
+        Ukoliko autor koriguje rad u očekivanom roku bićete obavešteni o daljem postupku.
+      </h4>
+      <br/>
+      <div *ngIf="loggedUser!=null" style="margin-top: 1%; margin-left: 7%" class="btn-group btn-group-lg" role="group" aria-label="...">
+        <button style="margin-left: 4%" class="btn btn-dark" (click)="logOut()">Izloguj se</button>
+      </div>
+    </div>
+  </div>
+</div>

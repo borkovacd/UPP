@@ -26,12 +26,10 @@ public class ChekingIfLoggedInService implements JavaDelegate {
 		
 		boolean loggedIn = false;
 		
-		//String loggedInUsername = identityService.getCurrentAuthentication().getUserId();
-		//System.out.println("LoggedInUsername: " + loggedInUsername);
-		
 		User loggedInUser = userService.getCurrentUser();
 		if(loggedInUser != null) {
 			loggedIn = true;
+			runtimeService.setVariable(execution.getProcessInstanceId(), "author", loggedInUser.getUsername());
 		} else {
 			loggedIn = false;
 		}

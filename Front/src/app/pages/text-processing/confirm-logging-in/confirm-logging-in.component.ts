@@ -61,7 +61,7 @@ export class ConfirmLoggingInComponent implements OnInit {
     const processInstanceId = this.route.snapshot.params.processInstanceId;
 
     console.log(o);
-    let x = this.userService.next(o, this.formFieldsDto.taskId);
+    let x = this.textProcessingService.confirmLoggingIn(o, this.formFieldsDto.taskId);
 
     x.subscribe(
       res => {

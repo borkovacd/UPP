@@ -26,6 +26,7 @@ import {UserInformingComponent} from './pages/text-processing/user-informing/use
 import {ArticleReviewComponent} from './pages/text-processing/article-review/article-review.component';
 import {EndPageComponent} from './pages/text-processing/end-page/end-page.component';
 import {PdfReviewComponent} from './pages/text-processing/pdf-review/pdf-review.component';
+import {ChiefEditorInformingComponent} from './pages/text-processing/chief-editor-informing/chief-editor-informing.component';
 
 
 
@@ -56,6 +57,7 @@ const routes: Routes = [
   { path: 'article-review/:taskId', component: ArticleReviewComponent },
   { path: 'pdf-review/:processInstanceId', component: PdfReviewComponent },
   { path: 'article-final', component: EndPageComponent },
+  { path: 'chief-editor-informing', component:  ChiefEditorInformingComponent},
 ];
 
 @NgModule({

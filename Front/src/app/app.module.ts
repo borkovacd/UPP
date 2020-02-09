@@ -37,6 +37,7 @@ import { UserInformingComponent } from './pages/text-processing/user-informing/u
 import { ArticleReviewComponent } from './pages/text-processing/article-review/article-review.component';
 import { EndPageComponent } from './pages/text-processing/end-page/end-page.component';
 import { PdfReviewComponent } from './pages/text-processing/pdf-review/pdf-review.component';
+import { ChiefEditorInformingComponent } from './pages/text-processing/chief-editor-informing/chief-editor-informing.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { PdfReviewComponent } from './pages/text-processing/pdf-review/pdf-revie
     UserInformingComponent,
     ArticleReviewComponent,
     EndPageComponent,
-    PdfReviewComponent
+    PdfReviewComponent,
+    ChiefEditorInformingComponent
   ],
   imports: [
     BrowserModule,

@@ -126,6 +126,18 @@ public class TextProcessingController {
         return neededRegistration;
     }
 	
+	@PostMapping(path = "/confirmLoggingIn/{taskId}", produces = "application/json")
+    public @ResponseBody ResponseEntity confirmLoggingIn(@RequestBody List<FormSubmissionDto> dto, @PathVariable String taskId) {
+		HashMap<String, Object> map = this.mapListToDto(dto);
+		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+		String processInstanceId = task.getProcessInstanceId();
+		
+		User author = userService.getCurrentUser();
+		runtimeService.setVariable(processInstanceId, "author", author.getUsername());
+		formService.submitTaskForm(taskId, map);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
 	@PostMapping(path = "/chooseMagazine/{taskId}", produces = "application/json")
     public @ResponseBody ResponseEntity<Boolean> chooseMagazine(@RequestBody List<ExtendedFormSubmissionDto> formData, @PathVariable String taskId) {
 		

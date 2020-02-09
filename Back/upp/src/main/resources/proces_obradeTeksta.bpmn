@@ -5,7 +5,7 @@
       <bpmn:outgoing>SequenceFlow_0z9x0eb</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="SequenceFlow_0z9x0eb" sourceRef="StartEvent_1" targetRef="Provera_Prijavljenog_Korisnika" />
-    <bpmn:userTask id="Task_Biranje_Casopisa" name="Biranje časopisa" camunda:assignee="${pokretac}">
+    <bpmn:userTask id="Task_Biranje_Casopisa" name="Biranje časopisa" camunda:assignee="${author}">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="casopisi" label="Izaberite časopis:" type="enum" />
@@ -38,7 +38,7 @@
       <bpmn:endEvent id="EndEvent_0cq42rm">
         <bpmn:incoming>SequenceFlow_14cqyh0</bpmn:incoming>
       </bpmn:endEvent>
-      <bpmn:userTask id="Task_0itf062" name="Definisanje iznosa" camunda:assignee="${pokretac}">
+      <bpmn:userTask id="Task_0itf062" name="Definisanje iznosa" camunda:assignee="${author}">
         <bpmn:extensionElements>
           <camunda:formData>
             <camunda:formField id="iznos" label="Iznos" type="long" defaultValue="0" />
@@ -47,7 +47,7 @@
         <bpmn:incoming>SequenceFlow_0d5k2a5</bpmn:incoming>
         <bpmn:outgoing>SequenceFlow_1czjk6k</bpmn:outgoing>
       </bpmn:userTask>
-      <bpmn:userTask id="UserTask_0c1a06u" name="Izbor načina plaćanja" camunda:assignee="${pokretac}">
+      <bpmn:userTask id="UserTask_0c1a06u" name="Izbor načina plaćanja" camunda:assignee="${author}">
         <bpmn:extensionElements>
           <camunda:formData>
             <camunda:formField id="nacinPlacanja" label="Način plaćanja" type="enum">
@@ -71,7 +71,7 @@
     <bpmn:sequenceFlow id="SequenceFlow_1fpq741" name="Potrebno je uplatiti članarinu" sourceRef="ExclusiveGateway_0x1rnpi" targetRef="SubProcess_1yg76vo">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${potrebnoPlacanje==true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:userTask id="Task_0xl8k15" name="Unošenje podataka o radu" camunda:formKey="Forma_Podaci_O_Radu" camunda:assignee="${pokretac}">
+    <bpmn:userTask id="Task_0xl8k15" name="Unošenje podataka o radu" camunda:formKey="Forma_Podaci_O_Radu" camunda:assignee="${author}">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="naslov" label="Naslov" type="string" />
@@ -157,7 +157,7 @@
     <bpmn:sequenceFlow id="SequenceFlow_0bseor9" name="Dokument nije formatiran u skladu sa zahtevima" sourceRef="ExclusiveGateway_0amoo48" targetRef="Task_1j3tosk">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${dobro_formatiran== false}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:serviceTask id="Task_1j3tosk" name="Slanje email notifikacije autoru da koriguje prijavu" camunda:expression="true">
+    <bpmn:serviceTask id="Task_1j3tosk" name="Slanje email notifikacije autoru da koriguje prijavu" camunda:class="com.ftn.upp.service.camunda.SendingPDFToAuthorService">
       <bpmn:incoming>SequenceFlow_0bseor9</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0cctpet</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -165,7 +165,7 @@
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${dobro_formatiran== true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="SequenceFlow_0cctpet" sourceRef="Task_1j3tosk" targetRef="Task_0ah9w2i" />
-    <bpmn:userTask id="Task_0ah9w2i" name="Korigovanje prijave (PDF dokumenta)" camunda:assignee="${pokretac}">
+    <bpmn:userTask id="Task_0ah9w2i" name="Korigovanje prijave (PDF dokumenta)" camunda:assignee="${author}">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="komentarR" label="Komentar urednika" type="string" defaultValue="${komentar}">
@@ -749,7 +749,7 @@ execution.setVariable("brojacRecenzenata",noviBrojac);</bpmn:script>
     <bpmn:sequenceFlow id="SequenceFlow_0n92dke" name="Završen unos podataka o koautorima" sourceRef="ExclusiveGateway_1x242nw" targetRef="Task_0zamoud">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${brojac==0}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:userTask id="UserTask_19etohj" name="Unošenje podataka o koautorima" camunda:assignee="${pokretac}">
+    <bpmn:userTask id="UserTask_19etohj" name="Unošenje podataka o koautorima" camunda:assignee="${author}">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="ime" label="Ime" type="string" />
@@ -913,7 +913,7 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_1joh5wo_di" bpmnElement="SequenceFlow_1joh5wo">
         <di:waypoint x="1720" y="320" />
-        <di:waypoint x="1760" y="320" />
+        <di:waypoint x="1780" y="320" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="ServiceTask_0pz7sq8_di" bpmnElement="Task_0zamoud">
         <dc:Bounds x="2060" y="580" width="100" height="80" />
@@ -1549,10 +1549,10 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
         <di:waypoint x="3555" y="720" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="ServiceTask_1g15n2d_di" bpmnElement="ServiceTask_1g15n2d">
-        <dc:Bounds x="1760" y="280" width="100" height="80" />
+        <dc:Bounds x="1780" y="280" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_0ph3imm_di" bpmnElement="SequenceFlow_0ph3imm">
-        <di:waypoint x="1860" y="320" />
+        <di:waypoint x="1880" y="320" />
         <di:waypoint x="1950" y="320" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

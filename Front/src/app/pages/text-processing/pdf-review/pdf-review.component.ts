@@ -63,7 +63,7 @@ export class PdfReviewComponent implements OnInit {
           //this.router.navigateByUrl('/login/' + processInstanceId);
         } else {
           alert("Odlucili ste da je potrebna korekcija dokumenta");
-          //this.router.navigateByUrl('/registration/' + processInstanceId);
+          this.router.navigateByUrl('/chief-editor-informing');
         }
       },
       err => {

@@ -1,10 +1,8 @@
 package com.ftn.upp.service.camunda;
 
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.util.List;
 
 import javax.activation.DataHandler;
@@ -15,28 +13,26 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 
-import org.springframework.stereotype.Service;
-
-import com.ftn.upp.model.ExtendedFormSubmissionDto;
-import com.ftn.upp.model.Magazine;
-import com.ftn.upp.model.User;
-import com.ftn.upp.repository.UserRepository;
-import com.ftn.upp.service.MagazineService;
-
+import org.camunda.bpm.engine.delegate.DelegateExecution;
+import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.camunda.bpm.engine.delegate.DelegateExecution;
-import org.camunda.bpm.engine.delegate.JavaDelegate;
 
+import com.ftn.upp.model.Article;
+import com.ftn.upp.model.ExtendedFormSubmissionDto;
+import com.ftn.upp.model.Magazine;
+import com.ftn.upp.model.User;
+import com.ftn.upp.repository.ArticleRepository;
+import com.ftn.upp.repository.UserRepository;
+import com.ftn.upp.service.MagazineService;
 
 @Service
-public class SendingPDFToEditorService implements JavaDelegate{
+public class SendingPDFToAuthorService implements JavaDelegate{
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
@@ -44,33 +40,30 @@ public class SendingPDFToEditorService implements JavaDelegate{
 	private Environment env;
 	
 	@Autowired
-	private MagazineService magazineService ;
+	private ArticleRepository articleRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
 
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
-		// TODO Auto-generated method stub
 		  
-		String usernameChiefEditor = "";
-		String emailChiefEditor = "";
+		String usernameAuthor = "";
+		String emailAuthor = "";
 		
-		List<ExtendedFormSubmissionDto> chosenMagazineData = (List<ExtendedFormSubmissionDto>) execution.getVariable("chosenMagazine");
-		for(ExtendedFormSubmissionDto item: chosenMagazineData) {
-			 String fieldId=item.getFieldId();
-			 if(fieldId.equals("casopisi")){
-				  List<Magazine> allMagazines = magazineService.findAll();
-				  for(Magazine m : allMagazines){
-					  for(String selected: item.getCategories()){
-						  String idM = m.getId().toString();
-						  if(idM.equals(selected)) {
-							  User chiefEditor = m.getMainEditor();
-							  System.out.println("Glavni urednik: " + chiefEditor.getUsername());
-							  usernameChiefEditor = chiefEditor.getUsername();
-							  emailChiefEditor = chiefEditor.getEmail();
-						  }
-					  }
-				  }
-			 }
+	    List<ExtendedFormSubmissionDto> articleData = (List<ExtendedFormSubmissionDto>)execution.getVariable("article_data");
+	    
+	    String articleTitle = "";
+		for (ExtendedFormSubmissionDto formField : articleData) {
+			if(formField.getFieldId().equals("naslov")) {
+				articleTitle = formField.getFieldValue();
+			}
 		}
+		  
+		Article article = articleRepository.findOneByTitle(articleTitle);
+		User author = userRepository.findOneByUsername(article.getAuthor().getUsername());
+		usernameAuthor = author.getUsername();
+		emailAuthor = author.getEmail();
 		
 		String processInstanceId = execution.getProcessInstanceId();
 		
@@ -78,9 +71,9 @@ public class SendingPDFToEditorService implements JavaDelegate{
 	     byte[] decodedBytes = (byte[]) execution.getVariable("file_decoded");
 	      
 		try {
-			sendNotificaitionAsync(processInstanceId, usernameChiefEditor, emailChiefEditor, fileName, decodedBytes);
+			sendNotificaitionAsync(processInstanceId, usernameAuthor, emailAuthor, fileName, decodedBytes);
 		}catch( Exception e ) {
-			System.out.println("Greska prilikom slanja emaila sa PDF-om glavnom uredniku: " + e.getMessage());
+			System.out.println("Greska prilikom slanja emaila sa PDF-om autoru: " + e.getMessage());
 		}
 	
 	  
@@ -95,7 +88,7 @@ public class SendingPDFToEditorService implements JavaDelegate{
 			   						   byte[] decodedBytes) throws MailException, InterruptedException, MessagingException {
 
 		System.out.println("Email se šalje...");
-		String content = "U prilgu se nalazi PDF dokument koji je potrebno pregledati ";
+		String content = "U prilgu se nalazi PDF dokument koji je potrebno korigovati ";
 		
 	    ByteArrayOutputStream outputStream = null;
 
@@ -124,11 +117,11 @@ public class SendingPDFToEditorService implements JavaDelegate{
 			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, false, "utf-8");
 			mimeMessage.setContent(mimeMultipart, "text/html");
 			helper.setTo(email);
-			helper.setSubject("Pregled PDF dokumenta od strane glavnog urednika");
+			helper.setSubject("Obaveštenje o potrebnoj korekciji rada");
 			helper.setFrom(env.getProperty("spring.mail.username"));
 			javaMailSender.send(mimeMessage);
 		
-			System.out.println("Email sa PDFom namenjen glavnom uredniku je poslat!");
+			System.out.println("Email sa PDFom namenjen autoru je poslat!");
 	                 
 	    
 	} catch(Exception ex) {
@@ -152,3 +145,4 @@ public class SendingPDFToEditorService implements JavaDelegate{
 		fop.close();
 	}
 }
+
