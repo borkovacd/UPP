@@ -60,7 +60,7 @@ export class DefineReviewTimeComponent implements OnInit {
         x.subscribe(
           res => {
             alert("Zadato je vreme za recenziranje");
-            //this.router.navigateByUrl('/text-information/' + processInstanceId);
+            this.router.navigateByUrl('/no-red/' + processInstanceId);
           },
           err => {
             console.log("Error occured");

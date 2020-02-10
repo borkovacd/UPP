@@ -164,6 +164,7 @@
     <bpmn:sequenceFlow id="SequenceFlow_09p7xu4" sourceRef="Task_0cew62z" targetRef="Task_16yqqtv" />
     <bpmn:serviceTask id="Task_16yqqtv" name="Slanje notifikacije dodeljenom uredniku" camunda:class="com.ftn.upp.service.camunda.SendingEmailAssignedEditorService">
       <bpmn:incoming>SequenceFlow_09p7xu4</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_19kpker</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1rz2v1w</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="SequenceFlow_1rz2v1w" sourceRef="Task_16yqqtv" targetRef="Task_1b7nv8s" />
@@ -189,7 +190,7 @@
       <bpmn:incoming>SequenceFlow_1g66fwx</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0kfg7t3</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:sequenceFlow id="SequenceFlow_0kfg7t3" sourceRef="Task_1709los" targetRef="Task_1aliybu" />
+    <bpmn:sequenceFlow id="SequenceFlow_0kfg7t3" sourceRef="Task_1709los" targetRef="Task_13db704" />
     <bpmn:userTask id="Task_1aliybu" name="Recenziranje" camunda:assignee="${recenzentTemp}">
       <bpmn:extensionElements>
         <camunda:formData>
@@ -223,7 +224,7 @@
           <camunda:formField id="komentarUredniku" label="Komentar (uredniku)" type="string" />
         </camunda:formData>
       </bpmn:extensionElements>
-      <bpmn:incoming>SequenceFlow_0kfg7t3</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_04iooui</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0nhsnj3</bpmn:outgoing>
       <bpmn:multiInstanceLoopCharacteristics camunda:collection="${izabraniRecenzenti}" camunda:elementVariable="recenzentTemp" />
     </bpmn:userTask>
@@ -257,18 +258,8 @@
       <bpmn:outgoing>SequenceFlow_01ypikk</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="SequenceFlow_0wnqzgi" sourceRef="UserTask_1galn8j" targetRef="UserTask_1223p38" />
-    <bpmn:sequenceFlow id="SequenceFlow_0nhsnj3" sourceRef="Task_1aliybu" targetRef="ServiceTask_0cjquca" />
-    <bpmn:sequenceFlow id="SequenceFlow_19kpker" sourceRef="IntermediateThrowEvent_1xwvxwy" targetRef="Task_0v8dpr2" />
-    <bpmn:serviceTask id="Task_0v8dpr2" name="Obaveštavanje urednika" camunda:expression="true">
-      <bpmn:incoming>SequenceFlow_19kpker</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_1jmmw5g</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="SequenceFlow_1jmmw5g" sourceRef="Task_0v8dpr2" targetRef="Task_1b7nv8s" />
-    <bpmn:serviceTask id="ServiceTask_0cjquca" name="Čuvanje podataka" camunda:expression="true">
-      <bpmn:incoming>SequenceFlow_0nhsnj3</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_1k06wlp</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="SequenceFlow_1k06wlp" sourceRef="ServiceTask_0cjquca" targetRef="UserTask_1097bqv" />
+    <bpmn:sequenceFlow id="SequenceFlow_0nhsnj3" sourceRef="Task_1aliybu" targetRef="UserTask_1097bqv" />
+    <bpmn:sequenceFlow id="SequenceFlow_19kpker" sourceRef="IntermediateThrowEvent_1xwvxwy" targetRef="Task_16yqqtv" />
     <bpmn:userTask id="UserTask_1097bqv" name="Obrada rada (po završenim recenzijama)" camunda:assignee="glavniUrednik">
       <bpmn:extensionElements>
         <camunda:formData>
@@ -283,7 +274,7 @@
           </camunda:formField>
         </camunda:formData>
       </bpmn:extensionElements>
-      <bpmn:incoming>SequenceFlow_1k06wlp</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_0nhsnj3</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0d7zm4b</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="SequenceFlow_0d7zm4b" sourceRef="UserTask_1097bqv" targetRef="ExclusiveGateway_0bcbv3b" />
@@ -556,7 +547,6 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
     <bpmn:sequenceFlow id="SequenceFlow_0ph3imm" sourceRef="ServiceTask_1g15n2d" targetRef="ScriptTask_0ojyxfm" />
     <bpmn:sequenceFlow id="SequenceFlow_0mskpol" sourceRef="Task_0fzbbbk" targetRef="Task_0cew62z" />
     <bpmn:serviceTask id="Task_1b7nv8s" name="Provera da li postoji odgovarajući broj recenzenata" camunda:class="com.ftn.upp.service.camunda.CheckReviewerNumberService">
-      <bpmn:incoming>SequenceFlow_1jmmw5g</bpmn:incoming>
       <bpmn:incoming>SequenceFlow_1rz2v1w</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1ioyz9t</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -645,6 +635,11 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
       <bpmn:outgoing>SequenceFlow_1ssnzbl</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="SequenceFlow_1ssnzbl" sourceRef="ServiceTask_02lnlz1" targetRef="EndEvent_1ionv8n" />
+    <bpmn:sequenceFlow id="SequenceFlow_04iooui" sourceRef="Task_13db704" targetRef="Task_1aliybu" />
+    <bpmn:userTask id="Task_13db704" name="Da proces ne pocrveni" camunda:assignee="${dodeljeniUrednik}">
+      <bpmn:incoming>SequenceFlow_0kfg7t3</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_04iooui</bpmn:outgoing>
+    </bpmn:userTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Proces_ObradeTeksta">
@@ -829,17 +824,17 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
         <dc:Bounds x="3530" y="850" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="ServiceTask_0fwc1o8_di" bpmnElement="Task_0cew62z">
-        <dc:Bounds x="3740" y="850" width="100" height="80" />
+        <dc:Bounds x="3840" y="850" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_09p7xu4_di" bpmnElement="SequenceFlow_09p7xu4">
-        <di:waypoint x="3840" y="890" />
-        <di:waypoint x="3950" y="890" />
+        <di:waypoint x="3940" y="890" />
+        <di:waypoint x="4120" y="890" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="ServiceTask_02v3d5y_di" bpmnElement="Task_16yqqtv">
-        <dc:Bounds x="3950" y="850" width="100" height="80" />
+        <dc:Bounds x="4120" y="850" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_1rz2v1w_di" bpmnElement="SequenceFlow_1rz2v1w">
-        <di:waypoint x="4050" y="890" />
+        <di:waypoint x="4220" y="890" />
         <di:waypoint x="4390" y="890" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="ExclusiveGateway_06cse1y_di" bpmnElement="ExclusiveGateway_06cse1y" isMarkerVisible="true">
@@ -870,12 +865,10 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_0kfg7t3_di" bpmnElement="SequenceFlow_0kfg7t3">
         <di:waypoint x="5030" y="670" />
-        <di:waypoint x="5225" y="670" />
-        <di:waypoint x="5225" y="750" />
-        <di:waypoint x="5260" y="750" />
+        <di:waypoint x="5090" y="670" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="UserTask_0wpgjgo_di" bpmnElement="Task_1aliybu">
-        <dc:Bounds x="5260" y="710" width="100" height="80" />
+        <dc:Bounds x="5260" y="630" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="ServiceTask_1yt5p4f_di" bpmnElement="Task_07m568w">
         <dc:Bounds x="4660" y="1100" width="100" height="80" />
@@ -895,29 +888,15 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
         <di:waypoint x="5100" y="1150" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_0nhsnj3_di" bpmnElement="SequenceFlow_0nhsnj3">
-        <di:waypoint x="5310" y="790" />
-        <di:waypoint x="5310" y="870" />
+        <di:waypoint x="5310" y="710" />
+        <di:waypoint x="5310" y="1010" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_19kpker_di" bpmnElement="SequenceFlow_19kpker">
-        <di:waypoint x="5378" y="750" />
-        <di:waypoint x="5610" y="750" />
-        <di:waypoint x="5610" y="450" />
-        <di:waypoint x="5540" y="450" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="ServiceTask_1m93rm4_di" bpmnElement="Task_0v8dpr2">
-        <dc:Bounds x="5440" y="410" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="SequenceFlow_1jmmw5g_di" bpmnElement="SequenceFlow_1jmmw5g">
-        <di:waypoint x="5440" y="450" />
-        <di:waypoint x="4440" y="450" />
-        <di:waypoint x="4440" y="850" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="ServiceTask_0cjquca_di" bpmnElement="ServiceTask_0cjquca">
-        <dc:Bounds x="5260" y="870" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="SequenceFlow_1k06wlp_di" bpmnElement="SequenceFlow_1k06wlp">
-        <di:waypoint x="5310" y="950" />
-        <di:waypoint x="5310" y="1010" />
+        <di:waypoint x="5378" y="670" />
+        <di:waypoint x="5490" y="670" />
+        <di:waypoint x="5490" y="450" />
+        <di:waypoint x="4170" y="450" />
+        <di:waypoint x="4170" y="850" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="UserTask_1097bqv_di" bpmnElement="UserTask_1097bqv">
         <dc:Bounds x="5260" y="1010" width="100" height="80" />
@@ -978,10 +957,11 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_1l7snja_di" bpmnElement="SequenceFlow_1l7snja">
         <di:waypoint x="6320" y="1125" />
-        <di:waypoint x="6320" y="650" />
-        <di:waypoint x="5030" y="650" />
+        <di:waypoint x="6320" y="590" />
+        <di:waypoint x="4980" y="590" />
+        <di:waypoint x="4980" y="630" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="6330" y="1010" width="79" height="40" />
+          <dc:Bounds x="6330" y="998" width="79" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_0bkl7es_di" bpmnElement="SequenceFlow_0bkl7es">
@@ -1230,7 +1210,7 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_0mskpol_di" bpmnElement="SequenceFlow_0mskpol">
         <di:waypoint x="3630" y="890" />
-        <di:waypoint x="3740" y="890" />
+        <di:waypoint x="3840" y="890" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="ServiceTask_1klcaig_di" bpmnElement="Task_1b7nv8s">
         <dc:Bounds x="4390" y="850" width="100" height="80" />
@@ -1243,7 +1223,7 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
         <di:waypoint x="4930" y="670" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="BoundaryEvent_0dvee4n_di" bpmnElement="IntermediateThrowEvent_1xwvxwy">
-        <dc:Bounds x="5342" y="732" width="36" height="36" />
+        <dc:Bounds x="5342" y="652" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="CallActivity_1t9ean6_di" bpmnElement="registracija">
         <dc:Bounds x="390" y="660" width="100" height="80" />
@@ -1295,6 +1275,13 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
         <di:waypoint x="7060" y="1030" />
         <di:waypoint x="7102" y="1030" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_04iooui_di" bpmnElement="SequenceFlow_04iooui">
+        <di:waypoint x="5190" y="670" />
+        <di:waypoint x="5260" y="670" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_0y8m15q_di" bpmnElement="Task_13db704">
+        <dc:Bounds x="5090" y="630" width="100" height="80" />
+      </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>

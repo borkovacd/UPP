@@ -50,6 +50,7 @@ import { ReviewDoneComponent } from './pages/text-processing/review-done/review-
 import { ArticleCorrectionAfterReviewComponent } from './pages/text-processing/article-correction-after-review/article-correction-after-review.component';
 import { ArticleCorrectionAfterReviewAgainComponent} from './pages/text-processing/article-correction-after-review-again/article-correction-after-review-again.component';
 import { AssignedEditorReviewingCorrectedComponent } from './pages/text-processing/assigned-editor-reviewing-corrected/assigned-editor-reviewing-corrected.component';
+import { DontGoRedComponent } from './pages/text-processing/dont-go-red/dont-go-red.component';
 
 @NgModule({
   declarations: [
@@ -91,7 +92,8 @@ import { AssignedEditorReviewingCorrectedComponent } from './pages/text-processi
     ReviewDoneComponent,
     ArticleCorrectionAfterReviewComponent,
     ArticleCorrectionAfterReviewAgainComponent,
-    AssignedEditorReviewingCorrectedComponent
+    AssignedEditorReviewingCorrectedComponent,
+    DontGoRedComponent
   ],
   imports: [
     BrowserModule,

@@ -39,6 +39,7 @@ import {AssignedEditorReviewingComponent} from './pages/text-processing/assigned
 import {AssignedEditorReviewingCorrectedComponent} from './pages/text-processing/assigned-editor-reviewing-corrected/assigned-editor-reviewing-corrected.component';
 import {ArticleCorrectionAfterReviewComponent} from './pages/text-processing/article-correction-after-review/article-correction-after-review.component';
 import {ArticleCorrectionAfterReviewAgainComponent} from './pages/text-processing/article-correction-after-review-again/article-correction-after-review-again.component';
+import {DontGoRedComponent} from './pages/text-processing/dont-go-red/dont-go-red.component';
 
 
 
@@ -70,6 +71,7 @@ const routes: Routes = [
   { path: 'article-correction/:taskId', component: ArticleCorrectionComponent },
   { path: 'pdf-review/:processInstanceId', component: PdfReviewComponent },
   { path: 'review-time/:processInstanceId', component: DefineReviewTimeComponent },
+  { path: 'no-red/:processInstanceId', component: DontGoRedComponent },
   { path: 'article-final', component: EndPageComponent },
   { path: 'chief-editor-informing', component:  ChiefEditorInformingComponent},
   { path: 'review-done', component:  ReviewDoneComponent},
