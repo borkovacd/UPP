@@ -50,23 +50,28 @@ export class DefineReviewTimeComponent implements OnInit {
     for (var property in value) {
       console.log(property);
       console.log(value[property]);
-      o.push({fieldId: property, fieldValue: value[property]});
+      if(value[property]=="PT10M" || value[property]=="PT5M" || value[property]=="PT3M") {
+        o.push({fieldId: property, fieldValue: value[property]});
+        console.log(o);
+        let x = this.textProcessingService.setReviewingTime(o, this.formFieldsDto.taskId);
+
+        const processInstanceId = this.route.snapshot.params.processInstanceId;
+
+        x.subscribe(
+          res => {
+            alert("Zadato je vreme za recenziranje");
+            //this.router.navigateByUrl('/text-information/' + processInstanceId);
+          },
+          err => {
+            console.log("Error occured");
+          }
+        );
+      } else {
+        alert("Vrednost nije odgovarajuceg formata! Pokusajte ponovo!")
+      }
+
     }
 
-    console.log(o);
-    let x = this.textProcessingService.setReviewingTime(o, this.formFieldsDto.taskId);
-
-    const processInstanceId = this.route.snapshot.params.processInstanceId;
-
-    x.subscribe(
-      res => {
-        alert("Zadato je vreme za recenziranje");
-        //this.router.navigateByUrl('/text-information/' + processInstanceId);
-      },
-      err => {
-        console.log("Error occured");
-      }
-    );
   }
 }
 

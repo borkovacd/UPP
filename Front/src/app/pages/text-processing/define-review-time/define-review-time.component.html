@@ -5,6 +5,14 @@
       <h3 style="color: white; margin-top: -0.5%" >
         Zadavanje roka za recenziranje
       </h3>
+      <h6 style="color: white; " >
+        <p>Iskoristite neku od ponudjenih vrednosti: </p>
+        PT3M = 3 minuta
+        <br/>
+        PT5M = 5 minuta
+        <br/>
+        PT10M = 10 minuta
+      </h6>
     </div>
     <div style="margin-top: 2%; color:white;" class="form-group">
       <form #f="ngForm" (ngSubmit)="onSubmit(f.value, f)" ngNativeValidate>
