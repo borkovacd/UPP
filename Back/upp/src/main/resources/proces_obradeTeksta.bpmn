@@ -1038,10 +1038,10 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_1l7snja_di" bpmnElement="SequenceFlow_1l7snja">
         <di:waypoint x="6420" y="1125" />
-        <di:waypoint x="6420" y="670" />
-        <di:waypoint x="5030" y="670" />
+        <di:waypoint x="6420" y="650" />
+        <di:waypoint x="5030" y="650" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="6430" y="1058" width="79" height="40" />
+          <dc:Bounds x="6430" y="1056" width="79" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_0bkl7es_di" bpmnElement="SequenceFlow_0bkl7es">

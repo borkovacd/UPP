@@ -15,10 +15,6 @@ export class TextProcessingService {
     return this.httpClient.get('http://localhost:8080/textProcessing/start');
   }
 
-  startPaymentSubprocess() : Observable<any> {
-    return this.httpClient.get('http://localhost:8080/textProcessing/startSubprocess');
-  }
-
   getTaskForm(processInstanceId){
     return this.httpClient.get('http://localhost:8080/textProcessing/getTaskForm/'.concat(processInstanceId)) as Observable<any>
   }
@@ -81,5 +77,9 @@ export class TextProcessingService {
 
   payMembership(payment, taskId) {
     return this.httpClient.post("http://localhost:8080/textProcessing/payMembership/".concat(taskId), payment) as Observable<any>;
+  }
+
+  setReviewingTime(time, taskId) {
+    return this.httpClient.post("http://localhost:8080/textProcessing/setReviewingTime/".concat(taskId), time) as Observable<any>;
   }
 }

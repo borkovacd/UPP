@@ -81,6 +81,7 @@ public class CheckingActiveMembershipService implements JavaDelegate {
 			System.out.println("Autor nema aktivnu clanarinu u izabranom casopisu!");
 		}
 	
+		System.out.println("*****************************************");
 		
 		runtimeService.setVariable(execution.getProcessInstanceId(), "postojiAktivnaClanarina", activeMembershipExists);
   

@@ -39,6 +39,7 @@ export class ChoosingReviewersComponent implements OnInit {
         this.formFieldsDto = res;
         this.formFields = res.formFields;
         console.log(this.formFields);
+        this.processInstanceId = res.processInstanceId;
         this.formFields.forEach( (field) =>{
 
           if( field.type.name=='enum'){
@@ -76,6 +77,8 @@ export class ChoosingReviewersComponent implements OnInit {
 
     let x = this.textProcessingService.chooseReviewers(o, this.formFieldsDto.taskId);
     //const taskId = this.route.snapshot.params.taskId;
+
+    const taskId = this.route.snapshot.params.taskId;
 
     x.subscribe(
       res => {

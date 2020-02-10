@@ -573,6 +573,30 @@ public class TextProcessingController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 	
+	@PostMapping(path = "/setReviewingTime/{taskId}", produces = "application/json")
+    public @ResponseBody ResponseEntity setReviewingTime(@RequestBody List<FormSubmissionDto> dto, @PathVariable String taskId) {
+		HashMap<String, Object> map = this.mapListToDto(dto);
+		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+		String processInstanceId = task.getProcessInstanceId();
+		runtimeService.setVariable(processInstanceId, "reviewingTime", dto); 
+		
+		System.out.println("OVDE");
+		List<FormSubmissionDto> reviewingTimeData = (List<FormSubmissionDto>) runtimeService.getVariable(processInstanceId, "reviewingTime");
+		for(FormSubmissionDto item: reviewingTimeData) {
+			 String fieldId=item.getFieldId();
+			 System.out.println("Ne udjes ti tamo a");
+			 if(fieldId.equals("vremenskiRokZaRecenziranje")) { 
+				  System.out.println("Definisani rok za recenziranje : " + item.getFieldValue());
+				  runtimeService.setVariable(processInstanceId, "vremenskiRokZaRecenziranje", item.getFieldValue()); 
+			 }
+		}
+		
+		
+		//formService.submitTaskForm(taskId, map);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+	
+	
 	
 	private HashMap<String, Object> mapListToDto(List<FormSubmissionDto> list)
 	{
