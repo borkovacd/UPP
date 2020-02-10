@@ -212,7 +212,7 @@ public class UserController {
 	@GetMapping(path = "/getTasksUser/{username}", produces = "application/json")
     public @ResponseBody ResponseEntity<List<TaskDto>> get(@PathVariable String username) {
 		//System.out.println("Usao u getTasksUser");
-		System.out.println(username);
+		//System.out.println(username);
 		User user = userService.findUserByUsername(username);
 		List<TaskDto> dtos = new ArrayList<TaskDto>();
 		List<User> allUsers = userService.getAll();

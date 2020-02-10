@@ -24,15 +24,15 @@ public class UserDetailsServiceImpl implements UserDetailsService  {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
-		System.out.println("Username na ulasku u metodu je: " + username);
+		//System.out.println("Username na ulasku u metodu je: " + username);
 		
 		com.ftn.upp.model.User user = repository.findOneByUsername(username);
 		
-		System.out.println("Korisnicko ime je: " + user.getUsername());
-		System.out.println("Lozinka je: " + user.getPassword());
+		//System.out.println("Korisnicko ime je: " + user.getUsername());
+		//System.out.println("Lozinka je: " + user.getPassword());
 		
 		if(user != null) {
-			System.out.println("User nije null!");
+			//System.out.println("User nije null!");
 				// Remember that Spring needs roles to be in this format: "ROLE_" + userRole (i.e. "ROLE_ADMIN")
 				// So, we need to set it to that format, so we can verify and compare roles (i.e. hasRole("ADMIN")).
 				List<GrantedAuthority> grantedAuthorities = AuthorityUtils
@@ -42,7 +42,7 @@ public class UserDetailsServiceImpl implements UserDetailsService  {
 				// And used by auth manager to verify and check user authentication.
 				return new User(user.getUsername(), user.getPassword(), grantedAuthorities);
 		}
-		System.out.println("User nije pronadjen!");
+		//System.out.println("User nije pronadjen!");
 		// If user not found. Throw this exception.
 		throw new UsernameNotFoundException("Username: " + username + " not found");
 	}

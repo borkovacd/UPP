@@ -80,12 +80,11 @@ export class ChiefEditorReviewingComponent implements OnInit {
 
     x.subscribe(
       res => {
+        console.log("Proces se zavrsava -> " + res);
         if (res == true) {
-          alert("Uspesno ste recenzirali rad");
-          //this.router.navigateByUrl('/user-informing');
+          this.router.navigateByUrl('/article-final');
         } else {
-          alert("Rad nije uspesno recenziran");
-          //this.router.navigateByUrl('/article-final');
+          this.router.navigateByUrl('correction-time/' + this.processInstanceId);
         }
       },
       err => {

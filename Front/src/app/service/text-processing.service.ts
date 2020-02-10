@@ -90,4 +90,8 @@ export class TextProcessingService {
   setReviewingTime(time, taskId) {
     return this.httpClient.post("http://localhost:8080/textProcessing/setReviewingTime/".concat(taskId), time) as Observable<any>;
   }
+
+  setCorrectionTime(time, taskId) {
+    return this.httpClient.post("http://localhost:8080/textProcessing/setCorrectionTime/".concat(taskId), time) as Observable<any>;
+  }
 }

@@ -123,11 +123,11 @@ public class TextProcessingController {
 		List<TaskDto> taskDTOList = new ArrayList<TaskDto>();
 		
 		if(tasks.size()==0){
-			System.out.println("Prazna lista, nema vise taskova");
+			//System.out.println("Prazna lista, nema vise taskova");
 		}
 		for(Task T: tasks)
 		{
-			System.out.println("Dodaje task "+T.getName());
+			//System.out.println("Dodaje task "+T.getName());
 			taskDTOList.add(new TaskDto(T.getId(), T.getName(), T.getAssignee()));
 		}
 		
@@ -172,11 +172,11 @@ public class TextProcessingController {
 		List<TaskDto> taskDTOList = new ArrayList<TaskDto>();
 		
 		if(tasks.size()==0){
-			System.out.println("Prazna lista, nema vise taskova");
+			//System.out.println("Prazna lista, nema vise taskova");
 		}
 		for(Task T: tasks)
 		{
-			System.out.println("Dodaje task "+T.getName());
+			//System.out.println("Dodaje task "+T.getName());
 			taskDTOList.add(new TaskDto(T.getId(), T.getName(), T.getAssignee()));
 		}
 		
@@ -362,7 +362,7 @@ public class TextProcessingController {
 					  for(String selected: item.getCategories()){
 						  String idM = m.getId().toString();
 						  if(idM.equals(selected)){
-							  System.out.println(m.getTitle());
+							  //System.out.println(m.getTitle());
 							  chosenMagazine = m;
 							  openAccess = m.isOpenAccess();
 							  runtimeService.setVariable(processInstanceId, "openAccess", openAccess);
@@ -486,7 +486,7 @@ public class TextProcessingController {
 		TaskFormData tfd = formService.getTaskFormData(taskId);
 		List<FormField> properties = tfd.getFormFields();
 		for(FormField fp : properties) {
-			System.out.println(fp.getId() + fp.getType());
+			//System.out.println(fp.getId() + fp.getType());
 			
 			/*if(fp.getDefaultValue() != null ) {
 				System.out.println("NIJE NULL DEFAULT");
@@ -599,12 +599,14 @@ public class TextProcessingController {
 			if(fieldId.equals("odluka_GU")){
 				if(item.getCategories().size() != 1){
 					System.out.println("Nemoguce je imati vise od jedne odluke!");	
-					return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+					return new ResponseEntity<Boolean>(HttpStatus.BAD_REQUEST);
 				}
 			}
 		}
 
 		runtimeService.setVariable(processInstanceId, "chiefEditorReview", formData);
+		
+		boolean processIsEnding = false;
 		
 		List<ExtendedFormSubmissionDto> chiefEditorReviewData = (List<ExtendedFormSubmissionDto>) runtimeService.getVariable(processInstanceId, "chiefEditorReview");
 		for(ExtendedFormSubmissionDto item: chiefEditorReviewData) {
@@ -615,7 +617,11 @@ public class TextProcessingController {
 					  for(String selected: item.getCategories()){
 						  String idDecision = decision.getId().toString();
 						  if(idDecision.equals(selected)){
-							  System.out.println("Odluka je: " + decision.getName());  
+							  System.out.println("Odluka je: " + decision.getName());
+							  if(decision.getName().equals("Prihvacen") || decision.getName().equals("Odbijen")) {
+								  System.out.println("Zavrsava se proces");
+								  processIsEnding = true;
+							  }
 							  runtimeService.setVariable(processInstanceId, "odluka", decision.getName());
 						  }
 					  }
@@ -625,7 +631,7 @@ public class TextProcessingController {
 		
 		formService.submitTaskForm(taskId, map);
 		
-		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		return new ResponseEntity<Boolean>(processIsEnding, HttpStatus.OK);
 		
     }
 	
@@ -655,6 +661,25 @@ public class TextProcessingController {
 			 }
 		}
 		
+		
+		formService.submitTaskForm(taskId, map);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+	
+	@PostMapping(path = "/setCorrectionTime/{taskId}", produces = "application/json")
+    public @ResponseBody ResponseEntity setCorrectionTime(@RequestBody List<FormSubmissionDto> dto, @PathVariable String taskId) {
+		HashMap<String, Object> map = this.mapListToDto(dto);
+		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+		String processInstanceId = task.getProcessInstanceId();
+		runtimeService.setVariable(processInstanceId, "correctionTime", dto); 
+		
+		List<FormSubmissionDto> correctionTimeData = (List<FormSubmissionDto>) runtimeService.getVariable(processInstanceId, "correctionTime");
+		for(FormSubmissionDto item: correctionTimeData) {
+			 String fieldId=item.getFieldId();
+			 if(fieldId.equals("vremenskiRokIspravke")) { 
+				  System.out.println("Definisani rok za ispravku : " + item.getFieldValue());
+			 }
+		}
 		
 		formService.submitTaskForm(taskId, map);
         return new ResponseEntity<>(HttpStatus.OK);

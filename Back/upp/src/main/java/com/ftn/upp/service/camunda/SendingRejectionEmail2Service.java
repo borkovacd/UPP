@@ -83,7 +83,7 @@ public class SendingRejectionEmail2Service implements JavaDelegate{
 									   String username,
 									   String email) throws MailException, InterruptedException, MessagingException {
 
-		System.out.println("Email se šalje...");
+		//System.out.println("Email se šalje...");
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, false, "utf-8");
 
