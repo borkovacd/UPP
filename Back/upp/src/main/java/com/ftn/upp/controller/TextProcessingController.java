@@ -38,11 +38,13 @@ import com.ftn.upp.model.FormFieldsDto;
 import com.ftn.upp.model.FormSubmissionDto;
 import com.ftn.upp.model.Magazine;
 import com.ftn.upp.model.MagazineScientificArea;
+import com.ftn.upp.model.Membership;
 import com.ftn.upp.model.TaskDto;
 import com.ftn.upp.model.User;
 import com.ftn.upp.repository.MagazineScientificAreaRepository;
 import com.ftn.upp.repository.ScientificAreaRepository;
 import com.ftn.upp.service.MagazineService;
+import com.ftn.upp.service.MembershipService;
 import com.ftn.upp.service.UserService;
 import com.ftn.upp.service.ValidationCoauthorService;
 
@@ -72,6 +74,9 @@ public class TextProcessingController {
 	private MagazineService magazineService;
 	
 	@Autowired
+	private MembershipService membershipService;
+	
+	@Autowired
 	private MagazineScientificAreaRepository magazineScientificAreaRepository;
 	
 	@Autowired
@@ -90,6 +95,7 @@ public class TextProcessingController {
 		return new FormFieldsDto(null, pi.getId(), null);
 	}
 	
+	
 	// Preuzimanje forme za novi task
 	@GetMapping(path = "/getTaskForm/{processInstanceId}", produces = "application/json")
     public @ResponseBody FormFieldsDto getNewTask(@PathVariable String processInstanceId) {
@@ -99,13 +105,8 @@ public class TextProcessingController {
 			return new FormFieldsDto(null, null, null);
 		} else {
 			Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).list().get(0);
-			//System.out.println("ASSIGNEE : " + task.getAssignee());
-			//System.out.println("TASK ZA KOJI PREUZIMAM FORMU: " + task.getId());
 			TaskFormData tfd = formService.getTaskFormData(task.getId());
 			List<FormField> properties = tfd.getFormFields();
-			/*for(FormField fp : properties) {
-				System.out.println(fp.getId() + fp.getType());
-			}*/
 			return new FormFieldsDto(task.getId(), null, properties);
 		}
     }
@@ -318,6 +319,7 @@ public class TextProcessingController {
 
 		runtimeService.setVariable(processInstanceId, "chosenMagazine", formData);
 		
+		Magazine chosenMagazine = null;
 		boolean openAccess = false;
 		List<ExtendedFormSubmissionDto> chosenMagazineData = (List<ExtendedFormSubmissionDto>) runtimeService.getVariable(processInstanceId, "chosenMagazine");
 		for(ExtendedFormSubmissionDto item: chosenMagazineData) {
@@ -329,6 +331,7 @@ public class TextProcessingController {
 						  String idM = m.getId().toString();
 						  if(idM.equals(selected)){
 							  System.out.println(m.getTitle());
+							  chosenMagazine = m;
 							  openAccess = m.isOpenAccess();
 							  runtimeService.setVariable(processInstanceId, "openAccess", openAccess);
 							  runtimeService.setVariable(processInstanceId, "glavniUrednik", m.getMainEditor().getUsername());
@@ -339,9 +342,30 @@ public class TextProcessingController {
 			 }
 		}
 		
-		formService.submitTaskForm(taskId, map);
+		boolean paymentRequested = true;
 		
-		return new ResponseEntity<Boolean>(openAccess, HttpStatus.OK);
+		if(openAccess == false) {
+			paymentRequested = false;
+			formService.submitTaskForm(taskId, map);
+			return new ResponseEntity<Boolean>(paymentRequested, HttpStatus.OK);
+		}
+		
+		String authorUsername = (String) runtimeService.getVariable(processInstanceId, "author");
+		User author = userService.findUserByUsername(authorUsername);
+		System.out.println("Autor je: " + author.getUsername() + "(" + author.getFirstName() + " " + author.getLastName() + ")");
+		
+		List<Membership> allMemberships = membershipService.findAll();
+		for(Membership membership : allMemberships) {
+			if(membership.getMagazine().getId() == chosenMagazine.getId()) {
+				if(membership.getUser().getId() == author.getId()) {
+					System.out.println("Autor ima aktivnu clanarinu u izabranom casopisu");
+					paymentRequested = false;
+				}
+			}
+		}
+		
+		formService.submitTaskForm(taskId, map);
+		return new ResponseEntity<Boolean>(paymentRequested, HttpStatus.OK);
 		
     }
 	
@@ -536,6 +560,17 @@ public class TextProcessingController {
 		
 		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 		
+    }
+	
+	@PostMapping(path = "/payMembership/{taskId}", produces = "application/json")
+    public @ResponseBody ResponseEntity payMembership(@RequestBody List<FormSubmissionDto> dto, @PathVariable String taskId) {
+		HashMap<String, Object> map = this.mapListToDto(dto);
+		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+		//System.out.println("Naziv ovog taska je: " + task.getName());
+		String processInstanceId = task.getProcessInstanceId();
+		runtimeService.setVariable(processInstanceId, "payment", dto); 
+		formService.submitTaskForm(taskId, map);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 	
 	

@@ -28,48 +28,8 @@
     <bpmn:sequenceFlow id="SequenceFlow_0glayvb" name="Časopis je open-access tipa" sourceRef="ExclusiveGateway_0lswd2i" targetRef="Task_1g6kglf">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${openAccess == true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:subProcess id="SubProcess_1yg76vo" name="Uplata članarine">
-      <bpmn:incoming>SequenceFlow_1fpq741</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_0grb0n2</bpmn:outgoing>
-      <bpmn:startEvent id="StartEvent_0xuba7v">
-        <bpmn:outgoing>SequenceFlow_0jvnju2</bpmn:outgoing>
-      </bpmn:startEvent>
-      <bpmn:sequenceFlow id="SequenceFlow_0jvnju2" sourceRef="StartEvent_0xuba7v" targetRef="UserTask_0c1a06u" />
-      <bpmn:endEvent id="EndEvent_0cq42rm">
-        <bpmn:incoming>SequenceFlow_14cqyh0</bpmn:incoming>
-      </bpmn:endEvent>
-      <bpmn:userTask id="Task_0itf062" name="Definisanje iznosa" camunda:assignee="${author}">
-        <bpmn:extensionElements>
-          <camunda:formData>
-            <camunda:formField id="iznos" label="Iznos" type="long" defaultValue="0" />
-          </camunda:formData>
-        </bpmn:extensionElements>
-        <bpmn:incoming>SequenceFlow_0d5k2a5</bpmn:incoming>
-        <bpmn:outgoing>SequenceFlow_1czjk6k</bpmn:outgoing>
-      </bpmn:userTask>
-      <bpmn:userTask id="UserTask_0c1a06u" name="Izbor načina plaćanja" camunda:assignee="${author}">
-        <bpmn:extensionElements>
-          <camunda:formData>
-            <camunda:formField id="nacinPlacanja" label="Način plaćanja" type="enum">
-              <camunda:value id="paypal" name="PayPal" />
-              <camunda:value id="bank" name="Banka" />
-              <camunda:value id="bitcoin" name="Bitcoin" />
-            </camunda:formField>
-          </camunda:formData>
-        </bpmn:extensionElements>
-        <bpmn:incoming>SequenceFlow_0jvnju2</bpmn:incoming>
-        <bpmn:outgoing>SequenceFlow_0d5k2a5</bpmn:outgoing>
-      </bpmn:userTask>
-      <bpmn:sequenceFlow id="SequenceFlow_0d5k2a5" sourceRef="UserTask_0c1a06u" targetRef="Task_0itf062" />
-      <bpmn:sequenceFlow id="SequenceFlow_1czjk6k" sourceRef="Task_0itf062" targetRef="Task_04m15b2" />
-      <bpmn:sequenceFlow id="SequenceFlow_14cqyh0" sourceRef="Task_04m15b2" targetRef="EndEvent_0cq42rm" />
-      <bpmn:serviceTask id="Task_04m15b2" name="Obrada uplate" camunda:expression="true">
-        <bpmn:incoming>SequenceFlow_1czjk6k</bpmn:incoming>
-        <bpmn:outgoing>SequenceFlow_14cqyh0</bpmn:outgoing>
-      </bpmn:serviceTask>
-    </bpmn:subProcess>
-    <bpmn:sequenceFlow id="SequenceFlow_1fpq741" name="Potrebno je uplatiti članarinu" sourceRef="ExclusiveGateway_0x1rnpi" targetRef="SubProcess_1yg76vo">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${potrebnoPlacanje==true}</bpmn:conditionExpression>
+    <bpmn:sequenceFlow id="SequenceFlow_1fpq741" name="Potrebno je uplatiti članarinu" sourceRef="ExclusiveGateway_0x1rnpi" targetRef="Proces_Uplate_Clanarine">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${postojiAktivnaClanarina==false}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:userTask id="Task_0xl8k15" name="Unošenje podataka o radu" camunda:formKey="Forma_Podaci_O_Radu" camunda:assignee="${author}">
       <bpmn:extensionElements>
@@ -95,9 +55,8 @@
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${openAccess == false}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="SequenceFlow_0j5g6cj" name="Postoji aktivna članarina" sourceRef="ExclusiveGateway_0x1rnpi" targetRef="Task_0xl8k15">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${potrebnoPlacanje==false}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${postojiAktivnaClanarina==true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="SequenceFlow_0grb0n2" sourceRef="SubProcess_1yg76vo" targetRef="Task_0xl8k15" />
     <bpmn:exclusiveGateway id="ExclusiveGateway_1x242nw">
       <bpmn:incoming>SequenceFlow_0xz346g</bpmn:incoming>
       <bpmn:incoming>SequenceFlow_1bnuj4i</bpmn:incoming>
@@ -536,7 +495,7 @@
       <bpmn:outgoing>SequenceFlow_1vhuhke</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="SequenceFlow_1rd8s2u" sourceRef="Task_1g6kglf" targetRef="ExclusiveGateway_0x1rnpi" />
-    <bpmn:serviceTask id="Task_1g6kglf" name="Provera  aktivne članarine" camunda:expression="true">
+    <bpmn:serviceTask id="Task_1g6kglf" name="Provera  aktivne članarine" camunda:class="com.ftn.upp.service.camunda.CheckingActiveMembershipService">
       <bpmn:incoming>SequenceFlow_0glayvb</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1rd8s2u</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -601,10 +560,6 @@
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="SequenceFlow_0rdo6ov" sourceRef="Task_18w25zp" targetRef="Provera_Prijavljenog_Korisnika" />
     <bpmn:sequenceFlow id="SequenceFlow_0f2xmp2" sourceRef="registracija" targetRef="Task_18w25zp" />
-    <bpmn:callActivity id="registracija" name="Potproces registracije" calledElement="Proces_Registracije">
-      <bpmn:incoming>SequenceFlow_04n20s5</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_0f2xmp2</bpmn:outgoing>
-    </bpmn:callActivity>
     <bpmn:scriptTask id="ScriptTask_0ojyxfm" name="Broj koautora" scriptFormat="javascript" camunda:resultVariable="result">
       <bpmn:incoming>SequenceFlow_0ph3imm</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0xz346g</bpmn:outgoing>
@@ -698,6 +653,42 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
         <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">${vremenskiRokZaRecenziranje}</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:boundaryEvent>
+    <bpmn:callActivity id="registracija" name="Potproces registracije" calledElement="Proces_Registracije">
+      <bpmn:incoming>SequenceFlow_04n20s5</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0f2xmp2</bpmn:outgoing>
+    </bpmn:callActivity>
+    <bpmn:sequenceFlow id="SequenceFlow_0grb0n2" sourceRef="Proces_Uplate_Clanarine" targetRef="Task_0xl8k15" />
+    <bpmn:subProcess id="Proces_Uplate_Clanarine" name="Uplata članarine">
+      <bpmn:incoming>SequenceFlow_1fpq741</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0grb0n2</bpmn:outgoing>
+      <bpmn:sequenceFlow id="SequenceFlow_0jvnju2" sourceRef="StartEvent_0xuba7v" targetRef="Unos_Podataka_Za_Placanje" />
+      <bpmn:sequenceFlow id="SequenceFlow_0d5k2a5" sourceRef="Unos_Podataka_Za_Placanje" targetRef="Task_04m15b2" />
+      <bpmn:sequenceFlow id="SequenceFlow_14cqyh0" sourceRef="Task_04m15b2" targetRef="EndEvent_0cq42rm" />
+      <bpmn:userTask id="Unos_Podataka_Za_Placanje" name="Unos podataka za plaćanje" camunda:assignee="${author}">
+        <bpmn:extensionElements>
+          <camunda:formData>
+            <camunda:formField id="nacinPlacanja" label="Način plaćanja" type="enum">
+              <camunda:value id="paypal" name="PayPal" />
+              <camunda:value id="bank" name="Banka" />
+              <camunda:value id="bitcoin" name="Bitcoin" />
+            </camunda:formField>
+            <camunda:formField id="iznos" label="Iznos" type="long" />
+          </camunda:formData>
+        </bpmn:extensionElements>
+        <bpmn:incoming>SequenceFlow_0jvnju2</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0d5k2a5</bpmn:outgoing>
+      </bpmn:userTask>
+      <bpmn:serviceTask id="Task_04m15b2" name="Obrada uplate članarine" camunda:class="com.ftn.upp.service.camunda.MembershipPaymentService">
+        <bpmn:incoming>SequenceFlow_0d5k2a5</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_14cqyh0</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:startEvent id="StartEvent_0xuba7v">
+        <bpmn:outgoing>SequenceFlow_0jvnju2</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:endEvent id="EndEvent_0cq42rm">
+        <bpmn:incoming>SequenceFlow_14cqyh0</bpmn:incoming>
+      </bpmn:endEvent>
+    </bpmn:subProcess>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Proces_ObradeTeksta">
@@ -729,15 +720,12 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
           <dc:Bounds x="758" y="247" width="83" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="SubProcess_1yg76vo_di" bpmnElement="SubProcess_1yg76vo" isExpanded="true">
-        <dc:Bounds x="1060" y="80" width="540" height="200" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="StartEvent_0xuba7v_di" bpmnElement="StartEvent_0xuba7v">
-        <dc:Bounds x="1082" y="162" width="36" height="36" />
+        <dc:Bounds x="1112" y="162" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_0jvnju2_di" bpmnElement="SequenceFlow_0jvnju2">
-        <di:waypoint x="1118" y="180" />
         <di:waypoint x="1148" y="180" />
+        <di:waypoint x="1220" y="180" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="EndEvent_0cq42rm_di" bpmnElement="EndEvent_0cq42rm">
         <dc:Bounds x="1532" y="162" width="36" height="36" />
@@ -749,9 +737,6 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
           <dc:Bounds x="970" y="146" width="80" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="UserTask_0lo929x_di" bpmnElement="Task_0itf062">
-        <dc:Bounds x="1280" y="140" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="UserTask_062obl9_di" bpmnElement="Task_0xl8k15">
         <dc:Bounds x="1620" y="280" width="100" height="80" />
       </bpmndi:BPMNShape>
@@ -772,28 +757,19 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
           <dc:Bounds x="960" y="273" width="72" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="SequenceFlow_0grb0n2_di" bpmnElement="SequenceFlow_0grb0n2">
-        <di:waypoint x="1600" y="180" />
-        <di:waypoint x="1670" y="180" />
-        <di:waypoint x="1670" y="280" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="UserTask_0c1a06u_di" bpmnElement="UserTask_0c1a06u">
-        <dc:Bounds x="1150" y="140" width="100" height="80" />
+      <bpmndi:BPMNShape id="UserTask_0c1a06u_di" bpmnElement="Unos_Podataka_Za_Placanje">
+        <dc:Bounds x="1220" y="140" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_0d5k2a5_di" bpmnElement="SequenceFlow_0d5k2a5">
-        <di:waypoint x="1250" y="180" />
-        <di:waypoint x="1280" y="180" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="SequenceFlow_1czjk6k_di" bpmnElement="SequenceFlow_1czjk6k">
-        <di:waypoint x="1380" y="180" />
-        <di:waypoint x="1410" y="180" />
+        <di:waypoint x="1320" y="180" />
+        <di:waypoint x="1360" y="180" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_14cqyh0_di" bpmnElement="SequenceFlow_14cqyh0">
-        <di:waypoint x="1510" y="180" />
+        <di:waypoint x="1460" y="180" />
         <di:waypoint x="1532" y="180" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="ServiceTask_1qiqfgx_di" bpmnElement="Task_04m15b2">
-        <dc:Bounds x="1410" y="140" width="100" height="80" />
+        <dc:Bounds x="1360" y="140" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="ExclusiveGateway_1x242nw_di" bpmnElement="ExclusiveGateway_1x242nw" isMarkerVisible="true">
         <dc:Bounds x="2075" y="295" width="50" height="50" />
@@ -937,11 +913,11 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
       <bpmndi:BPMNEdge id="SequenceFlow_0kfg7t3_di" bpmnElement="SequenceFlow_0kfg7t3">
         <di:waypoint x="5030" y="670" />
         <di:waypoint x="5225" y="670" />
-        <di:waypoint x="5225" y="710" />
-        <di:waypoint x="5400" y="710" />
+        <di:waypoint x="5225" y="750" />
+        <di:waypoint x="5400" y="750" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="UserTask_0wpgjgo_di" bpmnElement="Task_1aliybu">
-        <dc:Bounds x="5400" y="670" width="100" height="80" />
+        <dc:Bounds x="5400" y="710" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="ServiceTask_1yt5p4f_di" bpmnElement="Task_07m568w">
         <dc:Bounds x="4560" y="1110" width="100" height="80" />
@@ -961,12 +937,12 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
         <di:waypoint x="4880" y="1150" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_0nhsnj3_di" bpmnElement="SequenceFlow_0nhsnj3">
-        <di:waypoint x="5450" y="750" />
+        <di:waypoint x="5450" y="790" />
         <di:waypoint x="5450" y="870" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_19kpker_di" bpmnElement="SequenceFlow_19kpker">
-        <di:waypoint x="5518" y="710" />
-        <di:waypoint x="5610" y="710" />
+        <di:waypoint x="5518" y="750" />
+        <di:waypoint x="5610" y="750" />
         <di:waypoint x="5610" y="450" />
         <di:waypoint x="5540" y="450" />
       </bpmndi:BPMNEdge>
@@ -1062,10 +1038,10 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_1l7snja_di" bpmnElement="SequenceFlow_1l7snja">
         <di:waypoint x="6420" y="1125" />
-        <di:waypoint x="6420" y="640" />
-        <di:waypoint x="5030" y="640" />
+        <di:waypoint x="6420" y="670" />
+        <di:waypoint x="5030" y="670" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="6430" y="1055" width="79" height="40" />
+          <dc:Bounds x="6430" y="1058" width="79" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_0bkl7es_di" bpmnElement="SequenceFlow_0bkl7es">
@@ -1244,9 +1220,6 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
         <di:waypoint x="290" y="700" />
         <di:waypoint x="290" y="480" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="CallActivity_1t9ean6_di" bpmnElement="registracija">
-        <dc:Bounds x="390" y="660" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="ScriptTask_0ojyxfm_di" bpmnElement="ScriptTask_0ojyxfm">
         <dc:Bounds x="1950" y="280" width="100" height="80" />
       </bpmndi:BPMNShape>
@@ -1357,7 +1330,18 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
         <di:waypoint x="4930" y="670" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="BoundaryEvent_0dvee4n_di" bpmnElement="IntermediateThrowEvent_1xwvxwy">
-        <dc:Bounds x="5482" y="692" width="36" height="36" />
+        <dc:Bounds x="5482" y="732" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="CallActivity_1t9ean6_di" bpmnElement="registracija">
+        <dc:Bounds x="390" y="660" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0grb0n2_di" bpmnElement="SequenceFlow_0grb0n2">
+        <di:waypoint x="1600" y="180" />
+        <di:waypoint x="1670" y="180" />
+        <di:waypoint x="1670" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="SubProcess_1yg76vo_di" bpmnElement="Proces_Uplate_Clanarine" isExpanded="true">
+        <dc:Bounds x="1060" y="80" width="540" height="200" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

@@ -19,7 +19,6 @@ export class ChoosingMagazineComponent implements OnInit {
   private magazines = [];
   private enumValues = [];
 
-
   constructor(private route: ActivatedRoute,
               public router: Router,
               private userService: UserService,
@@ -79,12 +78,13 @@ export class ChoosingMagazineComponent implements OnInit {
 
     x.subscribe(
       res => {
-        console.log(res);
+        console.log("Potrebno placanje -> " + res);
         if(res==false) {
-          alert("Izabrani časopis nije open access tipa.");
+          alert("Nije potrebno uplatiti članarinu!");
           this.router.navigateByUrl('text-information/' + processInstanceId);
         } else {
-          alert("Izabrani časopis je open access tipa.");
+          alert("Neophodna je uplata članarine!");
+          this.router.navigateByUrl('membership-payment/' + processInstanceId );
         }
       },
       err => {
@@ -94,37 +94,3 @@ export class ChoosingMagazineComponent implements OnInit {
   }
 
 }
-
-  /*onSubmit(value, form) {
-    console.log(form);
-    console.log(value);
-    const o = new Array();
-
-    for (const property in value) {
-
-      if (property != 'recenzentiMagazina' && property != 'uredniciMagazina' ) {
-        o.push({fieldId : property, fieldValue : value[property]});
-      } else {
-        o.push({fieldId : property, categories : value[property]});
-
-      }
-      console.log('niz za slanje izgleda');
-      console.log(o);
-    }
-
-    const processInstanceId = this.route.snapshot.params.processInstanceId;
-
-    let x = this.magazineService.updateMagazine(o, this.formFieldsDto.taskId);
-    console.log('Pre subscribe');
-    x.subscribe(
-      res => {
-        console.log(res);
-        alert('You  have successfully updated magazine!');
-        this.router.navigateByUrl('/login/1/' + processInstanceId);
-      },
-      err => {
-        console.log('Error occured');
-      }
-    );
-  }
-}*/

@@ -42,6 +42,7 @@ import { ArticleCorrectionComponent } from './pages/text-processing/article-corr
 import { ChoosingReviewersComponent } from './pages/text-processing/choosing-reviewers/choosing-reviewers.component';
 import { DefineReviewTimeComponent } from './pages/text-processing/define-review-time/define-review-time.component';
 import { ChiefEditorNoCorrectionComponent } from './pages/text-processing/chief-editor-no-correction/chief-editor-no-correction.component';
+import { MembershipPaymentComponent } from './pages/text-processing/membership-payment/membership-payment.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import { ChiefEditorNoCorrectionComponent } from './pages/text-processing/chief-
     ArticleCorrectionComponent,
     ChoosingReviewersComponent,
     DefineReviewTimeComponent,
-    ChiefEditorNoCorrectionComponent
+    ChiefEditorNoCorrectionComponent,
+    MembershipPaymentComponent
   ],
   imports: [
     BrowserModule,
