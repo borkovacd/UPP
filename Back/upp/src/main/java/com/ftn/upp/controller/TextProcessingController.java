@@ -580,11 +580,9 @@ public class TextProcessingController {
 		String processInstanceId = task.getProcessInstanceId();
 		runtimeService.setVariable(processInstanceId, "reviewingTime", dto); 
 		
-		System.out.println("OVDE");
 		List<FormSubmissionDto> reviewingTimeData = (List<FormSubmissionDto>) runtimeService.getVariable(processInstanceId, "reviewingTime");
 		for(FormSubmissionDto item: reviewingTimeData) {
 			 String fieldId=item.getFieldId();
-			 System.out.println("Ne udjes ti tamo a");
 			 if(fieldId.equals("vremenskiRok")) { 
 				  System.out.println("Definisani rok za recenziranje : " + item.getFieldValue());
 			 }
