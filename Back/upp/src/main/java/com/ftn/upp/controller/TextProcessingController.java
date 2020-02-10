@@ -585,14 +585,13 @@ public class TextProcessingController {
 		for(FormSubmissionDto item: reviewingTimeData) {
 			 String fieldId=item.getFieldId();
 			 System.out.println("Ne udjes ti tamo a");
-			 if(fieldId.equals("vremenskiRokZaRecenziranje")) { 
+			 if(fieldId.equals("vremenskiRok")) { 
 				  System.out.println("Definisani rok za recenziranje : " + item.getFieldValue());
-				  runtimeService.setVariable(processInstanceId, "vremenskiRokZaRecenziranje", item.getFieldValue()); 
 			 }
 		}
 		
 		
-		//formService.submitTaskForm(taskId, map);
+		formService.submitTaskForm(taskId, map);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 	

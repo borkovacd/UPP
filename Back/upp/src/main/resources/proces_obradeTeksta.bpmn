@@ -180,14 +180,10 @@
     <bpmn:sequenceFlow id="SequenceFlow_0lgbkmz" name="Ne postoje recenzenti" sourceRef="ExclusiveGateway_06cse1y" targetRef="Task_07m568w">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${postojeRecenzenti== false}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:userTask id="Task_1709los" name="Definisanje vremenskog roka za recenziranje" camunda:assignee="${dodeljeniUrednik}">
+    <bpmn:userTask id="Task_1709los" name="Definisanje roka za recenziranje" camunda:assignee="${dodeljeniUrednik}">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="vremenskiRokZaRecenziranje" label="Vremenski rok" type="enum">
-            <camunda:value id="PT2M" name="PT2M" />
-            <camunda:value id="PT3M" name="PT3M" />
-            <camunda:value id="PT5M" name="PT5M" />
-          </camunda:formField>
+          <camunda:formField id="vremenskiRok" label="Rok za recenziranje" type="string" />
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_1l7snja</bpmn:incoming>
@@ -650,7 +646,7 @@ execution.setVariable("brojac",noviBrojac);</bpmn:script>
     <bpmn:boundaryEvent id="IntermediateThrowEvent_1xwvxwy" attachedToRef="Task_1aliybu">
       <bpmn:outgoing>SequenceFlow_19kpker</bpmn:outgoing>
       <bpmn:timerEventDefinition>
-        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">${vremenskiRokZaRecenziranje}</bpmn:timeDuration>
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">${vremenskiRok}</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:boundaryEvent>
     <bpmn:callActivity id="registracija" name="Potproces registracije" calledElement="Proces_Registracije">
