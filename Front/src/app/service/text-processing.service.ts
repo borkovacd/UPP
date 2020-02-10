@@ -44,6 +44,10 @@ export class TextProcessingService {
     return this.httpClient.get('http://localhost:8080/textProcessing/getTaskFormWithDecisions/'.concat(processInstanceId)) as Observable<any>
   }
 
+  getTaskFormWithFinalDecisions(processInstanceId){
+    return this.httpClient.get('http://localhost:8080/textProcessing/getTaskFormWithFinalDecisions/'.concat(processInstanceId)) as Observable<any>
+  }
+
   decideOnRegistration(registration, taskId) {
     return this.httpClient.post("http://localhost:8080/textProcessing/decideOnRegistration/".concat(taskId), registration) as Observable<any>;
   }
@@ -92,6 +96,9 @@ export class TextProcessingService {
     return this.httpClient.post('http://localhost:8080/textProcessing/assignedEditorReview/'.concat(taskId), assignedReview) as Observable<any>;
   }
 
+  assignedEditorReviewCorrected(assignedReview, taskId) {
+    return this.httpClient.post('http://localhost:8080/textProcessing/assignedEditorReviewCorrected/'.concat(taskId), assignedReview) as Observable<any>;
+  }
   payMembership(payment, taskId) {
     return this.httpClient.post("http://localhost:8080/textProcessing/payMembership/".concat(taskId), payment) as Observable<any>;
   }

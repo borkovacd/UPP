@@ -5,18 +5,18 @@ insert into user(id, activated, city, email, first_name, last_name, password, re
 insert into user(id, activated, city, email, first_name, last_name, password, reviewer, state, title, user_type, username) 
 	values (2, true, "New York", "devon.smith996@gmail.com", "Pera", "Peric", "$2a$10$bFoT0UWjOFAIQoFRYCIicO2hwNwZy6qhWYq4eXmWqJevf7b2TWpae", false, "USA", "Urednik" , "urednik", "urednik");
 insert into user(id, activated, city, email, first_name, last_name, password, reviewer, state, title, user_type, username) 
-	values (3, true, "New York", "devon.smith996@gmail.com", "Mika", "Mikic", "$2a$10$bFoT0UWjOFAIQoFRYCIicO2hwNwZy6qhWYq4eXmWqJevf7b2TWpae", false, "USA", "Urednik" , "urednik", "urednikR");
+	values (3, true, "New York", "albatraoz.seven@gmail.com", "Mika", "Mikic", "$2a$10$bFoT0UWjOFAIQoFRYCIicO2hwNwZy6qhWYq4eXmWqJevf7b2TWpae", false, "USA", "Urednik" , "urednik", "urednikR");
 insert into user(id, activated, city, email, first_name, last_name, password, reviewer, state, title, user_type, username) 
-	values (4, true, "New York", "devon.smith996@gmail.com", "Zika", "Zikic", "$2a$10$bFoT0UWjOFAIQoFRYCIicO2hwNwZy6qhWYq4eXmWqJevf7b2TWpae", false, "USA", "Urednik" , "urednik", "urednikH");
+	values (4, true, "New York", "albatraoz.seven@gmail.com", "Zika", "Zikic", "$2a$10$bFoT0UWjOFAIQoFRYCIicO2hwNwZy6qhWYq4eXmWqJevf7b2TWpae", false, "USA", "Urednik" , "urednik", "urednikH");
 insert into user(id, activated, city, email, first_name, last_name, password, reviewer, state, title, user_type, username) 
-	values (5, true, "New York", "devon.smith996@gmail.com", "Sima", "Simic", "$2a$10$bFoT0UWjOFAIQoFRYCIicO2hwNwZy6qhWYq4eXmWqJevf7b2TWpae", false, "USA", "Urednik" , "urednik", "urednikM");
+	values (5, true, "New York", "albatraoz.seven@gmail.com", "Sima", "Simic", "$2a$10$bFoT0UWjOFAIQoFRYCIicO2hwNwZy6qhWYq4eXmWqJevf7b2TWpae", false, "USA", "Urednik" , "urednik", "urednikM");
 -- insert recenzent
 insert into user(id, activated, city, email, first_name, last_name, password, reviewer, state, title, user_type, username) 
-	values (6, true, "New York", "albatraoz.seven@gmail.com", "Recenzent1", "Recenzent1", "$2a$10$bFoT0UWjOFAIQoFRYCIicO2hwNwZy6qhWYq4eXmWqJevf7b2TWpae", false, "USA", "Recenzent" , "recenzent", "recenzent1");
+	values (6, true, "New York", "albatraoz.seven@gmail.com", "Timothee", "Chalamet", "$2a$10$bFoT0UWjOFAIQoFRYCIicO2hwNwZy6qhWYq4eXmWqJevf7b2TWpae", false, "USA", "Recenzent" , "recenzent", "recenzent1");
 insert into user(id, activated, city, email, first_name, last_name, password, reviewer, state, title, user_type, username) 
-	values (7, true, "New York", "albatraoz.seven@gmail.com", "Recenzent2", "Recenzent2", "$2a$10$bFoT0UWjOFAIQoFRYCIicO2hwNwZy6qhWYq4eXmWqJevf7b2TWpae", false, "USA", "Recenzent" , "recenzent", "recenzent2");
+	values (7, true, "New York", "albatraoz.seven@gmail.com", "Saoirse", "Ronan", "$2a$10$bFoT0UWjOFAIQoFRYCIicO2hwNwZy6qhWYq4eXmWqJevf7b2TWpae", false, "USA", "Recenzent" , "recenzent", "recenzent2");
 insert into user(id, activated, city, email, first_name, last_name, password, reviewer, state, title, user_type, username) 
-	values (8, true, "New York", "albatraoz.seven@gmail.com", "Recenzent3", "Recenzent3", "$2a$10$bFoT0UWjOFAIQoFRYCIicO2hwNwZy6qhWYq4eXmWqJevf7b2TWpae", false, "USA", "Recenzent" , "recenzent", "recenzent3");
+	values (8, true, "New York", "albatraoz.seven@gmail.com", "Emma", "Watson", "$2a$10$bFoT0UWjOFAIQoFRYCIicO2hwNwZy6qhWYq4eXmWqJevf7b2TWpae", false, "USA", "Recenzent" , "recenzent", "recenzent3");
 -- insert autor
 insert into user(id, activated, city, email, first_name, last_name, password, reviewer, state, title, user_type, username) 
 	values (9, true, "Novi Sad", "borkovac.dragan96@gmail.com", "Dragan", "Borkovac", "$2a$10$bFoT0UWjOFAIQoFRYCIicO2hwNwZy6qhWYq4eXmWqJevf7b2TWpae", false, "Srbija", "Student" , "registrovan_korisnik", "borkovac");
@@ -94,6 +94,13 @@ insert into decision (id, name)
 	values (3, "Uslovno prihvacen uz vece vece izmene");
 insert into decision (id, name)
 	values (4, "Odbijen");
+	
+-- insert final decisions
+insert into final_decision (id, name)
+	values (1, "Prihvacen za objavljivanje");
+insert into final_decision (id, name)
+	values (2, "Potrebna dorada");
+
 
 
 
