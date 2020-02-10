@@ -74,6 +74,26 @@ insert into magazine_reviewer (magazine_id, user_id)
 	values (1, 7);
 insert into magazine_reviewer (magazine_id, user_id)
 	values (1, 8);
+	
+-- insert recommendations
+insert into recommendation (id, name)
+	values (1, "Prihvatiti");
+insert into recommendation (id, name)
+	values (2, "Prihvatiti uz manje ispravke");
+insert into recommendation (id, name)
+	values (3, "Prihvatiti uz vece ispravke");
+insert into recommendation (id, name)
+	values (4, "Odbiti");
+
+-- insert decisions
+insert into decision (id, name)
+	values (1, "Prihvacen");
+insert into decision (id, name)
+	values (2, "Prihvacen uz manju doradu");
+insert into decision (id, name)
+	values (3, "Uslovno prihvacen uz vece vece izmene");
+insert into decision (id, name)
+	values (4, "Odbijen");
 
 
 

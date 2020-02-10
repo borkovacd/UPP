@@ -69,6 +69,8 @@ export class UserService {
       window.location.href = 'article-correction/' + task.taskId;
     } else if (task.name === 'Izbor recenzenata') {
       window.location.href = 'choosing-reviewers/' + task.taskId;
+    } else if (task.name === 'Recenziranje') {
+      window.location.href = 'chief-editor-reviewing/' + task.taskId;
     } else {
       alert("U pitanju je neki drugi task!")
     }

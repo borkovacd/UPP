@@ -32,6 +32,7 @@ import {ChoosingReviewersComponent} from './pages/text-processing/choosing-revie
 import {DefineReviewTimeComponent} from './pages/text-processing/define-review-time/define-review-time.component';
 import {ChiefEditorNoCorrectionComponent} from './pages/text-processing/chief-editor-no-correction/chief-editor-no-correction.component';
 import {MembershipPaymentComponent} from './pages/text-processing/membership-payment/membership-payment.component';
+import {ChiefEditorReviewingComponent} from './pages/text-processing/chief-editor-reviewing/chief-editor-reviewing.component';
 
 
 
@@ -68,6 +69,8 @@ const routes: Routes = [
   { path: 'chief-editor-informing-nocorrection', component:  ChiefEditorNoCorrectionComponent},
   { path: 'choosing-reviewers/:taskId', component: ChoosingReviewersComponent },
   { path: 'membership-payment/:processInstanceId', component: MembershipPaymentComponent },
+  { path: 'chief-editor-reviewing/:taskId', component: ChiefEditorReviewingComponent },
+
 
 ];
 
