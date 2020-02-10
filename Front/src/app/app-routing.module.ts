@@ -34,6 +34,11 @@ import {ChiefEditorNoCorrectionComponent} from './pages/text-processing/chief-ed
 import {MembershipPaymentComponent} from './pages/text-processing/membership-payment/membership-payment.component';
 import {ChiefEditorReviewingComponent} from './pages/text-processing/chief-editor-reviewing/chief-editor-reviewing.component';
 import {DefineCorrectionTimeComponent} from './pages/text-processing/define-correction-time/define-correction-time.component';
+import {ReviewDoneComponent} from './pages/text-processing/review-done/review-done.component';
+import {AssignedEditorReviewingComponent} from './pages/text-processing/assigned-editor-reviewing/assigned-editor-reviewing.component';
+import {AssignedEditorReviewingCorrectedComponent} from './pages/text-processing/assigned-editor-reviewing-corrected/assigned-editor-reviewing-corrected.component';
+import {ArticleCorrectionAfterReviewComponent} from './pages/text-processing/article-correction-after-review/article-correction-after-review.component';
+import {ArticleCorrectionAfterReviewAgainComponent} from './pages/text-processing/article-correction-after-review-again/article-correction-after-review-again.component';
 
 
 
@@ -67,11 +72,16 @@ const routes: Routes = [
   { path: 'review-time/:processInstanceId', component: DefineReviewTimeComponent },
   { path: 'article-final', component: EndPageComponent },
   { path: 'chief-editor-informing', component:  ChiefEditorInformingComponent},
+  { path: 'review-done', component:  ReviewDoneComponent},
   { path: 'chief-editor-informing-nocorrection', component:  ChiefEditorNoCorrectionComponent},
   { path: 'choosing-reviewers/:taskId', component: ChoosingReviewersComponent },
   { path: 'membership-payment/:processInstanceId', component: MembershipPaymentComponent },
   { path: 'chief-editor-reviewing/:taskId', component: ChiefEditorReviewingComponent },
+  { path: 'assigned-editor-reviewing/:taskId', component: AssignedEditorReviewingComponent },
   { path: 'correction-time/:processInstanceId', component: DefineCorrectionTimeComponent },
+  { path: 'assigned-editor-reviewing-corrected/:taskId', component: AssignedEditorReviewingCorrectedComponent},
+  { path: 'article-correction-after-review/:taskId', component: ArticleCorrectionAfterReviewComponent },
+  { path: 'article-correction-after-review-again/:taskId', component: ArticleCorrectionAfterReviewAgainComponent },
 
 
 

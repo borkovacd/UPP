@@ -40,10 +40,12 @@ import com.ftn.upp.model.FormSubmissionDto;
 import com.ftn.upp.model.Magazine;
 import com.ftn.upp.model.MagazineScientificArea;
 import com.ftn.upp.model.Membership;
+import com.ftn.upp.model.Recommendation;
 import com.ftn.upp.model.TaskDto;
 import com.ftn.upp.model.User;
 import com.ftn.upp.repository.DecisionRepository;
 import com.ftn.upp.repository.MagazineScientificAreaRepository;
+import com.ftn.upp.repository.RecommendationRepository;
 import com.ftn.upp.service.DecisionService;
 import com.ftn.upp.service.MagazineService;
 import com.ftn.upp.service.MembershipService;
@@ -80,6 +82,9 @@ public class TextProcessingController {
 	
 	@Autowired
 	private DecisionRepository decisionRepository;
+	
+	@Autowired
+	private RecommendationRepository recommendationRepository;
 	
 	@Autowired
 	private MagazineScientificAreaRepository magazineScientificAreaRepository;
@@ -266,6 +271,35 @@ public class TextProcessingController {
         return new FormFieldsDto(task.getId(), processInstanceId, properties);
     }
 	
+	@GetMapping(path = "/getTaskFormWithRecommendations/{taskId}", produces = "application/json")
+    public @ResponseBody FormFieldsDto getTaskFormWithRecommendations(@PathVariable String taskId) {
+
+		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+		String processInstanceId = task.getProcessInstanceId();
+		
+		TaskFormData tfd = formService.getTaskFormData(task.getId());
+		List<FormField> properties = tfd.getFormFields();
+		
+		// dinamicko ucitavanje
+		List<Recommendation> recommendations = recommendationRepository.findAll();
+		for (FormField fp: properties)
+		{
+			if (fp.getId().equals("preporuka_GU"))
+			{
+				EnumFormType enumType = (EnumFormType) fp.getType();
+				enumType.getValues().clear();
+				
+				for (Recommendation r: recommendations)
+				{
+					enumType.getValues().put(r.getId().toString(), r.getName());
+				}
+				break ;
+			}
+		}
+		
+        return new FormFieldsDto(task.getId(), processInstanceId, properties);
+    }
+	
 	@GetMapping(path = "/getTaskFormWithDecisions/{taskId}", produces = "application/json")
     public @ResponseBody FormFieldsDto getTaskFormWithDecisions(@PathVariable String taskId) {
 
@@ -279,7 +313,7 @@ public class TextProcessingController {
 		List<Decision> decisions = decisionRepository.findAll();
 		for (FormField fp: properties)
 		{
-			if (fp.getId().equals("odluka_GU"))
+			if (fp.getId().equals("odluka_DU"))
 			{
 				EnumFormType enumType = (EnumFormType) fp.getType();
 				enumType.getValues().clear();
@@ -596,9 +630,9 @@ public class TextProcessingController {
 		for(ExtendedFormSubmissionDto item: formData){
 			String fieldId = item.getFieldId();
 			
-			if(fieldId.equals("odluka_GU")){
+			if(fieldId.equals("preporuka_GU")){
 				if(item.getCategories().size() != 1){
-					System.out.println("Nemoguce je imati vise od jedne odluke!");	
+					System.out.println("Samo jedna preporuka je dozvoljena!");	
 					return new ResponseEntity<Boolean>(HttpStatus.BAD_REQUEST);
 				}
 			}
@@ -606,23 +640,67 @@ public class TextProcessingController {
 
 		runtimeService.setVariable(processInstanceId, "chiefEditorReview", formData);
 		
-		boolean processIsEnding = false;
-		
 		List<ExtendedFormSubmissionDto> chiefEditorReviewData = (List<ExtendedFormSubmissionDto>) runtimeService.getVariable(processInstanceId, "chiefEditorReview");
 		for(ExtendedFormSubmissionDto item: chiefEditorReviewData) {
 			 String fieldId=item.getFieldId();
-			 if(fieldId.equals("odluka_GU")){
-				  List<Decision> allDecisions = decisionRepository.findAll();
-				  for(Decision decision : allDecisions){
+			 if(fieldId.equals("preporuka_GU")){
+				  List<Recommendation> allRecommendations = recommendationRepository.findAll();
+				  for(Recommendation r : allRecommendations){
 					  for(String selected: item.getCategories()){
-						  String idDecision = decision.getId().toString();
+						  String idDecision = r.getId().toString();
 						  if(idDecision.equals(selected)){
-							  System.out.println("Odluka je: " + decision.getName());
-							  if(decision.getName().equals("Prihvacen") || decision.getName().equals("Odbijen")) {
+							  System.out.println("Preporuka je: " + r.getName());
+							  runtimeService.setVariable(processInstanceId, "preporukaGlavnogUrednika", r.getName());
+						  }
+					  }
+				  }
+			 }
+		}
+		
+		formService.submitTaskForm(taskId, map);
+		
+		return new ResponseEntity<Boolean>(HttpStatus.OK);
+		
+    }
+	
+	
+	@PostMapping(path = "/assignedEditorReview/{taskId}", produces = "application/json")
+    public @ResponseBody ResponseEntity<Boolean> assignedEditorReview(@RequestBody List<ExtendedFormSubmissionDto> formData, @PathVariable String taskId) {
+		
+		HashMap<String, Object> map = this.mapListToDto2(formData);
+		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+		String processInstanceId = task.getProcessInstanceId();
+		
+		for(ExtendedFormSubmissionDto item: formData){
+			String fieldId = item.getFieldId();
+			
+			if(fieldId.equals("odluka_DU")){
+				if(item.getCategories().size() != 1){
+					System.out.println("Nemoguce je imati vise od jedne odluke!");	
+					return new ResponseEntity<Boolean>(HttpStatus.BAD_REQUEST);
+				}
+			}
+		}
+
+		runtimeService.setVariable(processInstanceId, "assignedEditorReview", formData);
+		
+		boolean processIsEnding = false;
+		
+		List<ExtendedFormSubmissionDto> assignedEditorReviewData = (List<ExtendedFormSubmissionDto>) runtimeService.getVariable(processInstanceId, "assignedEditorReview");
+		for(ExtendedFormSubmissionDto item: assignedEditorReviewData) {
+			 String fieldId=item.getFieldId();
+			 if(fieldId.equals("odluka_DU")){
+				  List<Decision> allDecisions = decisionRepository.findAll();
+				  for(Decision d : allDecisions){
+					  for(String selected: item.getCategories()){
+						  String idDecision = d.getId().toString();
+						  if(idDecision.equals(selected)){
+							  System.out.println("Odluka je: " + d.getName());
+							  if(d.getName().equals("Prihvacen") || d.getName().equals("Odbijen")) {
 								  System.out.println("Zavrsava se proces");
 								  processIsEnding = true;
 							  }
-							  runtimeService.setVariable(processInstanceId, "odluka", decision.getName());
+							  runtimeService.setVariable(processInstanceId, "odluka", d.getName());
 						  }
 					  }
 				  }

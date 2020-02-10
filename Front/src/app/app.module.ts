@@ -45,6 +45,11 @@ import { ChiefEditorNoCorrectionComponent } from './pages/text-processing/chief-
 import { MembershipPaymentComponent } from './pages/text-processing/membership-payment/membership-payment.component';
 import { ChiefEditorReviewingComponent } from './pages/text-processing/chief-editor-reviewing/chief-editor-reviewing.component';
 import { DefineCorrectionTimeComponent } from './pages/text-processing/define-correction-time/define-correction-time.component';
+import { AssignedEditorReviewingComponent } from './pages/text-processing/assigned-editor-reviewing/assigned-editor-reviewing.component';
+import { ReviewDoneComponent } from './pages/text-processing/review-done/review-done.component';
+import { ArticleCorrectionAfterReviewComponent } from './pages/text-processing/article-correction-after-review/article-correction-after-review.component';
+import { ArticleCorrectionAfterReviewAgainComponent} from './pages/text-processing/article-correction-after-review-again/article-correction-after-review-again.component';
+import { AssignedEditorReviewingCorrectedComponent } from './pages/text-processing/assigned-editor-reviewing-corrected/assigned-editor-reviewing-corrected.component';
 
 @NgModule({
   declarations: [
@@ -81,7 +86,12 @@ import { DefineCorrectionTimeComponent } from './pages/text-processing/define-co
     ChiefEditorNoCorrectionComponent,
     MembershipPaymentComponent,
     ChiefEditorReviewingComponent,
-    DefineCorrectionTimeComponent
+    DefineCorrectionTimeComponent,
+    AssignedEditorReviewingComponent,
+    ReviewDoneComponent,
+    ArticleCorrectionAfterReviewComponent,
+    ArticleCorrectionAfterReviewAgainComponent,
+    AssignedEditorReviewingCorrectedComponent
   ],
   imports: [
     BrowserModule,

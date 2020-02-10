@@ -60,7 +60,7 @@ export class DefineCorrectionTimeComponent implements OnInit {
         x.subscribe(
           res => {
             alert("Zadato je vreme za ispravku");
-            //this.router.navigateByUrl('/text-information/' + processInstanceId);
+            this.router.navigateByUrl('/chief-editor-informing');
           },
           err => {
             console.log("Error occured");

@@ -1,17 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {UserService} from '../../../service/user.service';
-import {MagazineService} from '../../../service/magazine.service';
-import {RepositoryService} from '../../../service/repository.service';
 import {TextProcessingService} from '../../../service/text-processing.service';
-import {FormSubmissionWithFileDto} from '../../../model/FormSubmissionWithFileDto';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
-  selector: 'app-chief-editor-reviewing',
-  templateUrl: './chief-editor-reviewing.component.html',
-  styleUrls: ['./chief-editor-reviewing.component.css']
+  selector: 'app-assigned-editor-reviewing',
+  templateUrl: './assigned-editor-reviewing.component.html',
+  styleUrls: ['./assigned-editor-reviewing.component.css']
 })
-export class ChiefEditorReviewingComponent implements OnInit {
+export class AssignedEditorReviewingComponent implements OnInit {
 
   private formFieldsDto = null;
   private formFields = [];
@@ -32,7 +28,7 @@ export class ChiefEditorReviewingComponent implements OnInit {
   ngOnInit() {
 
     const taskId = this.route.snapshot.params.taskId;
-    const x = this.textProcessingService.getTaskFormWithRecommendations(taskId);
+    const x = this.textProcessingService.getTaskFormWithDecisions(taskId);
 
     x.subscribe(
       res => {
@@ -65,7 +61,7 @@ export class ChiefEditorReviewingComponent implements OnInit {
 
     for (const property in value) {
 
-      if (property != 'preporuka_GU') {
+      if (property != 'odluka_DU') {
         o.push({fieldId : property, fieldValue : value[property]});
       } else {
         o.push({fieldId : property, categories : value[property]});
@@ -75,12 +71,17 @@ export class ChiefEditorReviewingComponent implements OnInit {
       console.log(o);
     }
 
-    let x = this.textProcessingService.chiefEditorReview(o, this.formFieldsDto.taskId);
+    let x = this.textProcessingService.assignedEditorReview(o, this.formFieldsDto.taskId);
 
 
     x.subscribe(
       res => {
-          this.router.navigateByUrl('/review-done');
+        console.log("Proces se zavrsava -> " + res);
+        if (res == true) {
+          this.router.navigateByUrl('/article-final');
+        } else {
+          this.router.navigateByUrl('correction-time/' + this.processInstanceId);
+        }
       },
       err => {
         console.log("Error occured");

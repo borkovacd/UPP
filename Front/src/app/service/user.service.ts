@@ -71,6 +71,14 @@ export class UserService {
       window.location.href = 'choosing-reviewers/' + task.taskId;
     } else if (task.name === 'Recenziranje') {
       window.location.href = 'chief-editor-reviewing/' + task.taskId;
+    } else if (task.name === 'Obrada rada') {
+      window.location.href = 'assigned-editor-reviewing/' + task.taskId;
+    } else if (task.name === 'Pregledanje ispravljenog rada') {
+      window.location.href = 'assigned-editor-reviewing-corrected/' + task.taskId;
+    } else if (task.name === 'Ispravljanje rada') {
+      window.location.href = 'article-correction-after-review/' + task.taskId;
+    } else if (task.name === 'Ponovna dorada ') {
+      window.location.href = 'article-correction-after-review-again/' + task.taskId;
     } else {
       alert("U pitanju je neki drugi task!")
     }

@@ -1,0 +1,32 @@
+<div class="view-welcome intro-2">
+  <div  class="container">
+    <div>
+      <br/>
+      <h3 style="color: white; margin-top: -0.5%" >
+        Ispravljanje rada posle recenzija
+      </h3>
+    </div>
+    <div style="margin-top: 2%; color:white;" class="form-group">
+      <form #f="ngForm" (ngSubmit)="onSubmit(f.value, f)" ngNativeValidate>
+
+        <div *ngFor="let field of formFields" >
+          <div>
+            <label for={{field.id}}> <h5>{{field.label}} </h5></label>
+          </div>
+          <div>
+            <label for={{field.id}}> <b><i>{{field.defaultValue}} </i></b></label>
+          </div>
+          <div>
+            <input  type="file" accept="application/pdf" *ngIf="field.properties.type == 'file'" (change)="fileChoserListener($event.target.files, field)">
+          </div>
+          <div>
+            <input type="text" name={{field.id}} ngModel  *ngIf="field.type.name=='string'  && field.label!='Komentar'  && field.label!='Ispravljen PDF'">
+
+          </div>
+
+        </div>
+        <button style="margin-left: 25%" class="btn btn-outline-light" type="submit"> Potvrdi </button>
+      </form>
+    </div>
+  </div>
+</div>
